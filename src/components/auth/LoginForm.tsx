@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FaceIcon, LockIcon, KeyIcon, Mail, Phone } from 'lucide-react';
+import { LockIcon, KeyIcon, Mail, Phone, User } from 'lucide-react';
 
 const LoginForm = () => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -39,7 +39,7 @@ const LoginForm = () => {
               <span className="hidden sm:inline">Phone</span>
             </TabsTrigger>
             <TabsTrigger value="faceid" className="flex items-center gap-2 text-xs sm:text-sm">
-              <FaceIcon className="h-3 w-3" />
+              <User className="h-3 w-3" />
               <span className="hidden sm:inline">Face ID</span>
             </TabsTrigger>
           </TabsList>
@@ -101,7 +101,7 @@ const LoginForm = () => {
           <TabsContent value="faceid">
             <div className="py-8 text-center space-y-4">
               <div className="bg-gray-100 w-32 h-32 rounded-full mx-auto flex items-center justify-center">
-                <FaceIcon className="h-16 w-16 text-gray-400" />
+                <User className="h-16 w-16 text-gray-400" />
               </div>
               <p className="text-gray-600">
                 This feature requires the Club66 Mobile App
