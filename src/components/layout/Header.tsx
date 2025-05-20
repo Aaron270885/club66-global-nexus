@@ -136,6 +136,7 @@ const Header = () => {
                           size="sm" 
                           className="justify-start"
                           asChild
+                          onClick={() => setIsOpen(false)}
                         >
                           <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
                         </Button>
@@ -148,6 +149,7 @@ const Header = () => {
                     variant="ghost"
                     className="justify-start"
                     asChild
+                    onClick={() => setIsOpen(false)}
                   >
                     <Link to={item.path}>{item.name}</Link>
                   </Button>
@@ -155,10 +157,10 @@ const Header = () => {
               )}
             </div>
             <div className="mt-4 flex flex-col space-y-2">
-              <Button asChild className="bg-club66-purple hover:bg-club66-darkpurple">
+              <Button asChild className="bg-club66-purple hover:bg-club66-darkpurple" onClick={() => setIsOpen(false)}>
                 <Link to="/register">Join Now</Link>
               </Button>
-              <Button asChild variant="outline" className="border-club66-purple text-club66-purple hover:bg-club66-purple/10">
+              <Button asChild variant="outline" className="border-club66-purple text-club66-purple hover:bg-club66-purple/10" onClick={() => setIsOpen(false)}>
                 <Link to="/login">Login</Link>
               </Button>
             </div>
