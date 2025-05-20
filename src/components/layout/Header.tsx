@@ -1,185 +1,255 @@
 
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, Globe } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { 
-  DropdownMenu,
-  DropdownMenuContent, 
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import CountrySelector from './CountrySelector';
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [showCountrySelector, setShowCountrySelector] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isAffiliatesOpen, setIsAffiliatesOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    // Close dropdowns when closing mobile menu
+    if (isMobileMenuOpen) {
+      setIsServicesOpen(false);
+      setIsAffiliatesOpen(false);
+    }
   };
 
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Our Cards', path: '/cards' },
-    { name: 'Our App', path: '/app' },
-    { name: 'Discounts', path: '/discounts' },
-    { 
-      name: 'Services & Products', 
-      path: '#',
-      dropdown: [
-        { name: 'Credit Account', path: '/services/credit' },
-        { name: 'Hire Purchase', path: '/services/hire-purchase' },
-        { name: 'Payday Loan', path: '/services/payday-loan' },
-      ] 
-    },
-    { 
-      name: 'Our Affiliates', 
-      path: '#',
-      dropdown: [
-        { name: 'Members', path: '/affiliates/members' },
-        { name: 'Merchants', path: '/affiliates/merchants' },
-        { name: 'Distributors', path: '/affiliates/distributors' },
-      ] 
-    },
-    { name: 'About', path: '/about' },
-    { name: 'Job Center', path: '/jobs' },
-    { name: 'FAQ', path: '/faq' },
-  ];
-
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+    <header className="bg-white shadow-sm">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-club66-purple">
-              Club<span className="text-club66-gold">66</span> Global
-            </span>
+          <Link to="/" className="text-xl font-bold text-club66-purple">
+            Club66 Global
           </Link>
 
-          {/* Country Selector - Desktop */}
-          <div className="hidden md:flex items-center ml-4">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="flex items-center gap-2 text-gray-600"
-              onClick={() => setShowCountrySelector(!showCountrySelector)}
-            >
-              <Globe className="h-4 w-4" />
-              <span>Mali</span>
-              <ChevronDown className="h-4 w-4" />
-            </Button>
-            {showCountrySelector && (
-              <div className="absolute mt-2 bg-white shadow-md rounded-md p-2" style={{ top: '60px', right: '20px' }}>
-                <CountrySelector onClose={() => setShowCountrySelector(false)} />
-              </div>
-            )}
-          </div>
-
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => 
-              item.dropdown ? (
-                <DropdownMenu key={item.name}>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" className="flex items-center gap-1">
-                      {item.name} <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    {item.dropdown.map((dropdownItem) => (
-                      <DropdownMenuItem key={dropdownItem.name} asChild>
-                        <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Button asChild key={item.name} variant="ghost" size="sm">
-                  <Link to={item.path}>{item.name}</Link>
-                </Button>
-              )
-            )}
-            <Button asChild size="sm" className="bg-club66-purple hover:bg-club66-darkpurple ml-2">
-              <Link to="/register">Join Now</Link>
-            </Button>
-            <Button asChild variant="outline" size="sm" className="border-club66-purple text-club66-purple hover:bg-club66-purple/10">
-              <Link to="/login">Login</Link>
-            </Button>
+          <nav className="hidden md:flex space-x-4 items-center">
+            <Link to="/cards" className="text-gray-700 hover:text-club66-purple">Cards</Link>
+            <Link to="/app" className="text-gray-700 hover:text-club66-purple">App</Link>
+            <Link to="/discounts" className="text-gray-700 hover:text-club66-purple">Discounts</Link>
+            
+            {/* Services Dropdown */}
+            <div className="relative">
+              <button 
+                className="flex items-center text-gray-700 hover:text-club66-purple"
+                onClick={() => setIsServicesOpen(!isServicesOpen)}
+              >
+                Services <ChevronDown className="ml-1 h-4 w-4" />
+              </button>
+              
+              {isServicesOpen && (
+                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                  <div className="py-1">
+                    <Link 
+                      to="/services" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      All Services
+                    </Link>
+                    <Link 
+                      to="/services/credit" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      Credit Account
+                    </Link>
+                    <Link 
+                      to="/services/hire-purchase" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      Hire Purchase
+                    </Link>
+                    <Link 
+                      to="/services/payday-loan" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsServicesOpen(false)}
+                    >
+                      Payday Loan
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Affiliates Dropdown */}
+            <div className="relative">
+              <button 
+                className="flex items-center text-gray-700 hover:text-club66-purple"
+                onClick={() => setIsAffiliatesOpen(!isAffiliatesOpen)}
+              >
+                Affiliates <ChevronDown className="ml-1 h-4 w-4" />
+              </button>
+              
+              {isAffiliatesOpen && (
+                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                  <div className="py-1">
+                    <Link 
+                      to="/affiliates/members" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsAffiliatesOpen(false)}
+                    >
+                      Members
+                    </Link>
+                    <Link 
+                      to="/affiliates/merchants" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsAffiliatesOpen(false)}
+                    >
+                      Merchants
+                    </Link>
+                    <Link 
+                      to="/affiliates/distributors" 
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsAffiliatesOpen(false)}
+                    >
+                      Distributors
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <Link to="/about" className="text-gray-700 hover:text-club66-purple">About</Link>
+            <Link to="/jobs" className="text-gray-700 hover:text-club66-purple">Jobs</Link>
+            <Link to="/faq" className="text-gray-700 hover:text-club66-purple">FAQ</Link>
+            <CountrySelector />
           </nav>
 
+          {/* Auth Buttons - Desktop */}
+          <div className="hidden md:flex items-center space-x-2">
+            <Button variant="outline" className="text-club66-purple border-club66-purple hover:bg-club66-purple/10" asChild>
+              <Link to="/login">
+                Login
+              </Link>
+            </Button>
+            <Button className="bg-club66-purple hover:bg-club66-darkpurple" asChild>
+              <Link to="/register">
+                Register
+              </Link>
+            </Button>
+          </div>
+
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-club66-purple"
-            onClick={toggleMenu}
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          <button onClick={toggleMobileMenu} className="md:hidden p-2">
+            {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden py-4 animate-fade-in">
-            <div className="flex flex-col space-y-2">
-              {navItems.map((item) => 
-                item.dropdown ? (
-                  <div key={item.name} className="flex flex-col">
-                    <Button variant="ghost" className="justify-start">
-                      {item.name}
-                    </Button>
-                    <div className="pl-4">
-                      {item.dropdown.map((dropdownItem) => (
-                        <Button 
-                          key={dropdownItem.name} 
-                          variant="ghost" 
-                          size="sm" 
-                          className="justify-start"
-                          asChild
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Link to={dropdownItem.path}>{dropdownItem.name}</Link>
-                        </Button>
-                      ))}
-                    </div>
+        {isMobileMenuOpen && (
+          <div className="md:hidden py-4 border-t">
+            <div className="flex flex-col space-y-3">
+              <Link to="/cards" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Cards</Link>
+              <Link to="/app" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">App</Link>
+              <Link to="/discounts" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Discounts</Link>
+              
+              {/* Services Dropdown - Mobile */}
+              <div>
+                <button 
+                  className="flex items-center justify-between w-full text-gray-700 py-1"
+                  onClick={() => setIsServicesOpen(!isServicesOpen)}
+                >
+                  <span>Services</span> 
+                  <ChevronDown className={`h-4 w-4 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {isServicesOpen && (
+                  <div className="pl-4 mt-1 space-y-2 border-l-2 border-gray-200">
+                    <Link 
+                      to="/services" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      All Services
+                    </Link>
+                    <Link 
+                      to="/services/credit" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Credit Account
+                    </Link>
+                    <Link 
+                      to="/services/hire-purchase" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Hire Purchase
+                    </Link>
+                    <Link 
+                      to="/services/payday-loan" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Payday Loan
+                    </Link>
                   </div>
-                ) : (
-                  <Button
-                    key={item.name}
-                    variant="ghost"
-                    className="justify-start"
-                    asChild
-                    onClick={() => setIsOpen(false)}
-                  >
-                    <Link to={item.path}>{item.name}</Link>
-                  </Button>
-                )
-              )}
+                )}
+              </div>
+              
+              {/* Affiliates Dropdown - Mobile */}
+              <div>
+                <button 
+                  className="flex items-center justify-between w-full text-gray-700 py-1"
+                  onClick={() => setIsAffiliatesOpen(!isAffiliatesOpen)}
+                >
+                  <span>Affiliates</span> 
+                  <ChevronDown className={`h-4 w-4 transition-transform ${isAffiliatesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {isAffiliatesOpen && (
+                  <div className="pl-4 mt-1 space-y-2 border-l-2 border-gray-200">
+                    <Link 
+                      to="/affiliates/members" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Members
+                    </Link>
+                    <Link 
+                      to="/affiliates/merchants" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Merchants
+                    </Link>
+                    <Link 
+                      to="/affiliates/distributors" 
+                      onClick={toggleMobileMenu}
+                      className="block text-sm text-gray-700"
+                    >
+                      Distributors
+                    </Link>
+                  </div>
+                )}
+              </div>
+              
+              <Link to="/about" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">About</Link>
+              <Link to="/jobs" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Jobs</Link>
+              <Link to="/faq" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">FAQ</Link>
+              <CountrySelector />
             </div>
-            <div className="mt-4 flex flex-col space-y-2">
-              <Button asChild className="bg-club66-purple hover:bg-club66-darkpurple" onClick={() => setIsOpen(false)}>
-                <Link to="/register">Join Now</Link>
+            
+            {/* Auth Buttons - Mobile */}
+            <div className="flex flex-col space-y-2 mt-4">
+              <Button variant="outline" className="text-club66-purple border-club66-purple hover:bg-club66-purple/10" asChild>
+                <Link to="/login">
+                  Login
+                </Link>
               </Button>
-              <Button asChild variant="outline" className="border-club66-purple text-club66-purple hover:bg-club66-purple/10" onClick={() => setIsOpen(false)}>
-                <Link to="/login">Login</Link>
+              <Button className="bg-club66-purple hover:bg-club66-darkpurple" asChild>
+                <Link to="/register">
+                  Register
+                </Link>
               </Button>
-            </div>
-            <div className="mt-4 flex items-center">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-2 text-gray-600"
-                onClick={() => setShowCountrySelector(!showCountrySelector)}
-              >
-                <Globe className="h-4 w-4" />
-                <span>Mali</span>
-                <ChevronDown className="h-4 w-4" />
-              </Button>
-              {showCountrySelector && (
-                <div className="absolute mt-2 bg-white shadow-md rounded-md p-2">
-                  <CountrySelector onClose={() => setShowCountrySelector(false)} />
-                </div>
-              )}
             </div>
           </div>
         )}
