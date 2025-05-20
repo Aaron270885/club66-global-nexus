@@ -1,6 +1,8 @@
 
 import { useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, Globe } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface Country {
   id: string;
@@ -10,7 +12,7 @@ interface Country {
 }
 
 interface CountrySelectorProps {
-  onClose: () => void;
+  onClose?: () => void; // Make onClose optional
 }
 
 const CountrySelector = ({ onClose }: CountrySelectorProps) => {
@@ -26,6 +28,7 @@ const CountrySelector = ({ onClose }: CountrySelectorProps) => {
   ];
 
   const [selectedCountry, setSelectedCountry] = useState<string>('Mali');
+  const [open, setOpen] = useState(false);
 
   const handleSelect = (country: Country) => {
     if (!country.active) {
@@ -34,38 +37,49 @@ const CountrySelector = ({ onClose }: CountrySelectorProps) => {
     }
     
     setSelectedCountry(country.name);
-    onClose();
+    setOpen(false);
+    if (onClose) onClose(); // Call onClose if provided
   };
 
   return (
-    <div className="w-64 max-h-80 overflow-y-auto">
-      <div className="p-2">
-        <h3 className="font-medium text-sm text-gray-700 mb-2">Select Country</h3>
-        <div className="space-y-1">
-          {countries.map((country) => (
-            <div
-              key={country.id}
-              className={`flex items-center p-2 rounded-md cursor-pointer ${
-                country.active ? 'hover:bg-gray-100' : 'opacity-50 cursor-not-allowed'
-              } ${selectedCountry === country.name ? 'bg-club66-purple/10' : ''}`}
-              onClick={() => handleSelect(country)}
-            >
-              <div className="flex-1">
-                <span className="text-sm">
-                  {country.name}
-                  {!country.active && (
-                    <span className="text-xs ml-2 text-gray-400">(Coming Soon)</span>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="sm" className="flex items-center gap-1">
+          <Globe className="h-4 w-4" />
+          <span>{selectedCountry}</span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64 p-0">
+        <div className="max-h-80 overflow-y-auto">
+          <div className="p-2">
+            <h3 className="font-medium text-sm text-gray-700 mb-2">Select Country</h3>
+            <div className="space-y-1">
+              {countries.map((country) => (
+                <div
+                  key={country.id}
+                  className={`flex items-center p-2 rounded-md cursor-pointer ${
+                    country.active ? 'hover:bg-gray-100' : 'opacity-50 cursor-not-allowed'
+                  } ${selectedCountry === country.name ? 'bg-club66-purple/10' : ''}`}
+                  onClick={() => handleSelect(country)}
+                >
+                  <div className="flex-1">
+                    <span className="text-sm">
+                      {country.name}
+                      {!country.active && (
+                        <span className="text-xs ml-2 text-gray-400">(Coming Soon)</span>
+                      )}
+                    </span>
+                  </div>
+                  {selectedCountry === country.name && (
+                    <Check className="h-4 w-4 text-club66-purple" />
                   )}
-                </span>
-              </div>
-              {selectedCountry === country.name && (
-                <Check className="h-4 w-4 text-club66-purple" />
-              )}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-      </div>
-    </div>
+      </PopoverContent>
+    </Popover>
   );
 };
 
