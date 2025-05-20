@@ -1,0 +1,142 @@
+
+import { Link } from 'react-router-dom';
+import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+
+const Footer = () => {
+  return (
+    <footer className="bg-gray-900 text-white">
+      <div className="container mx-auto px-4 pt-16 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
+          <div>
+            <h3 className="text-lg font-bold mb-6 flex items-center">
+              <span className="text-club66-gold">Club</span>
+              <span className="text-club66-purple">66</span> 
+              <span className="ml-2">Global</span>
+            </h3>
+            <p className="text-gray-300 mb-6 text-sm">
+              Elevating lifestyle experiences across Africa with exclusive member benefits, 
+              discounts, and opportunities for growth and prosperity.
+            </p>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 text-sm text-gray-300">
+                <Phone className="h-4 w-4" />
+                <span>+223 71 77 77 60</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-300">
+                <Mail className="h-4 w-4" />
+                <span>info@club66global.com</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-300">
+                <MapPin className="h-4 w-4" />
+                <span>Bamako, Mali</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Quick Links</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/" className="text-gray-300 hover:text-club66-gold text-sm">Home</Link>
+              </li>
+              <li>
+                <Link to="/cards" className="text-gray-300 hover:text-club66-gold text-sm">Our Cards</Link>
+              </li>
+              <li>
+                <Link to="/app" className="text-gray-300 hover:text-club66-gold text-sm">Our App</Link>
+              </li>
+              <li>
+                <Link to="/discounts" className="text-gray-300 hover:text-club66-gold text-sm">Discounts</Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-gray-300 hover:text-club66-gold text-sm">About Us</Link>
+              </li>
+              <li>
+                <Link to="/jobs" className="text-gray-300 hover:text-club66-gold text-sm">Job Center</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Support */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Support</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/faq" className="text-gray-300 hover:text-club66-gold text-sm">FAQ</Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-300 hover:text-club66-gold text-sm">Contact Us</Link>
+              </li>
+              <li>
+                <Link to="/privacy" className="text-gray-300 hover:text-club66-gold text-sm">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link to="/terms" className="text-gray-300 hover:text-club66-gold text-sm">Terms of Use</Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <h3 className="text-lg font-bold mb-6">Stay Updated</h3>
+            <p className="text-gray-300 mb-4 text-sm">Subscribe to our newsletter for the latest offers and updates.</p>
+            <form className="mb-4">
+              <div className="flex max-w-md">
+                <input
+                  type="email"
+                  placeholder="Your email address"
+                  className="rounded-l-md px-4 py-2 w-full focus:outline-none text-gray-900 text-sm"
+                />
+                <button
+                  type="submit"
+                  className="bg-club66-purple hover:bg-club66-darkpurple text-white rounded-r-md px-4 py-2 text-sm"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </form>
+            <div className="flex space-x-4 mt-6">
+              <a href="#" className="text-gray-300 hover:text-club66-gold">
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-300 hover:text-club66-gold">
+                <Twitter className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-300 hover:text-club66-gold">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="#" className="text-gray-300 hover:text-club66-gold">
+                <Linkedin className="h-5 w-5" />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              &copy; {new Date().getFullYear()} Club66 Global. All rights reserved.
+            </p>
+            <div className="mt-4 md:mt-0">
+              <div className="flex space-x-6">
+                <Link to="/privacy" className="text-gray-400 hover:text-white text-sm">
+                  Privacy
+                </Link>
+                <Link to="/terms" className="text-gray-400 hover:text-white text-sm">
+                  Terms
+                </Link>
+                <Link to="/cookies" className="text-gray-400 hover:text-white text-sm">
+                  Cookies
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
