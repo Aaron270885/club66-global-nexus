@@ -4,13 +4,15 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Basic pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
-// Pages
+// Main pages
 import Cards from "./pages/Cards";
 import AppPage from "./pages/App";
 import Discounts from "./pages/Discounts";
@@ -65,6 +67,7 @@ const AppComponent = () => (
           <Route path="/affiliates/merchants" element={<Merchants />} />
           <Route path="/affiliates/distributors" element={<Distributors />} />
           
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
