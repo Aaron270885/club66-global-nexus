@@ -1,5 +1,5 @@
 
-import { Users, Globe, Star, Heart } from 'lucide-react';
+import { Users, Globe, Star, Heart, User } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';

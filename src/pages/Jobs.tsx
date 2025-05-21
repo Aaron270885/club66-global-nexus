@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Search, Briefcase, MapPin, Clock, Filter, ChevronDown, Users } from 'lucide-react';
+import { Search, Briefcase, MapPin, Clock, Filter, ChevronDown, Users, Mail } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
