@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import MemberCard from '@/components/dashboard/MemberCard';
 import DashboardStats from '@/components/dashboard/DashboardStats';
+import CurrencyConverterWidget from '@/components/dashboard/CurrencyConverterWidget';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CreditCard, User, Settings, CreditCardIcon, Download, Phone } from 'lucide-react';
@@ -64,6 +65,13 @@ const Dashboard = () => {
                     <span className="font-medium">{user.referralCode}</span>
                   </div>
                   
+                  <Button variant="outline" size="sm" className="w-full mb-3" asChild>
+                    <Link to="/affiliate-dashboard">
+                      <User className="mr-2 h-4 w-4" />
+                      Affiliate Dashboard
+                    </Link>
+                  </Button>
+                  
                   <Button variant="outline" size="sm" className="w-full mb-3">
                     <User className="mr-2 h-4 w-4" />
                     Edit Profile
@@ -74,6 +82,11 @@ const Dashboard = () => {
                     Account Settings
                   </Button>
                 </div>
+              </div>
+              
+              {/* Currency Converter */}
+              <div className="mt-6">
+                <CurrencyConverterWidget />
               </div>
               
               {/* Membership Card Mobile View */}
@@ -197,6 +210,12 @@ const Dashboard = () => {
                         </Button>
                       </div>
                     </div>
+                    
+                    <Button className="w-full mb-4" asChild>
+                      <Link to="/affiliate-dashboard">
+                        View Affiliate Dashboard
+                      </Link>
+                    </Button>
                     
                     <h4 className="font-medium mt-6 mb-2">Your Referred Members</h4>
                     <div className="border rounded-md divide-y">

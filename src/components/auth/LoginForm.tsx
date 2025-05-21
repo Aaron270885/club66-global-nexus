@@ -1,22 +1,79 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LockIcon, KeyIcon, Mail, Phone, User } from 'lucide-react';
+import OTPVerification from './OTPVerification';
+import { toast } from '@/hooks/use-toast';
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [showOTPVerification, setShowOTPVerification] = useState(false);
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Login logic - integrate with auth system later
     console.log('Logging in with:', { emailOrPhone, password });
-    alert('Login successful!');
+    toast({
+      title: "Login successful!",
+      description: "Welcome back to Club66 Global."
+    });
+    
+    // Navigate to dashboard on successful login
+    navigate('/dashboard');
+  };
+
+  const handlePhoneSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneNumber) {
+      toast({
+        title: "Phone number required",
+        description: "Please enter your phone number.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Send OTP to phone number
+    setShowOTPVerification(true);
+    
+    // In a real app, this would make an API call to send an OTP code
+    toast({
+      title: "Verification code sent",
+      description: `A verification code has been sent to ${phoneNumber}`,
+    });
+  };
+  
+  const handleOTPComplete = () => {
+    // On successful OTP verification, log the user in
+    toast({
+      title: "Login successful!",
+      description: "Welcome back to Club66 Global."
+    });
+    
+    // Navigate to dashboard on successful login
+    navigate('/dashboard');
+  };
+  
+  const handleResendOTP = async () => {
+    // In a real app, this would make an API call to resend an OTP code
+    try {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast({
+        title: "Verification code resent",
+        description: `A new verification code has been sent to ${phoneNumber}`,
+      });
+      return Promise.resolve();
+    } catch (error) {
+      return Promise.reject(error);
+    }
   };
 
   return (
@@ -80,22 +137,36 @@ const LoginForm = () => {
           </TabsContent>
           
           <TabsContent value="phone">
-            <form className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="+223 XX XX XX XX"
-                />
-              </div>
-              <Button className="w-full bg-club66-purple hover:bg-club66-darkpurple">
-                Send Verification Code
-              </Button>
-              <p className="text-xs text-gray-500 text-center">
-                We'll send a verification code to your registered phone number
-              </p>
-            </form>
+            {showOTPVerification ? (
+              <OTPVerification 
+                phoneNumber={phoneNumber} 
+                onVerifyComplete={handleOTPComplete}
+                onResendCode={handleResendOTP}
+              />
+            ) : (
+              <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="+223 XX XX XX XX"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    required
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  className="w-full bg-club66-purple hover:bg-club66-darkpurple"
+                >
+                  Send Verification Code
+                </Button>
+                <p className="text-xs text-gray-500 text-center">
+                  We'll send a verification code to your registered phone number
+                </p>
+              </form>
+            )}
           </TabsContent>
           
           <TabsContent value="faceid">
