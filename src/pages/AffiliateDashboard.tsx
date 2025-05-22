@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { CreditCard, Users, Copy, ExternalLink, Gift, Percent, DollarSign, ArrowRight } from 'lucide-react';
+import { Check } from '@/components/ui/check';
 import { toast } from '@/hooks/use-toast';
 
 const AffiliateDashboard = () => {

@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, User, Bell, Settings, LogOut, CreditCard } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Users, Bell, Settings, LogOut, CreditCard } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
