@@ -2,7 +2,12 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, ChevronDown, User, Users, Bell, Settings, LogOut, CreditCard } from 'lucide-react';
+import { 
+  Menu, X, ChevronDown, User, Users, Bell, Settings, 
+  LogOut, CreditCard, Home, CreditCard as CardIcon, 
+  Smartphone, Percent, ShoppingBag, UsersRound, 
+  Info, Briefcase, HelpCircle, Globe 
+} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +16,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import CountrySelector from './CountrySelector';
+import { cn } from '@/lib/utils';
 
 // For demo purposes, we'll simulate a logged-in user
 const isLoggedIn = false; // Change to true to see the logged-in state
@@ -23,16 +38,31 @@ const user = {
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const [isAffiliatesOpen, setIsAffiliatesOpen] = useState(false);
+  
+  // State for mobile menu dropdowns
+  const [mobileDropdowns, setMobileDropdowns] = useState({
+    services: false,
+    affiliates: false,
+    about: false,
+  });
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
     // Close dropdowns when closing mobile menu
     if (isMobileMenuOpen) {
-      setIsServicesOpen(false);
-      setIsAffiliatesOpen(false);
+      setMobileDropdowns({
+        services: false,
+        affiliates: false,
+        about: false,
+      });
     }
+  };
+
+  const toggleMobileDropdown = (dropdown: keyof typeof mobileDropdowns) => {
+    setMobileDropdowns({
+      ...mobileDropdowns,
+      [dropdown]: !mobileDropdowns[dropdown],
+    });
   };
 
   return (
@@ -40,104 +70,223 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold text-club66-purple">
-            Club66 Global
+          <Link to="/" className="text-xl font-bold text-club66-purple flex items-center">
+            <span className="mr-2">Club66</span>
+            <CountrySelector />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-4 items-center">
-            <Link to="/cards" className="text-gray-700 hover:text-club66-purple">Cards</Link>
-            <Link to="/app" className="text-gray-700 hover:text-club66-purple">App</Link>
-            <Link to="/discounts" className="text-gray-700 hover:text-club66-purple">Discounts</Link>
-            
-            {/* Services Dropdown */}
-            <div className="relative">
-              <button 
-                className="flex items-center text-gray-700 hover:text-club66-purple"
-                onClick={() => setIsServicesOpen(!isServicesOpen)}
-              >
-                Services <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              
-              {isServicesOpen && (
-                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                  <div className="py-1">
-                    <Link 
-                      to="/services" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      All Services
-                    </Link>
-                    <Link 
-                      to="/services/credit" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Credit Account
-                    </Link>
-                    <Link 
-                      to="/services/hire-purchase" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Hire Purchase
-                    </Link>
-                    <Link 
-                      to="/services/payday-loan" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsServicesOpen(false)}
-                    >
-                      Payday Loan
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            {/* Affiliates Dropdown */}
-            <div className="relative">
-              <button 
-                className="flex items-center text-gray-700 hover:text-club66-purple"
-                onClick={() => setIsAffiliatesOpen(!isAffiliatesOpen)}
-              >
-                Affiliates <ChevronDown className="ml-1 h-4 w-4" />
-              </button>
-              
-              {isAffiliatesOpen && (
-                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                  <div className="py-1">
-                    <Link 
-                      to="/affiliates/members" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsAffiliatesOpen(false)}
-                    >
-                      Members
-                    </Link>
-                    <Link 
-                      to="/affiliates/merchants" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsAffiliatesOpen(false)}
-                    >
-                      Merchants
-                    </Link>
-                    <Link 
-                      to="/affiliates/distributors" 
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => setIsAffiliatesOpen(false)}
-                    >
-                      Distributors
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <Link to="/about" className="text-gray-700 hover:text-club66-purple">About</Link>
-            <Link to="/jobs" className="text-gray-700 hover:text-club66-purple">Jobs</Link>
-            <Link to="/faq" className="text-gray-700 hover:text-club66-purple">FAQ</Link>
-            <CountrySelector />
-          </nav>
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              {/* Home */}
+              <NavigationMenuItem>
+                <Link to="/">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <Home className="h-4 w-4 mr-1" />
+                    Home
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* Cards */}
+              <NavigationMenuItem>
+                <Link to="/cards">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <CardIcon className="h-4 w-4 mr-1" />
+                    Our Cards
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* App */}
+              <NavigationMenuItem>
+                <Link to="/app">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <Smartphone className="h-4 w-4 mr-1" />
+                    Our App
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* Discounts */}
+              <NavigationMenuItem>
+                <Link to="/discounts">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <Percent className="h-4 w-4 mr-1" />
+                    Discounts
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* Services */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  <ShoppingBag className="h-4 w-4 mr-1" />
+                  Services & Products
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[200px] gap-1 p-2">
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/services" className="block p-2 hover:bg-muted rounded-md">
+                          All Services
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/services/credit" className="block p-2 hover:bg-muted rounded-md">
+                          Credit Account
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/services/hire-purchase" className="block p-2 hover:bg-muted rounded-md">
+                          Hire Purchase
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/services/payday-loan" className="block p-2 hover:bg-muted rounded-md">
+                          Payday Loan
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              {/* Affiliates */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  <UsersRound className="h-4 w-4 mr-1" />
+                  Our Affiliates
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[200px] gap-1 p-2">
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/affiliates/members" className="block p-2 hover:bg-muted rounded-md">
+                          Members
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/affiliates/merchants" className="block p-2 hover:bg-muted rounded-md">
+                          Merchants
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/affiliates/distributors" className="block p-2 hover:bg-muted rounded-md">
+                          Distributors
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              {/* About */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>
+                  <Info className="h-4 w-4 mr-1" />
+                  About
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid grid-cols-2 w-[400px] gap-1 p-2">
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about" className="block p-2 hover:bg-muted rounded-md">
+                          Who is behind C66?
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/changing-lives" className="block p-2 hover:bg-muted rounded-md">
+                          Changing Lives!
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/association-members" className="block p-2 hover:bg-muted rounded-md">
+                          Association Members
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/partners" className="block p-2 hover:bg-muted rounded-md">
+                          Partners & Endorsements
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/projects" className="block p-2 hover:bg-muted rounded-md">
+                          Projects
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/news" className="block p-2 hover:bg-muted rounded-md">
+                          News & Press
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/terms" className="block p-2 hover:bg-muted rounded-md">
+                          Terms of Use
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/privacy" className="block p-2 hover:bg-muted rounded-md">
+                          Privacy Policy
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link to="/about/contact" className="block p-2 hover:bg-muted rounded-md">
+                          Contact Us
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              {/* Jobs */}
+              <NavigationMenuItem>
+                <Link to="/jobs">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <Briefcase className="h-4 w-4 mr-1" />
+                    Job Center
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              {/* FAQ */}
+              <NavigationMenuItem>
+                <Link to="/faq">
+                  <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                    <HelpCircle className="h-4 w-4 mr-1" />
+                    FAQ
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
 
           {/* Auth Buttons - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
@@ -293,22 +442,41 @@ const Header = () => {
                 </Link>
               )}
               
-              <Link to="/cards" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Cards</Link>
-              <Link to="/app" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">App</Link>
-              <Link to="/discounts" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Discounts</Link>
+              <Link to="/" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <Home className="h-4 w-4 mr-2" />
+                Home
+              </Link>
+              
+              <Link to="/cards" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <CardIcon className="h-4 w-4 mr-2" />
+                Our Cards
+              </Link>
+              
+              <Link to="/app" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <Smartphone className="h-4 w-4 mr-2" />
+                Our App
+              </Link>
+              
+              <Link to="/discounts" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <Percent className="h-4 w-4 mr-2" />
+                Discounts
+              </Link>
               
               {/* Services Dropdown - Mobile */}
               <div>
                 <button 
                   className="flex items-center justify-between w-full text-gray-700 py-1"
-                  onClick={() => setIsServicesOpen(!isServicesOpen)}
+                  onClick={() => toggleMobileDropdown('services')}
                 >
-                  <span>Services</span> 
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isServicesOpen ? 'rotate-180' : ''}`} />
+                  <div className="flex items-center">
+                    <ShoppingBag className="h-4 w-4 mr-2" />
+                    <span>Services & Products</span> 
+                  </div>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileDropdowns.services ? 'rotate-180' : ''}`} />
                 </button>
                 
-                {isServicesOpen && (
-                  <div className="pl-4 mt-1 space-y-2 border-l-2 border-gray-200">
+                {mobileDropdowns.services && (
+                  <div className="pl-6 mt-1 space-y-2 border-l-2 border-gray-200">
                     <Link 
                       to="/services" 
                       onClick={toggleMobileMenu}
@@ -345,14 +513,17 @@ const Header = () => {
               <div>
                 <button 
                   className="flex items-center justify-between w-full text-gray-700 py-1"
-                  onClick={() => setIsAffiliatesOpen(!isAffiliatesOpen)}
+                  onClick={() => toggleMobileDropdown('affiliates')}
                 >
-                  <span>Affiliates</span> 
-                  <ChevronDown className={`h-4 w-4 transition-transform ${isAffiliatesOpen ? 'rotate-180' : ''}`} />
+                  <div className="flex items-center">
+                    <UsersRound className="h-4 w-4 mr-2" />
+                    <span>Our Affiliates</span>
+                  </div>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileDropdowns.affiliates ? 'rotate-180' : ''}`} />
                 </button>
                 
-                {isAffiliatesOpen && (
-                  <div className="pl-4 mt-1 space-y-2 border-l-2 border-gray-200">
+                {mobileDropdowns.affiliates && (
+                  <div className="pl-6 mt-1 space-y-2 border-l-2 border-gray-200">
                     <Link 
                       to="/affiliates/members" 
                       onClick={toggleMobileMenu}
@@ -378,19 +549,70 @@ const Header = () => {
                 )}
               </div>
               
-              <Link to="/about" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">About</Link>
-              <Link to="/jobs" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">Jobs</Link>
-              <Link to="/faq" onClick={toggleMobileMenu} className="text-gray-700 hover:text-club66-purple">FAQ</Link>
-              <CountrySelector />
+              {/* About Dropdown - Mobile */}
+              <div>
+                <button 
+                  className="flex items-center justify-between w-full text-gray-700 py-1"
+                  onClick={() => toggleMobileDropdown('about')}
+                >
+                  <div className="flex items-center">
+                    <Info className="h-4 w-4 mr-2" />
+                    <span>About</span>
+                  </div>
+                  <ChevronDown className={`h-4 w-4 transition-transform ${mobileDropdowns.about ? 'rotate-180' : ''}`} />
+                </button>
+                
+                {mobileDropdowns.about && (
+                  <div className="pl-6 mt-1 space-y-2 border-l-2 border-gray-200">
+                    <Link to="/about" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Who is behind C66?
+                    </Link>
+                    <Link to="/about/changing-lives" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Changing Lives!
+                    </Link>
+                    <Link to="/about/association-members" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Association Members
+                    </Link>
+                    <Link to="/about/partners" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Partners & Endorsements
+                    </Link>
+                    <Link to="/about/projects" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Projects
+                    </Link>
+                    <Link to="/about/news" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      News & Press
+                    </Link>
+                    <Link to="/about/terms" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Terms of Use
+                    </Link>
+                    <Link to="/about/privacy" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Privacy Policy
+                    </Link>
+                    <Link to="/about/contact" onClick={toggleMobileMenu} className="block text-sm text-gray-700">
+                      Contact Us
+                    </Link>
+                  </div>
+                )}
+              </div>
+              
+              <Link to="/jobs" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <Briefcase className="h-4 w-4 mr-2" />
+                Job Center
+              </Link>
+              
+              <Link to="/faq" onClick={toggleMobileMenu} className="flex items-center text-gray-700 hover:text-club66-purple">
+                <HelpCircle className="h-4 w-4 mr-2" />
+                FAQ
+              </Link>
               
               {isLoggedIn && (
                 <>
-                  <Link to="/affiliate-dashboard" className="text-gray-700 hover:text-club66-purple">
-                    <Users className="h-4 w-4 mr-2 inline" />
+                  <Link to="/affiliate-dashboard" className="text-gray-700 hover:text-club66-purple flex items-center">
+                    <Users className="h-4 w-4 mr-2" />
                     Affiliate Dashboard
                   </Link>
-                  <Link to="/settings" className="text-gray-700 hover:text-club66-purple">
-                    <Settings className="h-4 w-4 mr-2 inline" />
+                  <Link to="/settings" className="text-gray-700 hover:text-club66-purple flex items-center">
+                    <Settings className="h-4 w-4 mr-2" />
                     Settings
                   </Link>
                   <Button variant="outline" size="sm" className="flex items-center justify-center mt-2">

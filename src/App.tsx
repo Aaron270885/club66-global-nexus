@@ -35,6 +35,16 @@ import Members from "./pages/affiliates/Members";
 import Merchants from "./pages/affiliates/Merchants";
 import Distributors from "./pages/affiliates/Distributors";
 
+// About Pages
+import ChangingLives from "./pages/about/ChangingLives";
+import AssociationMembers from "./pages/about/AssociationMembers";
+import Partners from "./pages/about/Partners";
+import Projects from "./pages/about/Projects";
+import News from "./pages/about/News";
+import Terms from "./pages/about/Terms";
+import Privacy from "./pages/about/Privacy";
+import Contact from "./pages/about/Contact";
+
 // Add custom styles for card flipping
 import "./styles/card.css";
 
@@ -60,7 +70,6 @@ const AppComponent = () => (
           <Route path="/cards" element={<Cards />} />
           <Route path="/app" element={<AppPage />} />
           <Route path="/discounts" element={<Discounts />} />
-          <Route path="/about" element={<About />} />
           <Route path="/jobs" element={<Jobs />} />
           <Route path="/faq" element={<FAQ />} />
           
@@ -74,6 +83,17 @@ const AppComponent = () => (
           <Route path="/affiliates/members" element={<Members />} />
           <Route path="/affiliates/merchants" element={<Merchants />} />
           <Route path="/affiliates/distributors" element={<Distributors />} />
+          
+          {/* About pages */}
+          <Route path="/about" element={<About />} />
+          <Route path="/about/changing-lives" element={<ChangingLives />} />
+          <Route path="/about/association-members" element={<AssociationMembers />} />
+          <Route path="/about/partners" element={<Partners />} />
+          <Route path="/about/projects" element={<Projects />} />
+          <Route path="/about/news" element={<News />} />
+          <Route path="/about/terms" element={<Terms />} />
+          <Route path="/about/privacy" element={<Privacy />} />
+          <Route path="/about/contact" element={<Contact />} />
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
