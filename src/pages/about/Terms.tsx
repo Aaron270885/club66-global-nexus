@@ -29,6 +29,22 @@ const Terms = () => {
             <li>Accept that memberships are valid for one year and subject to renewal</li>
           </ul>
           
+          <h3>2.1 Membership Tiers</h3>
+          <p>
+            Club66 offers three membership tiers with different benefits and fees:
+          </p>
+          <ul>
+            <li><strong>Essential:</strong> CFA 10,000/year + 1,000/month → 5% discount at Club66 owned businesses</li>
+            <li><strong>Premium:</strong> CFA 10,000/year + 2,000/month → 10% discount at Club66 owned businesses</li>
+            <li><strong>Elite (VIP):</strong> CFA 10,000/year + 5,000/month → 20% discount at Club66 owned businesses</li>
+          </ul>
+          <p>All tiers receive equal discount access with partner merchants.</p>
+          
+          <h3>2.2 Membership Duration and Renewal</h3>
+          <p>
+            Your membership is valid for one year from the date of activation. Monthly subscription fees will be charged automatically on the same day each month. You will be notified before your annual renewal date, and the annual fee will be charged automatically unless you choose to cancel your membership.
+          </p>
+          
           <h2>3. Payment Terms</h2>
           <p>
             Membership fees consist of an annual registration fee and monthly subscription fees as specified for your membership tier. You authorize Club66 to charge the payment method you provide for these fees.
@@ -37,9 +53,22 @@ const Terms = () => {
             Monthly fees will be automatically charged on the same day each month. Failure to pay monthly fees may result in suspension of membership benefits until payment is made.
           </p>
           
+          <h3>3.1 Payment Methods</h3>
+          <p>
+            Club66 accepts the following payment methods:
+          </p>
+          <ul>
+            <li>Mobile Money: Orange, Moov, Wave</li>
+            <li>Credit/Debit Cards via Stripe or PayPal</li>
+          </ul>
+          <p>You agree to keep your payment information up-to-date.</p>
+          
           <h2>4. Membership Card</h2>
           <p>
             Your digital membership card is personal to you and may not be transferred or shared with others. Any misuse of the membership card may result in termination of your membership without refund.
+          </p>
+          <p>
+            Physical cards can be requested for an additional fee and will be delivered to the address provided during registration.
           </p>
           
           <h2>5. Discounts and Benefits</h2>
