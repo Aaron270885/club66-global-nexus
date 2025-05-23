@@ -3,12 +3,14 @@ import { useState } from 'react';
 import { Check, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Country {
   id: string;
   name: string;
   code: string;
   active: boolean;
+  url?: string;
 }
 
 interface CountrySelectorProps {
@@ -16,15 +18,18 @@ interface CountrySelectorProps {
 }
 
 const CountrySelector = ({ onClose }: CountrySelectorProps) => {
+  const { toast } = useToast();
+  
   const countries: Country[] = [
-    { id: '1', name: 'Mali', code: 'ML', active: true },
-    { id: '2', name: 'Nigeria', code: 'NG', active: false },
-    { id: '3', name: 'Ghana', code: 'GH', active: false },
-    { id: '4', name: 'Senegal', code: 'SN', active: false },
-    { id: '5', name: 'South Africa', code: 'ZA', active: false },
-    { id: '6', name: 'Kenya', code: 'KE', active: false },
-    { id: '7', name: 'Ivory Coast', code: 'CI', active: false },
-    { id: '8', name: 'Egypt', code: 'EG', active: false },
+    { id: '1', name: 'Mali', code: 'ML', active: true, url: 'https://www.club66mali.com' },
+    { id: '2', name: 'Nigeria', code: 'NG', active: false, url: 'https://www.club66nigeria.com' },
+    { id: '3', name: 'Ghana', code: 'GH', active: false, url: 'https://www.club66ghana.com' },
+    { id: '4', name: 'Senegal', code: 'SN', active: false, url: 'https://www.club66senegal.com' },
+    { id: '5', name: 'South Africa', code: 'ZA', active: false, url: 'https://www.club66southafrica.com' },
+    { id: '6', name: 'Kenya', code: 'KE', active: false, url: 'https://www.club66kenya.com' },
+    { id: '7', name: 'Ivory Coast', code: 'CI', active: false, url: 'https://www.club66ivorycoast.com' },
+    { id: '8', name: 'Egypt', code: 'EG', active: false, url: 'https://www.club66egypt.com' },
+    { id: '9', name: 'Global', code: 'GL', active: true, url: 'https://www.club66global.com' },
   ];
 
   const [selectedCountry, setSelectedCountry] = useState<string>('Mali');
@@ -32,13 +37,27 @@ const CountrySelector = ({ onClose }: CountrySelectorProps) => {
 
   const handleSelect = (country: Country) => {
     if (!country.active) {
-      alert("This country is not yet available. Currently, only Mali is active.");
+      toast({
+        title: "Country Not Available",
+        description: "This country is not yet available. Currently, only Mali and Global are active.",
+        variant: "destructive",
+      });
       return;
     }
     
+    // Update selected country
     setSelectedCountry(country.name);
     setOpen(false);
-    if (onClose) onClose(); // Call onClose if provided
+    
+    // Handle country redirection
+    if (country.url && country.name !== 'Global' && window.location.hostname !== country.url) {
+      const shouldRedirect = window.confirm(`You are about to be redirected to ${country.url}. Continue?`);
+      if (shouldRedirect) {
+        window.location.href = country.url;
+      }
+    }
+    
+    if (onClose) onClose();
   };
 
   return (
