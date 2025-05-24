@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -103,6 +104,10 @@ const EmployerDashboard = () => {
   };
 
   const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+  };
+
+  const navigateToTab = (tabId: string) => {
     setActiveTab(tabId);
   };
 

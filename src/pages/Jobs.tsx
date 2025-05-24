@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Search, Briefcase, MapPin, Clock, Filter, ChevronDown, Users, Mail, SlidersHorizontal } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
@@ -11,7 +10,7 @@ import { Slider } from '@/components/ui/slider';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link } from 'react-router-dom';
-import { jobListings } from '@/data/jobListings'; // We'll create this data file
+import { jobListings } from '@/data/jobListings'; 
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -110,15 +109,35 @@ const Jobs = () => {
   
   return (
     <Layout>
-      <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-center">Career Opportunities</h1>
-          <p className="text-center text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join our team and be part of Club66 Global's mission to transform membership benefits 
-            and financial access across Africa. We offer exciting career paths and growth opportunities.
+      {/* Banner Section with Search */}
+      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 py-16 px-4">
+        <div className="container mx-auto max-w-5xl text-center text-white">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Find Your Dream Career</h1>
+          <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
+            Join Club66 Global and be part of a team transforming membership benefits across Africa.
           </p>
           
-          <div className="max-w-6xl mx-auto mb-12">
+          <div className="relative max-w-3xl mx-auto">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-400" />
+            </div>
+            <Input 
+              type="text" 
+              placeholder="Search jobs by title, department or location..." 
+              className="pl-10 h-12 text-black bg-white/95 border-0 shadow-lg focus-visible:ring-2 focus-visible:ring-white"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button className="absolute right-1 top-1 bottom-1 px-6">
+              Search
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="py-12 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
             <div className="flex justify-end mb-4">
               <Link to="/job-dashboard/employee">
                 <Button variant="outline" className="mr-2">Job Seeker Portal</Button>
@@ -145,7 +164,7 @@ const Jobs = () => {
               </div>
               
               {/* Left side filters panel */}
-              <div className={`lg:w-1/4 bg-white rounded-lg shadow-sm ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
+              <div className={`lg:w-1/4 bg-white rounded-lg shadow-md border border-gray-100 ${isFilterOpen ? 'block' : 'hidden lg:block'}`}>
                 <div className="p-4 border-b">
                   <div className="flex items-center justify-between">
                     <h2 className="font-medium flex items-center">
@@ -159,7 +178,7 @@ const Jobs = () => {
                 </div>
                 
                 <div className="p-4">
-                  <Accordion type="multiple" defaultValue={["salary", "department", "location", "jobType"]}>
+                  <Accordion type="multiple" defaultValue={["salary", "department", "location", "jobType", "experience", "certification", "technology"]}>
                     {/* Salary Range Filter */}
                     <AccordionItem value="salary">
                       <AccordionTrigger className="text-sm py-2">Salary Range</AccordionTrigger>
@@ -326,23 +345,6 @@ const Jobs = () => {
               
               {/* Right side job listings */}
               <div className="flex-grow">
-                <div className="flex flex-col md:flex-row gap-4 mb-6">
-                  <div className="flex-grow relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <Input 
-                      type="text" 
-                      placeholder="Search jobs by title, department or location..." 
-                      className="pl-10" 
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center text-sm text-gray-600">
-                    <span className="mr-2 whitespace-nowrap">Found {filteredJobs.length} jobs</span>
-                  </div>
-                </div>
-                
                 <div className="bg-white px-6 py-4 rounded-lg shadow-sm mb-6">
                   <div className="flex items-center justify-between">
                     <h2 className="font-medium">Showing {filteredJobs.length} opportunities</h2>
@@ -421,7 +423,7 @@ const Jobs = () => {
             </div>
           </div>
           
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-4xl mx-auto mt-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <Card>
                 <CardHeader className="text-center">
