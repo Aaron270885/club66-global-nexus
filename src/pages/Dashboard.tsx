@@ -21,10 +21,10 @@ const mockMember = {
   memberSince: '23 May 2025'
 };
 
-// Mock payment history
+// Mock payment history - Fixed status to use correct union type values
 const mockPaymentHistory = [
-  { id: 'INV-001', date: '23 May 2025', amount: 'CFA 12,000', status: 'Paid', description: 'Registration + Premium (May 2025)' },
-  { id: 'INV-002', date: '23 Jun 2025', amount: 'CFA 2,000', status: 'Upcoming', description: 'Premium Monthly Fee (Jun 2025)' },
+  { id: 'INV-001', date: '23 May 2025', amount: 'CFA 12,000', status: 'Paid' as 'Paid', description: 'Registration + Premium (May 2025)' },
+  { id: 'INV-002', date: '23 Jun 2025', amount: 'CFA 2,000', status: 'Upcoming' as 'Upcoming', description: 'Premium Monthly Fee (Jun 2025)' },
 ];
 
 // Mock discount usage
