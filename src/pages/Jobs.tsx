@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Link } from 'react-router-dom';
+import { jobListings } from '@/data/jobListings'; // We'll create this data file
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,121 +25,6 @@ const Jobs = () => {
     certification: [],
     technology: [],
   });
-  
-  const jobListings = [
-    {
-      id: 1,
-      title: "Field Sales Agent",
-      department: "Sales",
-      location: "Bamako, Mali",
-      type: "Full-time",
-      posted: "3 days ago",
-      description: "Join our field sales team to promote Club66 Global memberships and recruit new members across Bamako.",
-      requirements: ["High school diploma", "Excellent communication skills", "Sales experience preferred", "Fluency in French and Bambara"],
-      salary: 800,
-      experience: "Entry-level",
-      certifications: ["Sales Certification"],
-      technologies: ["CRM Software"]
-    },
-    {
-      id: 2,
-      title: "Customer Support Specialist",
-      department: "Customer Service",
-      location: "Bamako, Mali",
-      type: "Full-time",
-      posted: "1 week ago",
-      description: "Handle customer inquiries, membership activation, and provide excellent service to our growing member base.",
-      requirements: ["Bachelor's degree", "Customer service experience", "Strong problem-solving abilities", "Fluency in French and English"],
-      salary: 1000,
-      experience: "Mid-level",
-      certifications: ["Customer Service Certification"],
-      technologies: ["Zendesk", "Salesforce"]
-    },
-    {
-      id: 3,
-      title: "Marketing Coordinator",
-      department: "Marketing",
-      location: "Bamako, Mali",
-      type: "Full-time",
-      posted: "2 weeks ago",
-      description: "Coordinate marketing campaigns, social media, and promotional events for Club66 Global across Mali.",
-      requirements: ["Bachelor's degree in Marketing or related field", "2+ years of marketing experience", "Social media expertise", "Graphic design skills a plus"],
-      salary: 1200,
-      experience: "Mid-level",
-      certifications: ["Digital Marketing Certification"],
-      technologies: ["Adobe Creative Suite", "HubSpot"]
-    },
-    {
-      id: 4,
-      title: "Mobile App Developer",
-      department: "Technology",
-      location: "Remote",
-      type: "Full-time",
-      posted: "3 weeks ago",
-      description: "Develop and maintain our mobile applications for iOS and Android platforms.",
-      requirements: ["Bachelor's degree in Computer Science", "3+ years of mobile app development", "Experience with React Native", "Backend integration skills"],
-      salary: 2500,
-      experience: "Senior-level",
-      certifications: ["AWS Certification", "Google Developer Certification"],
-      technologies: ["React Native", "JavaScript", "Firebase"]
-    },
-    {
-      id: 5,
-      title: "Merchant Relations Manager",
-      department: "Partnerships",
-      location: "Bamako, Mali",
-      type: "Full-time",
-      posted: "1 month ago",
-      description: "Develop and maintain relationships with merchant partners, negotiate discounts, and expand our partner network.",
-      requirements: ["Bachelor's degree in Business", "3+ years in business development", "Strong negotiation skills", "Fluency in French and English"],
-      salary: 1800,
-      experience: "Senior-level",
-      certifications: ["Business Management Certification"],
-      technologies: ["CRM Software", "MS Office"]
-    },
-    {
-      id: 6,
-      title: "Field Agent Supervisor",
-      department: "Sales",
-      location: "Segou, Mali",
-      type: "Full-time",
-      posted: "2 days ago",
-      description: "Supervise a team of field agents, set targets, monitor performance, and provide training and support.",
-      requirements: ["Bachelor's degree", "2+ years of sales management", "Leadership abilities", "Fluency in French and Bambara"],
-      salary: 1500,
-      experience: "Mid-level",
-      certifications: ["Sales Management Certification", "Leadership Certification"],
-      technologies: ["Sales Analytics Tools", "CRM Software"]
-    },
-    {
-      id: 7,
-      title: "Finance Officer",
-      department: "Finance",
-      location: "Bamako, Mali",
-      type: "Full-time",
-      posted: "5 days ago",
-      description: "Handle financial operations, payment processing, and reporting for Club66 Global Mali.",
-      requirements: ["Bachelor's degree in Finance", "2+ years of finance experience", "Proficiency in accounting software", "Attention to detail"],
-      salary: 1600,
-      experience: "Mid-level",
-      certifications: ["Accounting Certification"],
-      technologies: ["QuickBooks", "Excel"]
-    },
-    {
-      id: 8,
-      title: "Social Media Assistant",
-      department: "Marketing",
-      location: "Bamako, Mali",
-      type: "Part-time",
-      posted: "1 week ago",
-      description: "Create and schedule content for social media platforms, engage with followers, and track metrics.",
-      requirements: ["Diploma in Marketing", "Social media management experience", "Creative content creation skills", "Fluency in French"],
-      salary: 700,
-      experience: "Entry-level",
-      certifications: ["Social Media Marketing Certification"],
-      technologies: ["Canva", "Hootsuite", "Buffer"]
-    }
-  ];
   
   // Unique values for filter options
   const departments = [...new Set(jobListings.map(job => job.department))];
@@ -232,6 +119,15 @@ const Jobs = () => {
           </p>
           
           <div className="max-w-6xl mx-auto mb-12">
+            <div className="flex justify-end mb-4">
+              <Link to="/job-dashboard/employee">
+                <Button variant="outline" className="mr-2">Job Seeker Portal</Button>
+              </Link>
+              <Link to="/job-dashboard/employer">
+                <Button>Employer Portal</Button>
+              </Link>
+            </div>
+            
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Left side filters - Mobile toggle */}
               <div className="lg:hidden w-full mb-4">
@@ -460,80 +356,67 @@ const Jobs = () => {
                   </div>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredJobs.map(job => (
-                    <Card key={job.id} className="overflow-hidden hover:shadow-md transition-shadow">
-                      <CardHeader className="bg-gray-50 border-b">
-                        <div className="flex justify-between items-start">
+                    <Link 
+                      key={job.id} 
+                      to={`/jobs/${job.id}`}
+                      className="block w-[300px] mx-auto"
+                    >
+                      <Card className="h-full hover:shadow-md transition-shadow">
+                        <CardHeader className="bg-gray-50 border-b">
                           <div>
-                            <CardTitle className="text-xl">{job.title}</CardTitle>
-                            <div className="flex flex-wrap items-center mt-1 text-sm text-gray-500 gap-2">
+                            <CardTitle className="text-lg">{job.title}</CardTitle>
+                            <div className="flex flex-wrap items-center mt-1 text-xs text-gray-500 gap-1">
                               <div className="flex items-center">
-                                <Briefcase className="h-4 w-4 mr-1" />
+                                <Briefcase className="h-3 w-3 mr-1" />
                                 <span>{job.department}</span>
                               </div>
                               <span className="mx-1">•</span>
                               <div className="flex items-center">
-                                <MapPin className="h-4 w-4 mr-1" />
+                                <MapPin className="h-3 w-3 mr-1" />
                                 <span>{job.location}</span>
-                              </div>
-                              <span className="mx-1">•</span>
-                              <div className="flex items-center">
-                                <Clock className="h-4 w-4 mr-1" />
-                                <span>{job.posted}</span>
                               </div>
                             </div>
                           </div>
-                          <div className="flex flex-col items-end gap-2">
-                            <Badge variant={job.type === "Full-time" ? "default" : "secondary"}>
-                              {job.type}
-                            </Badge>
-                            <span className="text-sm font-medium text-green-600">${job.salary}/month</span>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="pt-5">
-                        <p className="text-gray-600 mb-4">{job.description}</p>
-                        <div className="mb-4">
-                          <h4 className="font-medium mb-2">Requirements:</h4>
-                          <ul className="list-disc pl-5 space-y-1">
-                            {job.requirements.map((req, index) => (
-                              <li key={index} className="text-sm text-gray-600">{req}</li>
+                          <Badge variant={job.type === "Full-time" ? "default" : "secondary"} className="absolute top-3 right-3">
+                            {job.type}
+                          </Badge>
+                        </CardHeader>
+                        <CardContent className="py-3">
+                          <p className="text-gray-600 text-sm line-clamp-2">{job.description}</p>
+                          <div className="mt-3">
+                            <Badge variant="outline" className="mr-1 mb-1 text-xs">{job.experience}</Badge>
+                            {job.technologies.slice(0, 2).map(tech => (
+                              <Badge key={tech} variant="outline" className="mr-1 mb-1 text-xs bg-green-50">{tech}</Badge>
                             ))}
-                          </ul>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Badge variant="outline" className="bg-blue-50">{job.experience}</Badge>
-                          {job.certifications.map(cert => (
-                            <Badge key={cert} variant="outline" className="bg-purple-50">{cert}</Badge>
-                          ))}
-                          {job.technologies.map(tech => (
-                            <Badge key={tech} variant="outline" className="bg-green-50">{tech}</Badge>
-                          ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="border-t bg-gray-50 flex justify-between items-center">
-                        <Button className="bg-club66-purple hover:bg-club66-darkpurple">
-                          Apply Now
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-gray-500">
-                          Share <Mail className="ml-1 h-4 w-4" />
-                        </Button>
-                      </CardFooter>
-                    </Card>
+                            {job.technologies.length > 2 && (
+                              <Badge variant="outline" className="mr-1 mb-1 text-xs bg-gray-50">+{job.technologies.length - 2}</Badge>
+                            )}
+                          </div>
+                        </CardContent>
+                        <CardFooter className="border-t bg-gray-50 flex justify-between items-center py-2">
+                          <span className="text-sm font-medium text-green-600">${job.salary}/month</span>
+                          <div className="flex items-center text-xs text-gray-500">
+                            <Clock className="h-3 w-3 mr-1" />
+                            <span>{job.posted}</span>
+                          </div>
+                        </CardFooter>
+                      </Card>
+                    </Link>
                   ))}
-
-                  {filteredJobs.length === 0 && (
-                    <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-                      <div className="mb-4">
-                        <Search className="h-12 w-12 mx-auto text-gray-300" />
-                      </div>
-                      <h3 className="text-lg font-medium mb-2">No jobs match your criteria</h3>
-                      <p className="text-gray-500 mb-4">Try adjusting your search terms or filters</p>
-                      <Button variant="outline" onClick={resetFilters}>Clear Filters</Button>
-                    </div>
-                  )}
                 </div>
+                
+                {filteredJobs.length === 0 && (
+                  <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                    <div className="mb-4">
+                      <Search className="h-12 w-12 mx-auto text-gray-300" />
+                    </div>
+                    <h3 className="text-lg font-medium mb-2">No jobs match your criteria</h3>
+                    <p className="text-gray-500 mb-4">Try adjusting your search terms or filters</p>
+                    <Button variant="outline" onClick={resetFilters}>Clear Filters</Button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
