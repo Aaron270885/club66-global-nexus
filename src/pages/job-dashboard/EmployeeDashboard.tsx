@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Briefcase, CheckCircle, Clock, File, FileText, Bell, Settings, UserCircle, Star, Award, Bookmark, Eye, FileX, Search } from 'lucide-react';
+import { Briefcase, CheckCircle, Clock, File, FileText, Bell, Settings, UserCircle, Star, Award, Bookmark, Eye, FileX, Search, Mail, GraduationCap } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { jobListings } from '@/data/jobListings';
 import { Separator } from '@/components/ui/separator';
@@ -484,7 +483,7 @@ const EmployeeDashboard = () => {
   );
 };
 
-// Mocking the missing Phone component from lucide-react
+// Mocking the Phone component from lucide-react
 const Phone = ({ className = "", ...props }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

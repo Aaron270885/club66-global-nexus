@@ -1,757 +1,481 @@
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Card, CardContent } from '@/components/ui/card';
-import { Plus, X, AlertTriangle, Save } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { jobListings } from '@/data/jobListings';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
+import { ChevronLeft, Save, Plus, MinusCircle } from 'lucide-react';
+import { jobListings } from '@/data/jobListings';
 
 interface JobPostingFormProps {
   jobId?: number | null;
   onClose: () => void;
 }
 
-const jobPostingFormSchema = z.object({
-  title: z.string().min(3, { message: 'Job title must be at least 3 characters.' }),
-  department: z.string().min(1, { message: 'Please select a department.' }),
-  location: z.string().min(1, { message: 'Please enter a location.' }),
-  type: z.string().min(1, { message: 'Please select job type.' }),
-  salary: z.coerce.number().int().positive({ message: 'Salary must be a positive number.' }),
-  experience: z.string().min(1, { message: 'Please select experience level.' }),
-  description: z.string().min(20, { message: 'Job description must be at least 20 characters.' }),
-  responsibilities: z.string().min(20, { message: 'Responsibilities must be at least 20 characters.' }),
-  requirements: z.string().min(20, { message: 'Requirements must be at least 20 characters.' }),
-  benefits: z.string().optional(),
-  applicationDeadline: z.string().optional(),
-  contactEmail: z.string().email({ message: 'Please enter a valid email.' }).optional(),
-  technologies: z.array(z.string()).optional(),
-  certifications: z.array(z.string()).optional(),
-  status: z.enum(['Active', 'Draft'])
-});
-
-type JobPostingFormValues = z.infer<typeof jobPostingFormSchema>;
-
 const JobPostingForm = ({ jobId, onClose }: JobPostingFormProps) => {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [customTechnologies, setCustomTechnologies] = useState<string[]>([]);
-  const [customCertifications, setCustomCertifications] = useState<string[]>([]);
-  const [newTech, setNewTech] = useState('');
-  const [newCert, setNewCert] = useState('');
   
-  // Find existing job if editing
+  // Find job if editing an existing one
   const existingJob = jobId ? jobListings.find(job => job.id === jobId) : null;
   
-  // Available departments
-  const departments = [
-    'Sales',
-    'Marketing',
-    'Customer Service',
-    'Technology',
-    'Finance',
-    'Partnerships',
-    'Human Resources',
-    'Operations'
-  ];
-  
-  // Available experience levels
-  const experienceLevels = [
-    'Entry-level',
-    'Mid-level',
-    'Senior-level',
-    'Manager',
-    'Executive'
-  ];
-  
-  // Common technologies
-  const commonTechnologies = [
-    'MS Office',
-    'CRM Software',
-    'JavaScript',
-    'React',
-    'Python',
-    'Excel',
-    'Salesforce',
-    'HubSpot',
-    'Adobe Creative Suite',
-    'Social Media Tools'
-  ];
-  
-  // Common certifications
-  const commonCertifications = [
-    'Sales Certification',
-    'Customer Service Certification',
-    'Digital Marketing Certification',
-    'Project Management Professional (PMP)',
-    'AWS Certification',
-    'Google Analytics Certification',
-    'Accounting Certification',
-    'Leadership Certification'
-  ];
-  
-  // Create form with default values
-  const form = useForm<JobPostingFormValues>({
-    resolver: zodResolver(jobPostingFormSchema),
-    defaultValues: existingJob ? {
-      title: existingJob.title || '',
-      department: existingJob.department || '',
-      location: existingJob.location || '',
-      type: existingJob.type || 'Full-time',
-      salary: existingJob.salary || 0,
-      experience: existingJob.experience || '',
-      description: existingJob.description || '',
-      responsibilities: existingJob.responsibilities?.join('\n\n') || '',
-      requirements: existingJob.requirements.join('\n\n') || '',
-      benefits: existingJob.benefits?.join('\n\n') || '',
-      applicationDeadline: existingJob.applicationDeadline || '',
-      contactEmail: existingJob.contactEmail || '',
-      technologies: existingJob.technologies || [],
-      certifications: existingJob.certifications || [],
-      status: 'Active'
-    } : {
-      title: '',
-      department: '',
-      location: '',
-      type: 'Full-time',
-      salary: 0,
-      experience: '',
-      description: '',
-      responsibilities: '',
-      requirements: '',
-      benefits: '',
-      applicationDeadline: '',
-      contactEmail: '',
-      technologies: [],
-      certifications: [],
-      status: 'Draft'
-    }
+  // Form state
+  const [formData, setFormData] = useState({
+    title: existingJob?.title || '',
+    department: existingJob?.department || '',
+    location: existingJob?.location || '',
+    type: existingJob?.type || 'Full-time',
+    description: existingJob?.description || '',
+    detailedDescription: existingJob?.detailedDescription || '',
+    salary: existingJob?.salary || 0,
+    responsibilities: existingJob?.responsibilities || [''],
+    requirements: existingJob?.requirements || [''],
+    qualifications: existingJob?.qualifications || [''],
+    benefits: existingJob?.benefits || [''],
+    experience: existingJob?.experience || 'Entry-level',
+    certifications: existingJob?.certifications || [''],
+    technologies: existingJob?.technologies || [''],
+    applicationDeadline: existingJob?.applicationDeadline || '',
+    contactEmail: existingJob?.contactEmail || ''
   });
   
-  // Initialize custom arrays from existing job
-  React.useEffect(() => {
-    if (existingJob) {
-      setCustomTechnologies(existingJob.technologies || []);
-      setCustomCertifications(existingJob.certifications || []);
-    }
-  }, [existingJob]);
-  
-  // Handle adding new technology
-  const handleAddTechnology = () => {
-    if (newTech && !customTechnologies.includes(newTech)) {
-      const updatedTechs = [...customTechnologies, newTech];
-      setCustomTechnologies(updatedTechs);
-      form.setValue('technologies', updatedTechs);
-      setNewTech('');
-    }
+  // Handle form field changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  // Handle adding new certification
-  const handleAddCertification = () => {
-    if (newCert && !customCertifications.includes(newCert)) {
-      const updatedCerts = [...customCertifications, newCert];
-      setCustomCertifications(updatedCerts);
-      form.setValue('certifications', updatedCerts);
-      setNewCert('');
-    }
+  // Handle select changes
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
   
-  // Handle technology selection
-  const handleTechnologyChange = (tech: string, checked: boolean) => {
-    const updatedTechs = checked
-      ? [...customTechnologies, tech]
-      : customTechnologies.filter(t => t !== tech);
-    setCustomTechnologies(updatedTechs);
-    form.setValue('technologies', updatedTechs);
+  // Handle array field changes
+  const handleArrayChange = (array: string, index: number, value: string) => {
+    setFormData(prev => {
+      const newArray = [...prev[array as keyof typeof prev] as string[]];
+      newArray[index] = value;
+      return { ...prev, [array]: newArray };
+    });
   };
   
-  // Handle certification selection
-  const handleCertificationChange = (cert: string, checked: boolean) => {
-    const updatedCerts = checked
-      ? [...customCertifications, cert]
-      : customCertifications.filter(c => c !== cert);
-    setCustomCertifications(updatedCerts);
-    form.setValue('certifications', updatedCerts);
+  // Add new item to array fields
+  const addArrayItem = (array: string) => {
+    setFormData(prev => {
+      const newArray = [...prev[array as keyof typeof prev] as string[]];
+      newArray.push('');
+      return { ...prev, [array]: newArray };
+    });
   };
   
-  // Remove custom technology or certification
-  const handleRemoveItem = (item: string, type: 'tech' | 'cert') => {
-    if (type === 'tech') {
-      const updated = customTechnologies.filter(t => t !== item);
-      setCustomTechnologies(updated);
-      form.setValue('technologies', updated);
-    } else {
-      const updated = customCertifications.filter(c => c !== item);
-      setCustomCertifications(updated);
-      form.setValue('certifications', updated);
-    }
+  // Remove item from array fields
+  const removeArrayItem = (array: string, index: number) => {
+    setFormData(prev => {
+      const newArray = [...prev[array as keyof typeof prev] as string[]];
+      newArray.splice(index, 1);
+      return { ...prev, [array]: newArray };
+    });
   };
   
-  // Form submission handler
-  const onSubmit = (data: JobPostingFormValues) => {
-    setIsSubmitting(true);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     
-    // Transform responsibilities, requirements and benefits from text to arrays
-    const formattedData = {
-      ...data,
-      responsibilities: data.responsibilities.split('\n\n').filter(item => item.trim() !== ''),
-      requirements: data.requirements.split('\n\n').filter(item => item.trim() !== ''),
-      benefits: data.benefits ? data.benefits.split('\n\n').filter(item => item.trim() !== '') : undefined,
-    };
-    
-    // In a real app, we would send this to an API
-    setTimeout(() => {
-      console.log('Job posting data:', formattedData);
-      setIsSubmitting(false);
-      
+    // Validate form
+    if (!formData.title || !formData.department || !formData.location) {
       toast({
-        title: existingJob ? 'Job Updated' : 'Job Created',
-        description: existingJob 
-          ? `"${data.title}" has been updated successfully.`
-          : `"${data.title}" has been ${data.status === 'Active' ? 'published' : 'saved as draft'}.`,
+        title: "Missing Information",
+        description: "Please fill in all required fields.",
+        variant: "destructive"
       });
-      
-      onClose();
-    }, 1000);
-  };
-  
-  // Check if form has unsaved changes before closing
-  const handleDismiss = () => {
-    if (form.formState.isDirty) {
-      if (confirm('You have unsaved changes. Are you sure you want to close?')) {
-        onClose();
-      }
-    } else {
-      onClose();
+      return;
     }
+    
+    // In a real app, this would save to the backend
+    toast({
+      title: existingJob ? "Job Updated" : "Job Posted",
+      description: `"${formData.title}" has been ${existingJob ? 'updated' : 'posted'} successfully.`
+    });
+    
+    onClose();
   };
   
   return (
-    <Dialog open={true} onOpenChange={handleDismiss}>
-      <DialogContent className="max-w-4xl h-[90vh] max-h-[90vh] overflow-hidden flex flex-col">
-        <DialogHeader>
-          <DialogTitle>
-            {existingJob ? `Edit Job: ${existingJob.title}` : 'Create New Job Posting'}
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="flex-grow overflow-y-auto pr-2 -mr-2">
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <Tabs defaultValue="details">
-                <TabsList className="mb-6">
-                  <TabsTrigger value="details">Basic Details</TabsTrigger>
-                  <TabsTrigger value="description">Job Description</TabsTrigger>
-                  <TabsTrigger value="requirements">Requirements</TabsTrigger>
-                  <TabsTrigger value="settings">Settings</TabsTrigger>
-                </TabsList>
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-auto">
+      <Card className="w-full max-w-4xl max-h-[90vh] overflow-auto">
+        <CardHeader className="sticky top-0 bg-white z-10 border-b">
+          <div className="flex items-center justify-between">
+            <CardTitle>{existingJob ? 'Edit Job Posting' : 'Create New Job Posting'}</CardTitle>
+            <Button variant="ghost" onClick={onClose}>
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Back
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="title">Job Title<span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="title"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
                 
-                <TabsContent value="details" className="space-y-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="title"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Job Title*</FormLabel>
-                              <FormControl>
-                                <Input placeholder="e.g. Marketing Manager" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="department"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Department*</FormLabel>
-                              <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select department" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {departments.map(dept => (
-                                    <SelectItem key={dept} value={dept}>{dept}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="location"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Location*</FormLabel>
-                              <FormControl>
-                                <Input placeholder="e.g. Bamako, Mali or Remote" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="type"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Job Type*</FormLabel>
-                              <FormControl>
-                                <RadioGroup 
-                                  onValueChange={field.onChange} 
-                                  defaultValue={field.value}
-                                  className="flex flex-wrap gap-4"
-                                >
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Full-time" id="full-time" />
-                                    <label htmlFor="full-time">Full-time</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Part-time" id="part-time" />
-                                    <label htmlFor="part-time">Part-time</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Contract" id="contract" />
-                                    <label htmlFor="contract">Contract</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Internship" id="internship" />
-                                    <label htmlFor="internship">Internship</label>
-                                  </div>
-                                </RadioGroup>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="salary"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Monthly Salary (USD)*</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="number" 
-                                  placeholder="e.g. 1500" 
-                                  {...field} 
-                                  onChange={e => field.onChange(Number(e.target.value))}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="experience"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Experience Level*</FormLabel>
-                              <Select 
-                                onValueChange={field.onChange} 
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select experience level" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {experienceLevels.map(level => (
-                                    <SelectItem key={level} value={level}>{level}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+                <div>
+                  <Label htmlFor="department">Department<span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="department"
+                    name="department"
+                    value={formData.department}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
                 
-                <TabsContent value="description" className="space-y-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="space-y-6">
-                        <FormField
-                          control={form.control}
-                          name="description"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Job Description*</FormLabel>
-                              <FormControl>
-                                <Textarea 
-                                  placeholder="Describe the job role and purpose..."
-                                  className="min-h-[150px]"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Provide a clear overview of the job role and responsibilities.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="responsibilities"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Responsibilities*</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="List key responsibilities, separated by blank lines..."
-                                  className="min-h-[150px]"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Separate each responsibility with a blank line. These will be displayed as bullet points.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="benefits"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Benefits (Optional)</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="List benefits, separated by blank lines..."
-                                  className="min-h-[100px]"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Separate each benefit with a blank line. These will be displayed as bullet points.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+                <div>
+                  <Label htmlFor="location">Location<span className="text-red-500">*</span></Label>
+                  <Input 
+                    id="location"
+                    name="location"
+                    value={formData.location}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
                 
-                <TabsContent value="requirements" className="space-y-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="space-y-6">
-                        <FormField
-                          control={form.control}
-                          name="requirements"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Requirements*</FormLabel>
-                              <FormControl>
-                                <Textarea
-                                  placeholder="List job requirements, separated by blank lines..."
-                                  className="min-h-[150px]"
-                                  {...field}
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Separate each requirement with a blank line. These will be displayed as bullet points.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <Separator />
-                        
-                        <div>
-                          <h4 className="font-medium mb-3">Technologies & Skills</h4>
-                          <div className="mb-4">
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
-                              {commonTechnologies.map(tech => (
-                                <div key={tech} className="flex items-center space-x-2">
-                                  <Checkbox 
-                                    id={`tech-${tech}`} 
-                                    checked={customTechnologies.includes(tech)}
-                                    onCheckedChange={(checked) => 
-                                      handleTechnologyChange(tech, checked === true)
-                                    }
-                                  />
-                                  <label 
-                                    htmlFor={`tech-${tech}`}
-                                    className="text-sm"
-                                  >
-                                    {tech}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                            
-                            <div className="flex items-center space-x-2">
-                              <Input 
-                                placeholder="Add custom technology..." 
-                                className="max-w-xs"
-                                value={newTech}
-                                onChange={(e) => setNewTech(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    handleAddTechnology();
-                                  }
-                                }}
-                              />
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                size="sm"
-                                onClick={handleAddTechnology}
-                              >
-                                <Plus className="h-4 w-4 mr-1" />
-                                Add
-                              </Button>
-                            </div>
-                            
-                            {customTechnologies.length > 0 && (
-                              <div className="mt-3">
-                                <h5 className="text-sm text-gray-500 mb-2">Selected Technologies:</h5>
-                                <div className="flex flex-wrap gap-2">
-                                  {customTechnologies.map(tech => (
-                                    <Badge key={tech} variant="outline" className="bg-gray-50 pl-2 pr-1 py-1 flex items-center">
-                                      <span>{tech}</span>
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-4 w-4 p-0 ml-1"
-                                        onClick={() => handleRemoveItem(tech, 'tech')}
-                                      >
-                                        <X className="h-3 w-3" />
-                                      </Button>
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <Separator />
-                        
-                        <div>
-                          <h4 className="font-medium mb-3">Certifications</h4>
-                          <div className="mb-4">
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-4">
-                              {commonCertifications.map(cert => (
-                                <div key={cert} className="flex items-center space-x-2">
-                                  <Checkbox 
-                                    id={`cert-${cert}`} 
-                                    checked={customCertifications.includes(cert)}
-                                    onCheckedChange={(checked) => 
-                                      handleCertificationChange(cert, checked === true)
-                                    }
-                                  />
-                                  <label 
-                                    htmlFor={`cert-${cert}`}
-                                    className="text-sm"
-                                  >
-                                    {cert}
-                                  </label>
-                                </div>
-                              ))}
-                            </div>
-                            
-                            <div className="flex items-center space-x-2">
-                              <Input 
-                                placeholder="Add custom certification..." 
-                                className="max-w-xs"
-                                value={newCert}
-                                onChange={(e) => setNewCert(e.target.value)}
-                                onKeyDown={(e) => {
-                                  if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    handleAddCertification();
-                                  }
-                                }}
-                              />
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                size="sm"
-                                onClick={handleAddCertification}
-                              >
-                                <Plus className="h-4 w-4 mr-1" />
-                                Add
-                              </Button>
-                            </div>
-                            
-                            {customCertifications.length > 0 && (
-                              <div className="mt-3">
-                                <h5 className="text-sm text-gray-500 mb-2">Selected Certifications:</h5>
-                                <div className="flex flex-wrap gap-2">
-                                  {customCertifications.map(cert => (
-                                    <Badge key={cert} variant="outline" className="bg-gray-50 pl-2 pr-1 py-1 flex items-center">
-                                      <span>{cert}</span>
-                                      <Button
-                                        type="button"
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-4 w-4 p-0 ml-1"
-                                        onClick={() => handleRemoveItem(cert, 'cert')}
-                                      >
-                                        <X className="h-3 w-3" />
-                                      </Button>
-                                    </Badge>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
+                <div>
+                  <Label htmlFor="type">Job Type<span className="text-red-500">*</span></Label>
+                  <Select 
+                    value={formData.type} 
+                    onValueChange={(value) => handleSelectChange('type', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select job type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Full-time">Full-time</SelectItem>
+                      <SelectItem value="Part-time">Part-time</SelectItem>
+                      <SelectItem value="Contract">Contract</SelectItem>
+                      <SelectItem value="Internship">Internship</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
                 
-                <TabsContent value="settings" className="space-y-6">
-                  <Card>
-                    <CardContent className="pt-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="applicationDeadline"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Application Deadline</FormLabel>
-                              <FormControl>
-                                <Input type="date" {...field} />
-                              </FormControl>
-                              <FormDescription>
-                                Leave blank to keep job post open until filled.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="contactEmail"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Contact Email</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  type="email" 
-                                  placeholder="e.g. careers@company.com" 
-                                  {...field} 
-                                />
-                              </FormControl>
-                              <FormDescription>
-                                Email where applications will be sent.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        
-                        <FormField
-                          control={form.control}
-                          name="status"
-                          render={({ field }) => (
-                            <FormItem className="space-y-3">
-                              <FormLabel>Post Status</FormLabel>
-                              <FormControl>
-                                <RadioGroup 
-                                  onValueChange={field.onChange} 
-                                  defaultValue={field.value}
-                                  className="flex flex-col space-y-1"
-                                >
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Active" id="active" />
-                                    <label htmlFor="active">Active - Post immediately</label>
-                                  </div>
-                                  <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="Draft" id="draft" />
-                                    <label htmlFor="draft">Draft - Save for later</label>
-                                  </div>
-                                </RadioGroup>
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </TabsContent>
-              </Tabs>
-            </form>
-          </Form>
-        </div>
-        
-        <DialogFooter className="flex items-center">
-          {form.formState.isDirty && !isSubmitting && (
-            <div className="flex items-center text-amber-600 mr-auto text-sm">
-              <AlertTriangle className="h-4 w-4 mr-1" />
-              <span>Unsaved changes</span>
+                <div>
+                  <Label htmlFor="salary">Monthly Salary (USD)</Label>
+                  <Input 
+                    id="salary"
+                    name="salary"
+                    type="number"
+                    value={formData.salary.toString()}
+                    onChange={handleChange}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="experience">Experience Level</Label>
+                  <Select 
+                    value={formData.experience} 
+                    onValueChange={(value) => handleSelectChange('experience', value)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select experience level" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Entry-level">Entry-level</SelectItem>
+                      <SelectItem value="Mid-level">Mid-level</SelectItem>
+                      <SelectItem value="Senior-level">Senior-level</SelectItem>
+                      <SelectItem value="Executive">Executive</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="description">Short Description<span className="text-red-500">*</span></Label>
+                  <Textarea 
+                    id="description"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    rows={2}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="detailedDescription">Detailed Description</Label>
+                  <Textarea 
+                    id="detailedDescription"
+                    name="detailedDescription"
+                    value={formData.detailedDescription}
+                    onChange={handleChange}
+                    rows={5}
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="applicationDeadline">Application Deadline</Label>
+                  <Input 
+                    id="applicationDeadline"
+                    name="applicationDeadline"
+                    value={formData.applicationDeadline}
+                    onChange={handleChange}
+                    placeholder="e.g., June 30, 2025"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="contactEmail">Contact Email</Label>
+                  <Input 
+                    id="contactEmail"
+                    name="contactEmail"
+                    type="email"
+                    value={formData.contactEmail}
+                    onChange={handleChange}
+                    placeholder="careers@example.com"
+                  />
+                </div>
+              </div>
             </div>
-          )}
-          
-          <Button variant="outline" type="button" onClick={handleDismiss} disabled={isSubmitting}>
-            Cancel
-          </Button>
-          
-          <Button 
-            type="submit" 
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>Submitting...</>
-            ) : (
-              <>
+            
+            <div className="border-t pt-6">
+              <h3 className="font-medium mb-4">Requirements & Qualifications</h3>
+              
+              <div className="space-y-6">
+                {/* Responsibilities */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Responsibilities</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('responsibilities')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.responsibilities.map((item, index) => (
+                    <div key={`resp-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('responsibilities', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.responsibilities.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('responsibilities', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Requirements */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Requirements</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('requirements')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.requirements.map((item, index) => (
+                    <div key={`req-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('requirements', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.requirements.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('requirements', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Qualifications */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Qualifications</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('qualifications')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.qualifications.map((item, index) => (
+                    <div key={`qual-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('qualifications', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.qualifications.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('qualifications', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Benefits */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Benefits</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('benefits')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.benefits.map((item, index) => (
+                    <div key={`ben-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('benefits', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.benefits.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('benefits', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Technologies */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Required Technologies/Skills</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('technologies')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.technologies.map((item, index) => (
+                    <div key={`tech-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('technologies', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.technologies.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('technologies', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Certifications */}
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <Label>Required Certifications</Label>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => addArrayItem('certifications')}
+                    >
+                      <Plus className="h-4 w-4 mr-1" /> Add
+                    </Button>
+                  </div>
+                  
+                  {formData.certifications.map((item, index) => (
+                    <div key={`cert-${index}`} className="flex mb-2">
+                      <Input 
+                        value={item}
+                        onChange={(e) => handleArrayChange('certifications', index, e.target.value)}
+                        className="mr-2"
+                      />
+                      {formData.certifications.length > 1 && (
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          onClick={() => removeArrayItem('certifications', index)}
+                        >
+                          <MinusCircle className="h-4 w-4" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end space-x-4 pt-4 border-t">
+              <Button type="button" variant="outline" onClick={onClose}>
+                Cancel
+              </Button>
+              <Button type="submit">
                 <Save className="h-4 w-4 mr-2" />
-                {existingJob ? 'Update Job' : 'Create Job'}
-              </>
-            )}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+                {existingJob ? 'Update Job' : 'Post Job'}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

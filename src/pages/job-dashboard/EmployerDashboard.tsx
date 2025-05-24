@@ -89,6 +89,7 @@ const EmployerDashboard = () => {
   const { toast } = useToast();
   const [showPostingForm, setShowPostingForm] = useState(false);
   const [selectedJobId, setSelectedJobId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState('overview');
   
   const handleEditJob = (jobId: number) => {
     setSelectedJobId(jobId);
@@ -100,6 +101,10 @@ const EmployerDashboard = () => {
       title: 'Job Duplicated',
       description: 'The job has been duplicated successfully and saved as a draft.',
     });
+  };
+
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
   };
 
   return (
@@ -122,7 +127,7 @@ const EmployerDashboard = () => {
             </div>
           </div>
           
-          <Tabs defaultValue="overview">
+          <Tabs defaultValue="overview" value={activeTab} onValueChange={handleTabChange}>
             <TabsList className="mb-6">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="jobs">My Jobs</TabsTrigger>
@@ -434,7 +439,7 @@ const EmployerDashboard = () => {
                                   {applicant.position} • Applied {applicant.date}
                                 </div>
                               </div>
-                              <Badge className="ml-4" variant="outline" className={applicant.statusColor}>
+                              <Badge variant="outline" className={applicant.statusColor}>
                                 {applicant.status}
                               </Badge>
                             </div>
