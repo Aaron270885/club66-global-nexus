@@ -29,15 +29,15 @@ const JobCenter = () => {
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Button asChild className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                <Link to="/jobs">
+                <Link to="/job-center">
                   <Search className="h-4 w-4 mr-2" />
-                  Browse Jobs
+                  Visit Job Center
                 </Link>
               </Button>
               <Button variant="outline" asChild className="border-purple-200 text-purple-600 hover:bg-purple-50">
-                <Link to="/job-dashboard/employee">
+                <Link to="/jobs">
                   <Briefcase className="h-4 w-4 mr-2" />
-                  Job Seeker Portal
+                  Browse Jobs
                 </Link>
               </Button>
             </div>
@@ -49,37 +49,39 @@ const JobCenter = () => {
               <div className="bg-blue-50 p-2 rounded-lg mb-2">
                 <TrendingUp className="h-5 w-5 text-blue-600 mx-auto" />
               </div>
-              <div className="text-lg font-bold text-blue-600">150+</div>
+              <div className="text-lg font-bold text-blue-600">250+</div>
               <div className="text-xs text-gray-500">Active Jobs</div>
             </div>
             <div className="text-center">
               <div className="bg-green-50 p-2 rounded-lg mb-2">
                 <Users className="h-5 w-5 text-green-600 mx-auto" />
               </div>
-              <div className="text-lg font-bold text-green-600">500+</div>
+              <div className="text-lg font-bold text-green-600">100+</div>
               <div className="text-xs text-gray-500">Companies</div>
             </div>
             <div className="text-center">
               <div className="bg-purple-50 p-2 rounded-lg mb-2">
                 <Award className="h-5 w-5 text-purple-600 mx-auto" />
               </div>
-              <div className="text-lg font-bold text-purple-600">95%</div>
-              <div className="text-xs text-gray-500">Success Rate</div>
+              <div className="text-lg font-bold text-purple-600">500+</div>
+              <div className="text-xs text-gray-500">Placements</div>
             </div>
           </div>
           
-          {/* Employer Section */}
-          <div className="text-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 rounded-lg">
-            <div className="bg-white p-3 rounded-full w-fit mx-auto mb-3 shadow-sm">
-              <Building className="h-8 w-8 text-gray-600" />
-            </div>
-            <h4 className="font-semibold mb-2">For Employers</h4>
-            <p className="text-gray-600 mb-4 text-sm">
-              Are you hiring? Post jobs and find talented candidates from our premium network.
-            </p>
-            <Button variant="outline" size="sm" asChild className="bg-white hover:bg-gray-50">
-              <Link to="/job-dashboard/employer">Employer Dashboard</Link>
-            </Button>
+          {/* Quick Links */}
+          <div className="space-y-3">
+            <Link to="/job-dashboard/employee" className="block">
+              <Button variant="outline" size="sm" className="w-full justify-start bg-blue-50 hover:bg-blue-100 border-blue-200">
+                <Users className="h-4 w-4 mr-2" />
+                Employee Dashboard
+              </Button>
+            </Link>
+            <Link to="/job-dashboard/employer" className="block">
+              <Button variant="outline" size="sm" className="w-full justify-start bg-green-50 hover:bg-green-100 border-green-200">
+                <Building className="h-4 w-4 mr-2" />
+                Employer Dashboard
+              </Button>
+            </Link>
           </div>
         </div>
       </CardContent>

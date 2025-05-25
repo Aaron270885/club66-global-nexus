@@ -22,6 +22,7 @@ import AppPage from "./pages/App";
 import Discounts from "./pages/Discounts";
 import About from "./pages/About";
 import Jobs from "./pages/Jobs";
+import JobCenter from "./pages/JobCenter";
 import JobDetail from "./pages/JobDetail";
 import FAQ from "./pages/FAQ";
 
@@ -76,6 +77,7 @@ const AppComponent = () => (
           <Route path="/app" element={<AppPage />} />
           <Route path="/discounts" element={<Discounts />} />
           <Route path="/jobs" element={<Jobs />} />
+          <Route path="/job-center" element={<JobCenter />} />
           <Route path="/jobs/:id" element={<JobDetail />} />
           <Route path="/job-dashboard/employee" element={<EmployeeDashboard />} />
           <Route path="/job-dashboard/employer" element={<EmployerDashboard />} />
