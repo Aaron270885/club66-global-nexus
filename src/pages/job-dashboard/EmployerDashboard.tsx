@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -107,8 +106,12 @@ const EmployerDashboard = () => {
     setActiveTab(tabId);
   };
 
-  const navigateToTab = (tabId: string) => {
-    setActiveTab(tabId);
+  const navigateToJobsTab = () => {
+    setActiveTab('jobs');
+  };
+
+  const navigateToApplicantsTab = () => {
+    setActiveTab('applicants');
   };
 
   return (
@@ -231,10 +234,8 @@ const EmployerDashboard = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="outline" asChild>
-                        <Link to="#" onClick={() => document.querySelector('[data-value="jobs"]')?.click()}>
-                          Manage All Jobs
-                        </Link>
+                      <Button variant="outline" onClick={navigateToJobsTab}>
+                        Manage All Jobs
                       </Button>
                     </CardFooter>
                   </Card>
@@ -278,10 +279,8 @@ const EmployerDashboard = () => {
                       </div>
                     </CardContent>
                     <CardFooter>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link to="#" onClick={() => document.querySelector('[data-value="applicants"]')?.click()}>
-                          View All Applicants
-                        </Link>
+                      <Button variant="ghost" size="sm" onClick={navigateToApplicantsTab}>
+                        View All Applicants
                       </Button>
                     </CardFooter>
                   </Card>
