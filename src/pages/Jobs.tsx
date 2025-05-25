@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Search, Briefcase, MapPin, Clock, Filter, ChevronDown, Users, Mail, SlidersHorizontal } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -109,31 +110,27 @@ const Jobs = () => {
   
   return (
     <Layout>
-      {/* Banner Section with Search */}
-      <div className="bg-gradient-to-r from-purple-700 to-indigo-700 py-16 px-4">
-        <div className="container mx-auto max-w-5xl text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Find Your Dream Career</h1>
-          <p className="text-xl md:text-2xl mb-8 opacity-90 max-w-3xl mx-auto">
-            Join Club66 Global and be part of a team transforming membership benefits across Africa.
-          </p>
-          
-          <div className="relative max-w-3xl mx-auto">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
-            </div>
-            <Input 
-              type="text" 
-              placeholder="Search jobs by title, department or location..." 
-              className="pl-10 h-12 text-black bg-white/95 border-0 shadow-lg focus-visible:ring-2 focus-visible:ring-white"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Button className="absolute right-1 top-1 bottom-1 px-6">
-              Search
-            </Button>
+      {/* Premium Banner with Search */}
+      <PremiumBanner
+        title="Find Your Dream Career"
+        description="Join Club66 Global and be part of a team transforming membership benefits across Africa."
+      >
+        <div className="relative max-w-3xl mx-auto">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
           </div>
+          <Input 
+            type="text" 
+            placeholder="Search jobs by title, department or location..." 
+            className="pl-10 h-12 text-black bg-white/95 border-0 shadow-lg focus-visible:ring-2 focus-visible:ring-white"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Button className="absolute right-1 top-1 bottom-1 px-6">
+            Search
+          </Button>
         </div>
-      </div>
+      </PremiumBanner>
       
       <div className="py-12 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">

@@ -1,7 +1,7 @@
-
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
 import { ArrowLeft, Briefcase, MapPin, Calendar, Clock, Mail, Share2, Bookmark, DollarSign, GraduationCap, Award, Code } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,16 +23,16 @@ const JobDetail = () => {
   if (!job) {
     return (
       <Layout>
-        <div className="container mx-auto py-16 px-4">
-          <div className="text-center max-w-md mx-auto">
-            <Briefcase className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h1 className="text-2xl font-bold mb-2">Job Not Found</h1>
-            <p className="text-gray-600 mb-6">The job listing you are looking for does not exist or has been removed.</p>
-            <Link to="/jobs">
-              <Button>Return to Jobs</Button>
-            </Link>
-          </div>
-        </div>
+        <PremiumBanner
+          title="Job Not Found"
+          description="The job listing you are looking for does not exist or has been removed."
+          showBackButton
+          backUrl="/jobs"
+        >
+          <Link to="/jobs">
+            <Button size="lg" className="mt-4">Return to Jobs</Button>
+          </Link>
+        </PremiumBanner>
       </Layout>
     );
   }
@@ -58,14 +58,30 @@ const JobDetail = () => {
   
   return (
     <Layout>
+      <PremiumBanner
+        title={job.title}
+        description={`${job.department} • ${job.location} • $${job.salary}/month`}
+        showBackButton
+        backUrl="/jobs"
+      >
+        <div className="flex flex-wrap gap-4 justify-center mt-6">
+          <Button size="lg" onClick={handleApply}>
+            Apply Now
+          </Button>
+          <Button variant="outline" size="lg" onClick={handleSaveJob} className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+            <Bookmark className="h-4 w-4 mr-2" />
+            Save Job
+          </Button>
+          <Button variant="outline" size="lg" onClick={handleShareJob} className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+            <Share2 className="h-4 w-4 mr-2" />
+            Share
+          </Button>
+        </div>
+      </PremiumBanner>
+      
       <div className="bg-gradient-to-br from-purple-50 to-purple-100 py-10">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Link to="/jobs" className="inline-flex items-center text-gray-600 hover:text-club66-purple mb-6">
-              <ArrowLeft className="h-4 w-4 mr-1" />
-              Back to Jobs
-            </Link>
-            
             <Card className="mb-6">
               <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center">
                 <div>
@@ -91,16 +107,6 @@ const JobDetail = () => {
                       <span>${job.salary}/month</span>
                     </div>
                   </div>
-                </div>
-                <div className="flex gap-2 mt-4 md:mt-0">
-                  <Button variant="outline" size="sm" onClick={handleSaveJob}>
-                    <Bookmark className="h-4 w-4 mr-1" />
-                    Save
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={handleShareJob}>
-                    <Share2 className="h-4 w-4 mr-1" />
-                    Share
-                  </Button>
                 </div>
               </CardHeader>
               
