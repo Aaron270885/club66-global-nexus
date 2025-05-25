@@ -1,284 +1,244 @@
 
-import { useState } from 'react';
-import { Search, CreditCard, Users, ShieldCheck, ChevronsDown, ChevronsUp } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
-import { Input } from '@/components/ui/input';
+import PremiumBanner from '@/components/layout/PremiumBanner';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { HelpCircle, MessageCircle, Phone, Mail, Search } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [expandedQuestion, setExpandedQuestion] = useState<number | null>(null);
-  
-  const toggleQuestion = (id: number) => {
-    setExpandedQuestion(expandedQuestion === id ? null : id);
-  };
-  
-  const categories = [
+
+  const faqData = [
     {
-      id: "membership",
-      name: "Membership",
-      icon: Users,
+      category: "Membership",
       questions: [
         {
-          id: 1,
-          question: "How do I sign up for a Club66 Global membership?",
-          answer: "You can sign up for a membership by clicking the 'Register' button on our website or downloading our mobile app. Fill out the registration form with your personal details, choose your membership tier, select optional social benefits, and complete the payment process. Once payment is confirmed, your digital membership card will be instantly activated."
+          question: "How do I become a Club66 Global member?",
+          answer: "You can become a member by registering on our website or mobile app. Simply provide your basic information, choose a membership tier, and complete the verification process. Membership activation takes 24-48 hours."
         },
         {
-          id: 2,
-          question: "What are the different membership tiers available?",
-          answer: "We offer three membership tiers: Essential (5% discount at Club66 Global businesses), Premium (10% discount), and Elite (20% discount). All tiers include access to partner business discounts and other benefits, but higher tiers provide increased discount percentages and additional perks. Each tier has different pricing: Essential costs CFA 10,000 per year + CFA 1,000 per month, Premium costs CFA 10,000 per year + CFA 2,000 per month, and Elite costs CFA 10,000 per year + CFA 5,000 per month."
+          question: "What are the different membership tiers?",
+          answer: "We offer three membership tiers: Basic (free), Premium ($10/month), and VIP ($25/month). Each tier offers different benefits including discounts, cashback rates, and exclusive access to services."
         },
         {
-          id: 3,
-          question: "How do I upgrade my membership tier?",
-          answer: "You can upgrade your membership tier at any time through your member dashboard. Simply navigate to the 'Membership' section, select 'Upgrade Membership', choose your desired tier, and complete the payment process for the difference. Your new benefits will be activated immediately after the payment is confirmed."
+          question: "Can I upgrade or downgrade my membership?",
+          answer: "Yes, you can change your membership tier at any time through your dashboard. Upgrades take effect immediately, while downgrades take effect at the next billing cycle."
         },
         {
-          id: 4,
-          question: "Can I change my selected social benefits after registration?",
-          answer: "Yes, you can modify your selected social benefits through your member dashboard. However, some changes may be subject to administrative fees or waiting periods, depending on the benefits involved. Contact customer support for assistance with specific changes to your social benefits selection."
+          question: "Is there a minimum commitment period?",
+          answer: "No, there's no minimum commitment period. You can cancel your membership at any time. For paid memberships, you'll continue to have access until the end of your billing period."
         }
       ]
     },
     {
-      id: "cards",
-      name: "Membership Cards",
-      icon: CreditCard,
+      category: "Card Services",
       questions: [
         {
-          id: 5,
-          question: "How do I access my digital membership card?",
-          answer: "Your digital membership card is automatically generated after your registration is complete. You can access it through your member dashboard on our website or through our mobile app. The digital card includes your unique member ID, name, and a QR code for verification by partner merchants."
+          question: "How do I activate my Club66 card?",
+          answer: "You can activate your card through our mobile app, website, or by calling our customer service. You'll need your card number and the activation code sent to your registered phone number."
         },
         {
-          id: 6,
-          question: "How do I request a physical membership card?",
-          answer: "You can request a physical membership card through your member dashboard. Navigate to the 'Membership Card' section, select 'Request Physical Card', confirm your mailing address, and complete any applicable payment for processing and delivery fees. Physical cards typically arrive within 14 business days."
+          question: "Where can I use my Club66 card?",
+          answer: "Your Club66 card can be used at all partner merchants, online stores that accept our payment network, and for various services within the Club66 ecosystem."
         },
         {
-          id: 7,
-          question: "How do merchants verify my membership?",
-          answer: "Partner merchants verify your membership by scanning the QR code on your digital or physical card using their authorized device. The scan confirms your membership status, tier, and applicable discount. The verification shows a green indicator for valid memberships or a red indicator for invalid or expired memberships."
+          question: "What should I do if my card is lost or stolen?",
+          answer: "Immediately contact our customer service or use the app to block your card. We'll issue a replacement card within 3-5 business days at no additional cost."
         },
         {
-          id: 8,
-          question: "What should I do if my card is not working at a partner location?",
-          answer: "If your card is not being recognized at a partner location, first ensure your membership is active and not expired. If the issue persists, you can contact our customer support hotline for immediate assistance. Our support team can verify your membership status and help resolve any technical issues with the merchant."
+          question: "Are there any transaction fees?",
+          answer: "Basic transactions are free for all members. Some premium services may have minimal fees, which are clearly disclosed before any transaction."
         }
       ]
     },
     {
-      id: "benefits",
-      name: "Benefits & Discounts",
-      icon: ShieldCheck,
+      category: "Financial Services",
       questions: [
         {
-          id: 9,
-          question: "What discounts do I receive with my membership?",
-          answer: "Your discount depends on your membership tier: Essential members receive 5% off at Club66 Global businesses, Premium members receive 10% off, and Elite members receive 20% off. Additionally, all members receive exclusive discounts at our partner businesses, which vary by partner but typically range from 5% to 15%."
+          question: "How does the credit account work?",
+          answer: "Our credit account allows you to make purchases and pay later. Credit limits are determined based on your membership tier and credit assessment. Interest rates start from 2.5% per month."
         },
         {
-          id: 10,
-          question: "What are the optional social benefits I can select?",
-          answer: "Upon subscribing, you can choose from several social benefits including: Startup Capital, Residential Land Plot, Payday Loans (with preferential interest rates), Scholarship or Professional Training, and Pilgrimage Package (Muslim/Christian). Each option has its standard charges, which will be clearly displayed during the selection process."
+          question: "What is hire purchase and how does it work?",
+          answer: "Hire purchase allows you to buy items and pay in installments over time. You can choose payment periods from 3 to 24 months with competitive interest rates."
         },
         {
-          id: 11,
-          question: "How do I use my discount at partner businesses?",
-          answer: "To use your discount, simply present your digital or physical membership card at the time of purchase. The merchant will scan your card to verify your membership and apply the appropriate discount automatically. The discount is applied to the final purchase amount before tax."
+          question: "How quickly can I get a payday loan?",
+          answer: "Payday loans are processed within 30 minutes for eligible members. The amount depends on your membership tier and payment history with us."
         },
         {
-          id: 12,
-          question: "Where can I see a list of all partner businesses?",
-          answer: "A complete list of partner businesses is available on our website and mobile app. You can filter partners by category, location, or discount percentage. Each partner listing includes details about their location, business hours, and the specific discounts available to Club66 Global members."
+          question: "What documents do I need for financial services?",
+          answer: "You'll need valid ID, proof of income, and bank statements. Additional documents may be required based on the specific service and amount requested."
         }
       ]
     },
     {
-      id: "payments",
-      name: "Payments & Billing",
-      icon: CreditCard,
+      category: "Discounts & Benefits",
       questions: [
         {
-          id: 13,
-          question: "What payment methods are accepted?",
-          answer: "We accept payments through various methods including: Mobile Money (Orange Money, Moov Money, Wave), Bank Transfers, and Credit Cards (via Stripe and PayPal). Payment methods may vary by country, with mobile money being the preferred option in Mali."
+          question: "How do I access discounts at partner merchants?",
+          answer: "Simply show your Club66 card or app at participating merchants. Discounts are automatically applied when you use your card for payment."
         },
         {
-          id: 14,
-          question: "How often will I be billed for my membership?",
-          answer: "Your membership includes an annual fee of CFA 10,000 billed once a year, plus a monthly fee that varies by tier (CFA 1,000 for Essential, CFA 2,000 for Premium, or CFA 5,000 for Elite). The monthly fee is billed on the same day each month from your registration date."
+          question: "Do discounts have expiration dates?",
+          answer: "Most discounts are ongoing benefits of membership. Special promotional discounts may have expiration dates, which are clearly communicated in the app."
         },
         {
-          id: 15,
-          question: "How do I update my payment information?",
-          answer: "You can update your payment information through your member dashboard. Navigate to the 'Billing' section, select 'Payment Methods', and follow the instructions to add, remove, or update your payment details. Changes will apply to your next billing cycle."
+          question: "Can I combine discounts with other offers?",
+          answer: "This depends on the merchant's policy. Some allow combining offers while others don't. Check the terms and conditions for each discount."
         },
         {
-          id: 16,
-          question: "What is the refund policy?",
-          answer: "Membership fees are generally non-refundable. However, in exceptional circumstances, refunds may be considered on a case-by-case basis. Please contact our customer support team with your specific situation for assistance with potential refunds."
+          question: "How do I find new partner merchants?",
+          answer: "New partners are regularly added and announced through our app, website, and email newsletters. Check the 'Discounts' section in your app for the latest additions."
         }
       ]
     },
     {
-      id: "affiliate",
-      name: "Affiliate Program",
-      icon: Users,
+      category: "Technical Support",
       questions: [
         {
-          id: 17,
-          question: "How does the affiliate program work?",
-          answer: "Our affiliate program allows members to earn commissions by referring new members. Each member receives a unique affiliate code to share. When someone signs up using your code, you earn 10% of their membership fees paid (both annual and monthly) for as long as they remain an active member."
+          question: "I can't log into my account. What should I do?",
+          answer: "Try resetting your password using the 'Forgot Password' option. If that doesn't work, clear your browser cache or update the app. Contact support if the issue persists."
         },
         {
-          id: 18,
-          question: "How do I track my affiliate earnings?",
-          answer: "You can track all your affiliate activities and earnings through the 'Affiliate Dashboard' in your member account. The dashboard shows your referrals, their membership status, and your commission history. Commissions are calculated monthly based on the membership fees paid by your referrals."
+          question: "The app isn't working properly on my phone.",
+          answer: "Ensure you have the latest version of the app installed. Restart your phone and check your internet connection. If problems continue, contact our technical support team."
         },
         {
-          id: 19,
-          question: "When and how are affiliate commissions paid?",
-          answer: "Affiliate commissions are paid monthly, typically within the first week of the month for the previous month's earnings. Payments are made to your preferred payment method, which you can set in your affiliate dashboard. Available payment methods include mobile money, bank transfer, or credit to your Club66 Global account."
+          question: "How do I update my personal information?",
+          answer: "Log into your account and go to 'Profile Settings'. You can update most information there. Some changes may require verification and take 24-48 hours to process."
         },
         {
-          id: 20,
-          question: "Is there a limit to how many people I can refer?",
-          answer: "There is no limit to the number of people you can refer to Club66 Global. The more members you refer, the more commission you can earn. High-performing affiliates may also qualify for additional bonuses and incentives through our tiered affiliate program."
+          question: "Is my personal data secure?",
+          answer: "Yes, we use bank-level encryption and security measures to protect your data. We comply with international data protection standards and never share your information without consent."
         }
       ]
     }
   ];
-  
-  const allQuestions = categories.flatMap(category => category.questions);
-  
-  const filteredQuestions = searchTerm
-    ? allQuestions.filter(q => 
-        q.question.toLowerCase().includes(searchTerm.toLowerCase()) || 
-        q.answer.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : [];
-  
+
+  const filteredFAQs = faqData.map(category => ({
+    ...category,
+    questions: category.questions.filter(q => 
+      q.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      q.answer.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  })).filter(category => category.questions.length > 0);
+
   return (
     <Layout>
+      <PremiumBanner
+        title="Frequently Asked Questions"
+        description="Find answers to common questions about Club66 Global services and membership benefits."
+      >
+        <div className="relative max-w-2xl mx-auto">
+          <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+            <Search className="h-5 w-5 text-gray-400" />
+          </div>
+          <Input 
+            type="text" 
+            placeholder="Search FAQs..." 
+            className="pl-10 h-12 text-black bg-white/95 border-0 shadow-lg focus-visible:ring-2 focus-visible:ring-white"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+      </PremiumBanner>
+
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-center">Frequently Asked Questions</h1>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Find answers to common questions about Club66 Global membership and services.
-            Can't find what you're looking for? Contact our support team.
-          </p>
-          
-          <div className="max-w-3xl mx-auto mb-10">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <Input 
-                type="text" 
-                placeholder="Search for answers..." 
-                className="pl-10" 
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
-            {searchTerm && (
-              <div className="mt-6">
-                <h2 className="font-medium mb-4">Search Results ({filteredQuestions.length})</h2>
-                {filteredQuestions.length > 0 ? (
-                  <div className="space-y-4">
-                    {filteredQuestions.map((q) => (
-                      <Card key={q.id} className="border">
-                        <CardHeader className="py-3">
-                          <div 
-                            className="flex justify-between items-center cursor-pointer"
-                            onClick={() => toggleQuestion(q.id)}
-                          >
-                            <CardTitle className="text-lg">{q.question}</CardTitle>
-                            {expandedQuestion === q.id ? (
-                              <ChevronsUp className="h-5 w-5 text-gray-400" />
-                            ) : (
-                              <ChevronsDown className="h-5 w-5 text-gray-400" />
-                            )}
-                          </div>
-                        </CardHeader>
-                        {expandedQuestion === q.id && (
-                          <CardContent className="pt-0 pb-4">
-                            <p className="text-gray-600">{q.answer}</p>
-                          </CardContent>
-                        )}
-                      </Card>
+          <div className="max-w-4xl mx-auto">
+            {filteredFAQs.map((category, index) => (
+              <Card key={index} className="mb-8">
+                <CardHeader>
+                  <CardTitle className="flex items-center text-xl">
+                    <HelpCircle className="h-6 w-6 mr-3 text-purple-600" />
+                    {category.category}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Accordion type="single" collapsible className="space-y-2">
+                    {category.questions.map((faq, faqIndex) => (
+                      <AccordionItem key={faqIndex} value={`item-${index}-${faqIndex}`} className="border rounded-lg px-4">
+                        <AccordionTrigger className="text-left hover:no-underline py-4">
+                          {faq.question}
+                        </AccordionTrigger>
+                        <AccordionContent className="pb-4 text-gray-700">
+                          {faq.answer}
+                        </AccordionContent>
+                      </AccordionItem>
                     ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-                    <p className="text-gray-500 mb-4">No results found for "{searchTerm}"</p>
-                    <Button variant="outline" onClick={() => setSearchTerm('')}>Clear Search</Button>
-                  </div>
-                )}
-              </div>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            ))}
+
+            {filteredFAQs.length === 0 && searchTerm && (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <HelpCircle className="h-12 w-12 mx-auto text-gray-300 mb-4" />
+                  <h3 className="text-lg font-medium mb-2">No FAQs found</h3>
+                  <p className="text-gray-500 mb-4">
+                    Sorry, we couldn't find any FAQs matching "{searchTerm}". 
+                    Try different keywords or contact our support team.
+                  </p>
+                  <Button variant="outline" onClick={() => setSearchTerm('')}>
+                    Clear Search
+                  </Button>
+                </CardContent>
+              </Card>
             )}
-          </div>
-          
-          {!searchTerm && (
-            <div className="max-w-3xl mx-auto">
-              <Tabs defaultValue="membership">
-                <TabsList className="grid grid-cols-3 md:grid-cols-5 mb-6">
-                  {categories.map(category => (
-                    <TabsTrigger key={category.id} value={category.id} className="flex flex-col items-center py-3">
-                      <category.icon className="h-5 w-5 mb-1" />
-                      <span>{category.name}</span>
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
-                
-                {categories.map(category => (
-                  <TabsContent key={category.id} value={category.id}>
-                    <div className="space-y-4">
-                      {category.questions.map((q) => (
-                        <Card key={q.id} className="border">
-                          <CardHeader className="py-3">
-                            <div 
-                              className="flex justify-between items-center cursor-pointer"
-                              onClick={() => toggleQuestion(q.id)}
-                            >
-                              <CardTitle className="text-lg">{q.question}</CardTitle>
-                              {expandedQuestion === q.id ? (
-                                <ChevronsUp className="h-5 w-5 text-gray-400" />
-                              ) : (
-                                <ChevronsDown className="h-5 w-5 text-gray-400" />
-                              )}
-                            </div>
-                          </CardHeader>
-                          {expandedQuestion === q.id && (
-                            <CardContent className="pt-0 pb-4">
-                              <p className="text-gray-600">{q.answer}</p>
-                            </CardContent>
-                          )}
-                        </Card>
-                      ))}
+
+            {/* Contact Support Section */}
+            <Card className="mt-12">
+              <CardHeader>
+                <CardTitle className="text-center text-2xl">Still Need Help?</CardTitle>
+                <p className="text-center text-gray-600">
+                  Can't find what you're looking for? Our support team is here to help.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <div className="bg-blue-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                      <MessageCircle className="h-8 w-8 text-blue-600" />
                     </div>
-                  </TabsContent>
-                ))}
-              </Tabs>
-            </div>
-          )}
-          
-          <div className="mt-16 max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md text-center">
-            <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
-            <p className="text-gray-600 mb-6">
-              Our customer support team is ready to help you with any questions or issues you may have.
-            </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button className="bg-club66-purple hover:bg-club66-darkpurple">
-                Contact Support
-              </Button>
-              <Button variant="outline">
-                Live Chat
-              </Button>
-            </div>
+                    <h3 className="font-semibold mb-2">Live Chat</h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      Chat with our support team in real-time
+                    </p>
+                    <Button variant="outline" size="sm">Start Chat</Button>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-green-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                      <Phone className="h-8 w-8 text-green-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Phone Support</h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      Call us Monday to Friday, 8AM - 6PM
+                    </p>
+                    <Button variant="outline" size="sm">+223 XX XX XX XX</Button>
+                  </div>
+
+                  <div className="text-center">
+                    <div className="bg-purple-100 p-4 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                      <Mail className="h-8 w-8 text-purple-600" />
+                    </div>
+                    <h3 className="font-semibold mb-2">Email Support</h3>
+                    <p className="text-gray-600 text-sm mb-4">
+                      Send us an email and we'll respond within 24 hours
+                    </p>
+                    <Link to="/about/contact">
+                      <Button variant="outline" size="sm">Contact Us</Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

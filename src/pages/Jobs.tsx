@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Search, Briefcase, MapPin, Clock, Filter, ChevronDown, Users, Mail, SlidersHorizontal } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
@@ -25,6 +26,9 @@ const Jobs = () => {
     certification: [],
     technology: [],
   });
+  
+  console.log('Job listings data:', jobListings); // Debug log
+  console.log('Total jobs:', jobListings.length); // Debug log
   
   // Unique values for filter options
   const departments = [...new Set(jobListings.map(job => job.department))];
@@ -93,6 +97,8 @@ const Jobs = () => {
            matchesJobType && matchesSalary && matchesExperience && 
            matchesCertification && matchesTechnology;
   });
+  
+  console.log('Filtered jobs:', filteredJobs.length); // Debug log
   
   // Reset all filters
   const resetFilters = () => {
@@ -347,7 +353,7 @@ const Jobs = () => {
                     <h2 className="font-medium">Showing {filteredJobs.length} opportunities</h2>
                     <div className="flex items-center text-sm text-gray-600">
                       <span className="mr-2">Sort by:</span>
-                      <button className="flex items-center font-medium hover:text-club66-purple">
+                      <button className="flex items-center font-medium hover:text-purple-600">
                         Newest
                         <ChevronDown className="h-4 w-4 ml-1" />
                       </button>
@@ -355,49 +361,50 @@ const Jobs = () => {
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-6">
                   {filteredJobs.map(job => (
                     <Link 
                       key={job.id} 
                       to={`/jobs/${job.id}`}
-                      className="block w-[300px] mx-auto"
+                      className="block"
                     >
-                      <Card className="h-full hover:shadow-md transition-shadow">
-                        <CardHeader className="bg-gray-50 border-b">
-                          <div>
-                            <CardTitle className="text-lg">{job.title}</CardTitle>
-                            <div className="flex flex-wrap items-center mt-1 text-xs text-gray-500 gap-1">
-                              <div className="flex items-center">
-                                <Briefcase className="h-3 w-3 mr-1" />
-                                <span>{job.department}</span>
-                              </div>
-                              <span className="mx-1">•</span>
-                              <div className="flex items-center">
-                                <MapPin className="h-3 w-3 mr-1" />
-                                <span>{job.location}</span>
+                      <Card className="h-full hover:shadow-lg transition-shadow border border-gray-200 hover:border-purple-300">
+                        <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50 border-b">
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <CardTitle className="text-lg text-purple-800">{job.title}</CardTitle>
+                              <div className="flex flex-wrap items-center mt-2 text-sm text-gray-600 gap-3">
+                                <div className="flex items-center">
+                                  <Briefcase className="h-4 w-4 mr-1.5" />
+                                  <span>{job.department}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <MapPin className="h-4 w-4 mr-1.5" />
+                                  <span>{job.location}</span>
+                                </div>
                               </div>
                             </div>
+                            <Badge variant={job.type === "Full-time" ? "default" : "secondary"} className="ml-2">
+                              {job.type}
+                            </Badge>
                           </div>
-                          <Badge variant={job.type === "Full-time" ? "default" : "secondary"} className="absolute top-3 right-3">
-                            {job.type}
-                          </Badge>
                         </CardHeader>
-                        <CardContent className="py-3">
-                          <p className="text-gray-600 text-sm line-clamp-2">{job.description}</p>
-                          <div className="mt-3">
-                            <Badge variant="outline" className="mr-1 mb-1 text-xs">{job.experience}</Badge>
+                        <CardContent className="py-4">
+                          <p className="text-gray-700 text-sm line-clamp-3 mb-4">{job.description}</p>
+                          <div className="flex flex-wrap gap-2">
+                            <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700">{job.experience}</Badge>
                             {job.technologies.slice(0, 2).map(tech => (
-                              <Badge key={tech} variant="outline" className="mr-1 mb-1 text-xs bg-green-50">{tech}</Badge>
+                              <Badge key={tech} variant="outline" className="text-xs bg-green-50 text-green-700">{tech}</Badge>
                             ))}
                             {job.technologies.length > 2 && (
-                              <Badge variant="outline" className="mr-1 mb-1 text-xs bg-gray-50">+{job.technologies.length - 2}</Badge>
+                              <Badge variant="outline" className="text-xs bg-gray-50">+{job.technologies.length - 2}</Badge>
                             )}
                           </div>
                         </CardContent>
-                        <CardFooter className="border-t bg-gray-50 flex justify-between items-center py-2">
-                          <span className="text-sm font-medium text-green-600">${job.salary}/month</span>
-                          <div className="flex items-center text-xs text-gray-500">
-                            <Clock className="h-3 w-3 mr-1" />
+                        <CardFooter className="border-t bg-gray-50 flex justify-between items-center py-3">
+                          <span className="text-lg font-semibold text-green-600">${job.salary}/month</span>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Clock className="h-4 w-4 mr-1" />
                             <span>{job.posted}</span>
                           </div>
                         </CardFooter>
