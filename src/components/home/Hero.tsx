@@ -1,81 +1,126 @@
 
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Crown, Users, Gift, TrendingUp } from 'lucide-react';
 
 const Hero = () => {
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 to-purple-100">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-6 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-              Join Club<span className="text-club66-purple">66</span> Global for Exclusive Benefits
+    <section className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="1"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-8 text-white">
+            <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
+              <Crown className="h-5 w-5 mr-2 text-yellow-400" />
+              <span className="text-sm font-medium">Premium Membership Platform</span>
+            </div>
+            
+            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+              Join Club<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300">66</span>
+              <br />Global
             </h1>
-            <p className="text-lg text-gray-700 max-w-lg">
-              Unlock a world of discounts, opportunities, and community connections through our 
-              tiered membership plans. Experience the Club66 difference today.
+            
+            <p className="text-xl md:text-2xl text-gray-300 max-w-lg leading-relaxed">
+              Unlock exclusive benefits, discounts, and opportunities through our 
+              premium membership experience designed for the elite.
             </p>
-            <div className="flex flex-wrap gap-4 pt-4">
-              <Button asChild size="lg" className="bg-club66-purple hover:bg-club66-darkpurple">
-                <Link to="/register">Join Today</Link>
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <Button asChild size="lg" className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white border-0 shadow-xl">
+                <Link to="/membership-payment">Start Your Journey</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-club66-purple text-club66-purple hover:bg-club66-purple/10">
-                <Link to="/plans">View Membership Plans</Link>
+              <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm">
+                <Link to="/discounts">Explore Benefits</Link>
               </Button>
             </div>
 
-            <div className="grid grid-cols-3 gap-4 pt-6">
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 pt-8">
               <div className="text-center">
-                <p className="text-3xl font-bold text-club66-purple">5-20%</p>
-                <p className="text-sm text-gray-600">Member Discounts</p>
+                <div className="flex items-center justify-center mb-2">
+                  <TrendingUp className="h-6 w-6 text-green-400" />
+                </div>
+                <p className="text-3xl font-bold text-white">5-20%</p>
+                <p className="text-sm text-gray-300">Member Discounts</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-club66-purple">10%</p>
-                <p className="text-sm text-gray-600">Referral Bonus</p>
+                <div className="flex items-center justify-center mb-2">
+                  <Gift className="h-6 w-6 text-yellow-400" />
+                </div>
+                <p className="text-3xl font-bold text-white">10%</p>
+                <p className="text-sm text-gray-300">Referral Bonus</p>
               </div>
               <div className="text-center">
-                <p className="text-3xl font-bold text-club66-purple">200+</p>
-                <p className="text-sm text-gray-600">Partner Businesses</p>
+                <div className="flex items-center justify-center mb-2">
+                  <Users className="h-6 w-6 text-blue-400" />
+                </div>
+                <p className="text-3xl font-bold text-white">200+</p>
+                <p className="text-sm text-gray-300">Partner Businesses</p>
               </div>
             </div>
           </div>
 
-          <div className="relative animate-fade-in">
-            <div className="bg-white rounded-xl shadow-xl p-6 transform rotate-3 relative z-10">
-              <div className="card-gradient rounded-lg p-4 flex items-center justify-between">
-                <div className="text-white">
-                  <p className="text-xs uppercase tracking-wider">Elite Member</p>
-                  <p className="text-lg font-bold">Club66 Global</p>
+          {/* Right Content - Membership Cards */}
+          <div className="relative">
+            <div className="relative z-20">
+              {/* Elite Card */}
+              <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl shadow-2xl p-8 transform rotate-2 relative z-10 border border-purple-400/20">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="text-white">
+                    <p className="text-sm uppercase tracking-wider opacity-90">Elite Member</p>
+                    <p className="text-2xl font-bold">Club66 Global</p>
+                  </div>
+                  <div className="bg-white/20 text-white rounded-full w-16 h-16 flex items-center justify-center backdrop-blur-sm">
+                    <span className="font-bold text-xl">66</span>
+                  </div>
                 </div>
-                <div className="bg-white/20 text-white rounded-full w-12 h-12 flex items-center justify-center">
-                  <span className="font-bold">66</span>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-white/80 text-sm">Member Name</p>
+                    <p className="font-semibold text-white text-lg">Ahmed Traore</p>
+                  </div>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-white/80 text-xs">Member ID</p>
+                      <p className="text-sm font-medium text-white">C66-ML-21058</p>
+                    </div>
+                    <div>
+                      <p className="text-white/80 text-xs">Valid until</p>
+                      <p className="text-sm font-medium text-white">01/28</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className="mt-4">
-                <p className="font-bold">Ahmed Traore</p>
-                <p className="text-gray-500 text-xs">Valid until 01/28</p>
-                <div className="mt-2 flex justify-between items-center">
-                  <div className="text-xs text-gray-500">Membership ID</div>
-                  <div className="text-sm font-medium">C66-ML-21058</div>
+              
+              {/* Premium Card */}
+              <div className="bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl shadow-xl p-8 transform -rotate-3 absolute -top-8 -left-8 z-0 border border-yellow-300/30">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="text-gray-900">
+                    <p className="text-sm uppercase tracking-wider opacity-70">Premium Member</p>
+                    <p className="text-2xl font-bold">Club66 Global</p>
+                  </div>
+                  <div className="bg-white/30 text-gray-900 rounded-full w-16 h-16 flex items-center justify-center">
+                    <span className="font-bold text-xl">66</span>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="bg-white rounded-xl shadow-lg p-6 transform -rotate-2 absolute top-12 -left-12 z-0">
-              <div className="gold-gradient rounded-lg p-4 flex items-center justify-between">
-                <div className="text-gray-900">
-                  <p className="text-xs uppercase tracking-wider">Premium Member</p>
-                  <p className="text-lg font-bold">Club66 Global</p>
-                </div>
-                <div className="bg-white/70 text-gray-900 rounded-full w-12 h-12 flex items-center justify-center">
-                  <span className="font-bold">66</span>
-                </div>
-              </div>
-              <div className="mt-4">
-                <p className="font-bold">Fatima Diallo</p>
-                <p className="text-gray-500 text-xs">Valid until 10/27</p>
-                <div className="mt-2 flex justify-between items-center">
-                  <div className="text-xs text-gray-500">Membership ID</div>
-                  <div className="text-sm font-medium">C66-ML-18593</div>
+                <div className="space-y-4">
+                  <div>
+                    <p className="text-gray-700 text-sm">Member Name</p>
+                    <p className="font-semibold text-gray-900 text-lg">Fatima Diallo</p>
+                  </div>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-gray-700 text-xs">Member ID</p>
+                      <p className="text-sm font-medium text-gray-900">C66-ML-18593</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-700 text-xs">Valid until</p>
+                      <p className="text-sm font-medium text-gray-900">10/27</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

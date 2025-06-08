@@ -15,6 +15,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ActivateCard from "./pages/ActivateCard";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
+import MembershipPayment from "./pages/MembershipPayment";
 
 // Main pages
 import Cards from "./pages/Cards";
@@ -71,6 +72,7 @@ const AppComponent = () => (
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/activate-card" element={<ActivateCard />} />
           <Route path="/affiliate-dashboard" element={<AffiliateDashboard />} />
+          <Route path="/membership-payment" element={<MembershipPayment />} />
           
           {/* Main navigation pages */}
           <Route path="/cards" element={<Cards />} />

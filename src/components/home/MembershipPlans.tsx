@@ -2,6 +2,7 @@
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from 'react-router-dom';
 
 const MembershipPlans = () => {
   const plans = [
@@ -109,12 +110,14 @@ const MembershipPlans = () => {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button 
+                <Button asChild
                   className={`w-full ${plan.buttonVariant === 'default' ? 'bg-club66-purple hover:bg-club66-darkpurple' : ''}`}
                   variant={plan.buttonVariant === 'default' ? 'default' : 
                           plan.buttonVariant === 'secondary' ? 'secondary' : 'outline'}
                 >
-                  Select {plan.name}
+                  <Link to="/membership-payment">
+                    Select {plan.name}
+                  </Link>
                 </Button>
               </CardFooter>
             </Card>
