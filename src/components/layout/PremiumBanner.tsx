@@ -1,14 +1,19 @@
 
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface PremiumBannerProps {
   title: string;
   description: string;
   children?: ReactNode;
   backgroundImage?: string;
+  showBackButton?: boolean;
+  backUrl?: string;
 }
 
-const PremiumBanner = ({ title, description, children, backgroundImage }: PremiumBannerProps) => {
+const PremiumBanner = ({ title, description, children, backgroundImage, showBackButton, backUrl }: PremiumBannerProps) => {
   const defaultBgImage = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80';
   
   return (
@@ -26,6 +31,16 @@ const PremiumBanner = ({ title, description, children, backgroundImage }: Premiu
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center text-white max-w-4xl mx-auto">
+          {showBackButton && backUrl && (
+            <div className="mb-6">
+              <Button asChild variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+                <Link to={backUrl}>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
+                </Link>
+              </Button>
+            </div>
+          )}
           <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
             {title}
           </h1>
