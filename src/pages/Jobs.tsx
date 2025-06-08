@@ -2,14 +2,56 @@
 import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
-import { Search, MapPin, Building, Clock, DollarSign, Filter, ChevronDown, Briefcase } from 'lucide-react';
+import { Search, MapPin, Building, Clock, DollarSign, Filter, Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link } from 'react-router-dom';
-import { jobListings } from '@/data/jobListings';
+
+// Sample job data - replace with actual data source
+const jobListings = [
+  {
+    id: 1,
+    title: 'Senior Software Engineer',
+    company: { name: 'Tech Solutions Mali' },
+    location: 'Bamako, Mali',
+    salary: '150,000',
+    type: 'Full-time',
+    department: 'Engineering',
+    posted: '2 days ago',
+    featured: true,
+    description: 'Join our dynamic team to build cutting-edge applications that serve millions of users across Africa.',
+    technologies: ['React', 'Node.js', 'TypeScript', 'AWS', 'MongoDB']
+  },
+  {
+    id: 2,
+    title: 'Marketing Manager',
+    company: { name: 'Club66 Global' },
+    location: 'Bamako, Mali',
+    salary: '120,000',
+    type: 'Full-time',
+    department: 'Marketing',
+    posted: '1 week ago',
+    featured: false,
+    description: 'Lead our marketing initiatives to expand Club66 Global membership across West Africa.',
+    technologies: ['Digital Marketing', 'SEO', 'Social Media', 'Analytics']
+  },
+  {
+    id: 3,
+    title: 'Customer Success Representative',
+    company: { name: 'Club66 Global' },
+    location: 'Remote',
+    salary: '80,000',
+    type: 'Part-time',
+    department: 'Customer Service',
+    posted: '3 days ago',
+    featured: false,
+    description: 'Help our members get the most value from their Club66 Global membership experience.',
+    technologies: ['Customer Support', 'CRM', 'Communication']
+  }
+];
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,6 +77,7 @@ const Jobs = () => {
       <PremiumBanner
         title="Find Your Dream Job"
         description="Discover exciting career opportunities with top companies across Africa. Start your journey today."
+        backgroundImage="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       >
         <div className="max-w-4xl mx-auto mt-8">
           <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 border border-white/20">
@@ -179,7 +222,7 @@ const Jobs = () => {
                               </div>
                               <div className="flex items-center">
                                 <DollarSign className="h-4 w-4 mr-1" />
-                                <span>${job.salary}/month</span>
+                                <span>{job.salary} FCFA/month</span>
                               </div>
                               <div className="flex items-center">
                                 <Clock className="h-4 w-4 mr-1" />

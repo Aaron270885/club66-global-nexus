@@ -2,6 +2,7 @@
 import { Download, Smartphone, Check, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
 import { Button } from '@/components/ui/button';
 
 const AppPage = () => {
@@ -18,13 +19,14 @@ const AppPage = () => {
   
   return (
     <Layout>
+      <PremiumBanner
+        title="Club66 Global Mobile App"
+        description="Manage your membership, access your benefits, and connect with our community on the go."
+        backgroundImage="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+      />
+
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-center">Club66 Global Mobile App</h1>
-          <p className="text-center text-gray-600 mb-8">
-            Manage your membership, access your benefits, and connect with our community on the go.
-          </p>
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16">
             <div className="order-2 lg:order-1">
               <h2 className="text-3xl font-bold mb-6">Everything You Need In Your Pocket</h2>
@@ -62,76 +64,11 @@ const AppPage = () => {
             
             <div className="order-1 lg:order-2 flex justify-center">
               <div className="relative">
-                <div className="rounded-[2.5rem] bg-gray-900 border-8 border-gray-900 shadow-xl w-64">
-                  <div className="h-[500px] rounded-3xl bg-white overflow-hidden">
-                    <div className="h-12 bg-gray-100 flex justify-center items-center">
-                      <div className="w-1/2 h-6 rounded-full bg-gray-300"></div>
-                    </div>
-                    <div className="bg-gradient-to-br from-purple-100 to-purple-50 p-4 h-full">
-                      <div className="card-gradient rounded-xl overflow-hidden shadow-lg p-4 mt-4">
-                        <div className="flex justify-between items-center">
-                          <div className="text-white">
-                            <div className="text-xs font-medium">Club66 Global</div>
-                            <div className="text-lg font-bold">Member Card</div>
-                          </div>
-                          <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
-                            <span className="font-bold text-white text-xs">66</span>
-                          </div>
-                        </div>
-                        <div className="mt-4 mb-2">
-                          <div className="text-white/80 text-xs">Member</div>
-                          <div className="text-white text-sm font-medium">Ahmed Traore</div>
-                        </div>
-                        <div className="mt-2 flex justify-between items-end">
-                          <div>
-                            <div className="text-white/80 text-xs">ID</div>
-                            <div className="text-white text-xs">C66-ML-21058</div>
-                          </div>
-                          <div>
-                            <div className="text-white/80 text-xs">Expires</div>
-                            <div className="text-white text-xs">01/28</div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white rounded-xl p-3 mt-4">
-                        <div className="text-sm font-medium mb-2">Your Benefits</div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-xs">
-                            <span>Discount at Club66 Businesses</span>
-                            <span className="font-medium text-club66-purple">20%</span>
-                          </div>
-                          <div className="flex justify-between text-xs">
-                            <span>Payday Loans Interest</span>
-                            <span className="font-medium text-club66-purple">5% Flat</span>
-                          </div>
-                          <div className="flex justify-between text-xs">
-                            <span>Membership Tier</span>
-                            <span className="font-medium text-club66-purple">Elite</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-white rounded-xl p-3 mt-4">
-                        <div className="text-sm font-medium mb-2">Quick Actions</div>
-                        <div className="grid grid-cols-3 gap-2">
-                          <div className="bg-gray-100 p-2 rounded-md flex flex-col items-center justify-center">
-                            <Smartphone className="h-4 w-4 text-gray-600" />
-                            <span className="text-xs mt-1">Card</span>
-                          </div>
-                          <div className="bg-gray-100 p-2 rounded-md flex flex-col items-center justify-center">
-                            <Download className="h-4 w-4 text-gray-600" />
-                            <span className="text-xs mt-1">Benefits</span>
-                          </div>
-                          <div className="bg-gray-100 p-2 rounded-md flex flex-col items-center justify-center">
-                            <ShieldCheck className="h-4 w-4 text-gray-600" />
-                            <span className="text-xs mt-1">Support</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                  alt="Mobile App Interface"
+                  className="rounded-lg shadow-xl w-80 h-96 object-cover"
+                />
               </div>
             </div>
           </div>
@@ -170,7 +107,7 @@ const AppPage = () => {
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
               Download our app today and enjoy all the benefits of your Club66 Global membership on the go.
             </p>
-            <Button className="bg-club66-purple hover:bg-club66-darkpurple" size="lg" asChild>
+            <Button className="bg-purple-600 hover:bg-purple-700" size="lg" asChild>
               <Link to="/register">Join Club66 Global Today</Link>
             </Button>
           </div>

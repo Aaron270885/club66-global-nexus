@@ -6,9 +6,15 @@ import { Crown, Users, Gift, TrendingUp } from 'lucide-react';
 const Hero = () => {
   return (
     <section className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 to-transparent"></div>
+      {/* Background image with transparency */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')`
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/80 to-slate-900/80"></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
