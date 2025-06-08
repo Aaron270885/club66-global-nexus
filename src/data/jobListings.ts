@@ -16,6 +16,7 @@ export interface JobListing {
   experience: string;
   certifications: string[];
   technologies: string[];
+  featured?: boolean;
   company?: {
     name: string;
     logo?: string;
@@ -33,6 +34,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Full-time",
     posted: "3 days ago",
+    featured: true,
     description: "Join our field sales team to promote Club66 Global memberships and recruit new members across Bamako.",
     detailedDescription: "We are looking for energetic and persuasive Field Sales Agents to join our growing team. As a Field Sales Agent, you will be responsible for promoting Club66 Global memberships, educating potential customers about our services, and signing up new members. You will play a crucial role in expanding our member base and contributing to the growth of Club66 Global in Mali.",
     responsibilities: [
@@ -80,6 +82,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Full-time",
     posted: "1 week ago",
+    featured: false,
     description: "Handle customer inquiries, membership activation, and provide excellent service to our growing member base.",
     detailedDescription: "As a Customer Support Specialist, you will be the front line of communication with our members. You will handle inquiries, resolve issues, and ensure our members receive the highest level of service. This role requires excellent communication skills, patience, and a genuine desire to help others. You will work as part of our dedicated customer service team in our Bamako headquarters.",
     responsibilities: [
@@ -128,6 +131,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Full-time",
     posted: "2 weeks ago",
+    featured: true,
     description: "Coordinate marketing campaigns, social media, and promotional events for Club66 Global across Mali.",
     requirements: ["Bachelor's degree in Marketing or related field", "2+ years of marketing experience", "Social media expertise", "Graphic design skills a plus"],
     salary: 1200,
@@ -142,6 +146,7 @@ export const jobListings: JobListing[] = [
     location: "Remote",
     type: "Full-time",
     posted: "3 weeks ago",
+    featured: false,
     description: "Develop and maintain our mobile applications for iOS and Android platforms.",
     requirements: ["Bachelor's degree in Computer Science", "3+ years of mobile app development", "Experience with React Native", "Backend integration skills"],
     salary: 2500,
@@ -156,6 +161,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Full-time",
     posted: "1 month ago",
+    featured: false,
     description: "Develop and maintain relationships with merchant partners, negotiate discounts, and expand our partner network.",
     requirements: ["Bachelor's degree in Business", "3+ years in business development", "Strong negotiation skills", "Fluency in French and English"],
     salary: 1800,
@@ -170,6 +176,7 @@ export const jobListings: JobListing[] = [
     location: "Segou, Mali",
     type: "Full-time",
     posted: "2 days ago",
+    featured: true,
     description: "Supervise a team of field agents, set targets, monitor performance, and provide training and support.",
     requirements: ["Bachelor's degree", "2+ years of sales management", "Leadership abilities", "Fluency in French and Bambara"],
     salary: 1500,
@@ -184,6 +191,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Full-time",
     posted: "5 days ago",
+    featured: false,
     description: "Handle financial operations, payment processing, and reporting for Club66 Global Mali.",
     requirements: ["Bachelor's degree in Finance", "2+ years of finance experience", "Proficiency in accounting software", "Attention to detail"],
     salary: 1600,
@@ -198,6 +206,7 @@ export const jobListings: JobListing[] = [
     location: "Bamako, Mali",
     type: "Part-time",
     posted: "1 week ago",
+    featured: false,
     description: "Create and schedule content for social media platforms, engage with followers, and track metrics.",
     requirements: ["Diploma in Marketing", "Social media management experience", "Creative content creation skills", "Fluency in French"],
     salary: 700,
