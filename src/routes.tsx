@@ -1,3 +1,4 @@
+
 import { createBrowserRouter } from 'react-router-dom';
 import Index from '@/pages/Index';
 import Login from '@/pages/Login';
@@ -18,6 +19,7 @@ import Cards from '@/pages/Cards';
 import ResetPassword from '@/pages/ResetPassword';
 import ForgotPassword from '@/pages/ForgotPassword';
 import NotFound from '@/pages/NotFound';
+import ProjectRequests from '@/pages/ProjectRequests';
 
 // About sub-pages
 import Contact from '@/pages/about/Contact';
@@ -177,6 +179,11 @@ export const router = createBrowserRouter([
   {
     path: '/employer-dashboard',
     element: <EmployerDashboard />,
+  },
+  // Project Requests
+  {
+    path: '/project-requests',
+    element: <ProjectRequests />,
   },
   // FAQ
   {

@@ -33,7 +33,7 @@ const Header = () => {
 
   const navigationItems = [
     { title: 'Home', href: '/' },
-    { title: 'Our Cards', href: '/cards' },
+    { title: 'Our Cards (ZENIKA)', href: '/cards' },
     { title: 'Our App', href: '/app' },
     { title: 'Discounts', href: '/discounts' },
     { title: 'Services & Products', href: '/services' },
@@ -61,14 +61,15 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="container mx-auto px-4">
+      <div className="w-full px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-purple-800 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C66</span>
-            </div>
-            <span className="font-bold text-xl text-gray-900">Club66 Global</span>
+          <Link to="/" className="flex items-center space-x-3">
+            <img 
+              src="/lovable-uploads/c7e102a1-7d8a-4184-be93-4094e5c02ecd.png" 
+              alt="Club66 Global Logo" 
+              className="h-10 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -80,7 +81,7 @@ const Header = () => {
                     <NavigationMenuLink asChild>
                       <Link 
                         to={item.href}
-                        className="px-3 py-2 text-gray-700 hover:text-purple-600 transition-colors"
+                        className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
                       >
                         {item.title}
                       </Link>
@@ -149,7 +150,7 @@ const Header = () => {
                 <Button variant="ghost" asChild>
                   <Link to="/login">Login</Link>
                 </Button>
-                <Button asChild className="bg-purple-600 hover:bg-purple-700">
+                <Button asChild className="bg-blue-600 hover:bg-blue-700">
                   <Link to="/register">Join Club66</Link>
                 </Button>
               </div>
@@ -170,7 +171,7 @@ const Header = () => {
                     <Link
                       key={item.href}
                       to={item.href}
-                      className="text-lg font-medium hover:text-purple-600 transition-colors"
+                      className="text-lg font-medium hover:text-blue-600 transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       {item.title}
@@ -183,7 +184,7 @@ const Header = () => {
                       <Link
                         key={item.href}
                         to={item.href}
-                        className="block py-2 text-gray-600 hover:text-purple-600 transition-colors"
+                        className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.title}
@@ -197,7 +198,7 @@ const Header = () => {
                       <Link
                         key={item.href}
                         to={item.href}
-                        className="block py-2 text-gray-600 hover:text-purple-600 transition-colors"
+                        className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
                         onClick={() => setIsOpen(false)}
                       >
                         {item.title}
@@ -228,7 +229,7 @@ const Header = () => {
                         <Button variant="ghost" className="w-full" asChild>
                           <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
                         </Button>
-                        <Button className="w-full bg-purple-600 hover:bg-purple-700" asChild>
+                        <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
                           <Link to="/register" onClick={() => setIsOpen(false)}>Join Club66</Link>
                         </Button>
                       </>

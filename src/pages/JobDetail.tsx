@@ -1,5 +1,6 @@
+
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
 import { ArrowLeft, Briefcase, MapPin, Calendar, Clock, Mail, Share2, Bookmark, DollarSign, GraduationCap, Award, Code } from 'lucide-react';
@@ -14,6 +15,7 @@ import JobApplicationForm from '@/components/jobs/JobApplicationForm';
 
 const JobDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   
@@ -55,6 +57,16 @@ const JobDetail = () => {
   const handleApply = () => {
     setShowApplicationForm(true);
   };
+
+  const handleApplicationSuccess = () => {
+    toast({
+      title: "Application submitted successfully!",
+      description: "Redirecting you back to jobs page."
+    });
+    setTimeout(() => {
+      navigate('/jobs');
+    }, 2000);
+  };
   
   return (
     <Layout>
@@ -79,8 +91,8 @@ const JobDetail = () => {
         </div>
       </PremiumBanner>
       
-      <div className="bg-gradient-to-br from-purple-50 to-purple-100 py-10">
-        <div className="container mx-auto px-4">
+      <div className="bg-gradient-to-br from-purple-50 to-purple-100 py-10 w-full">
+        <div className="w-full px-4">
           <div className="max-w-4xl mx-auto">
             <Card className="mb-6">
               <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center">
@@ -218,6 +230,7 @@ const JobDetail = () => {
                 jobId={job.id} 
                 jobTitle={job.title}
                 onClose={() => setShowApplicationForm(false)}
+                onSuccess={handleApplicationSuccess}
               />
             )}
             

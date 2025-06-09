@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { FileUp, CheckCircle, XCircle, Upload, Briefcase, GraduationCap, Calendar } from 'lucide-react';
+import { FileUp, CheckCircle, XCircle, Upload, Briefcase, GraduationCap, Calendar, X } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -17,6 +17,7 @@ interface JobApplicationFormProps {
   jobId: number;
   jobTitle: string;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 const formSchema = z.object({
@@ -30,7 +31,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const JobApplicationForm = ({ jobId, jobTitle, onClose }: JobApplicationFormProps) => {
+const JobApplicationForm = ({ jobId, jobTitle, onClose, onSuccess }: JobApplicationFormProps) => {
   const { toast } = useToast();
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isResumeUploaded, setIsResumeUploaded] = useState(false);
@@ -100,194 +101,212 @@ const JobApplicationForm = ({ jobId, jobTitle, onClose }: JobApplicationFormProp
     }, 2000);
   };
 
+  const handleSuccessClose = () => {
+    setShowSuccessDialog(false);
+    onSuccess?.();
+    onClose();
+  };
+
   return (
     <>
-      <Card className="mb-6 animate-fade-in">
-        <CardHeader>
-          <CardTitle className="text-xl">Apply for: {jobTitle}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="mb-6">
-            <div className="flex items-center space-x-2 mb-6">
-              <div className={`p-2 rounded-full ${isResumeUploaded ? 'bg-green-100' : 'bg-gray-100'}`}>
-                <FileUp className={`h-5 w-5 ${isResumeUploaded ? 'text-green-600' : 'text-gray-500'}`} />
-              </div>
-              <div className="flex-1">
-                <Label htmlFor="resume" className="text-sm font-medium block mb-1">Upload your resume</Label>
-                <div className="flex items-center w-full">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="mr-2"
-                    onClick={() => document.getElementById('resume')?.click()}
-                  >
-                    <Upload className="h-4 w-4 mr-2" />
-                    {isResumeUploaded ? 'Change File' : 'Select File'}
-                  </Button>
-                  <span className="text-sm text-gray-500">
-                    {resumeFile ? resumeFile.name : "PDF, DOCX or TXT, max 5MB"}
-                  </span>
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <Card className="border-0 shadow-2xl">
+            <CardHeader className="relative">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                className="absolute right-4 top-4 p-2"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+              <CardTitle className="text-xl pr-10">Apply for: {jobTitle}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-6">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className={`p-2 rounded-full ${isResumeUploaded ? 'bg-green-100' : 'bg-gray-100'}`}>
+                    <FileUp className={`h-5 w-5 ${isResumeUploaded ? 'text-green-600' : 'text-gray-500'}`} />
+                  </div>
+                  <div className="flex-1">
+                    <Label htmlFor="resume" className="text-sm font-medium block mb-1">Upload your resume</Label>
+                    <div className="flex items-center w-full">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="mr-2"
+                        onClick={() => document.getElementById('resume')?.click()}
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {isResumeUploaded ? 'Change File' : 'Select File'}
+                      </Button>
+                      <span className="text-sm text-gray-500">
+                        {resumeFile ? resumeFile.name : "PDF, DOCX or TXT, max 5MB"}
+                      </span>
+                    </div>
+                    <Input
+                      id="resume"
+                      type="file"
+                      accept=".pdf,.doc,.docx,.txt"
+                      className="hidden"
+                      onChange={handleResumeChange}
+                    />
+                    {isResumeUploaded && (
+                      <div className="mt-2 text-sm text-green-600 flex items-center">
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Resume uploaded successfully
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <Input
-                  id="resume"
-                  type="file"
-                  accept=".pdf,.doc,.docx,.txt"
-                  className="hidden"
-                  onChange={handleResumeChange}
-                />
-                {isResumeUploaded && (
-                  <div className="mt-2 text-sm text-green-600 flex items-center">
-                    <CheckCircle className="h-4 w-4 mr-1" />
-                    Resume uploaded successfully
+
+                {parsedResumeData && (
+                  <div className="bg-blue-50 border border-blue-100 rounded-md p-4 mb-6">
+                    <div className="flex items-start mb-2">
+                      <div className="mr-2 mt-0.5">
+                        <CheckCircle className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <div>
+                        <h4 className="font-medium text-blue-800">Resume Auto-Fill</h4>
+                        <p className="text-sm text-blue-700">
+                          We've automatically filled in some information from your resume. Please review and complete any missing details.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
+                
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <FormField
+                        control={form.control}
+                        name="fullName"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your full name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Your email address" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Your phone number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <Briefcase className="h-5 w-5 text-gray-500 mr-2" />
+                        <Label className="font-medium text-gray-700">Work Experience</Label>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="workExperience"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Describe your relevant work experience" 
+                                className="min-h-[100px]" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-center">
+                        <GraduationCap className="h-5 w-5 text-gray-500 mr-2" />
+                        <Label className="font-medium text-gray-700">Education</Label>
+                      </div>
+                      
+                      <FormField
+                        control={form.control}
+                        name="education"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="List your educational background" 
+                                className="min-h-[100px]" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <Label className="font-medium text-gray-700">Cover Letter (Optional)</Label>
+                      
+                      <FormField
+                        control={form.control}
+                        name="coverLetter"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Textarea 
+                                placeholder="Write a brief cover letter or message" 
+                                className="min-h-[150px]" 
+                                {...field} 
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    
+                    <div className="flex justify-end space-x-3">
+                      <Button type="button" variant="outline" onClick={onClose}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" disabled={isSubmitting || !isResumeUploaded}>
+                        {isSubmitting ? "Submitting..." : "Submit Application"}
+                      </Button>
+                    </div>
+                  </form>
+                </Form>
               </div>
-            </div>
-
-            {parsedResumeData && (
-              <div className="bg-blue-50 border border-blue-100 rounded-md p-4 mb-6">
-                <div className="flex items-start mb-2">
-                  <div className="mr-2 mt-0.5">
-                    <CheckCircle className="h-4 w-4 text-blue-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-blue-800">Resume Auto-Fill</h4>
-                    <p className="text-sm text-blue-700">
-                      We've automatically filled in some information from your resume. Please review and complete any missing details.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="fullName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your full name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" placeholder="Your email address" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your phone number" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <Briefcase className="h-5 w-5 text-gray-500 mr-2" />
-                    <Label className="font-medium text-gray-700">Work Experience</Label>
-                  </div>
-                  
-                  <FormField
-                    control={form.control}
-                    name="workExperience"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Describe your relevant work experience" 
-                            className="min-h-[100px]" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <GraduationCap className="h-5 w-5 text-gray-500 mr-2" />
-                    <Label className="font-medium text-gray-700">Education</Label>
-                  </div>
-                  
-                  <FormField
-                    control={form.control}
-                    name="education"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="List your educational background" 
-                            className="min-h-[100px]" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="space-y-4">
-                  <Label className="font-medium text-gray-700">Cover Letter (Optional)</Label>
-                  
-                  <FormField
-                    control={form.control}
-                    name="coverLetter"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Write a brief cover letter or message" 
-                            className="min-h-[150px]" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="flex justify-end space-x-3">
-                  <Button type="button" variant="outline" onClick={onClose}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={isSubmitting || !isResumeUploaded}>
-                    {isSubmitting ? "Submitting..." : "Submit Application"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
       
       <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
         <DialogContent className="sm:max-w-md">
@@ -310,10 +329,7 @@ const JobApplicationForm = ({ jobId, jobTitle, onClose }: JobApplicationFormProp
             </p>
           </div>
           <div className="flex justify-end">
-            <Button onClick={() => {
-              setShowSuccessDialog(false);
-              onClose();
-            }}>
+            <Button onClick={handleSuccessClose}>
               Close
             </Button>
           </div>
