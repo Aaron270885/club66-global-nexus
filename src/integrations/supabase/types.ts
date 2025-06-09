@@ -892,6 +892,14 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      increment_competition_entries: {
+        Args: { competition_id: string }
+        Returns: undefined
+      }
+      increment_vote_count: {
+        Args: { participant_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       agent_type: "individual" | "merchant" | "distributor"

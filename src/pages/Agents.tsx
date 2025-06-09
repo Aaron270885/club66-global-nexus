@@ -72,6 +72,7 @@ const Agents = () => {
     mutationFn: async (type: 'individual' | 'merchant' | 'distributor') => {
       if (!user) throw new Error('Please login to register as an agent');
 
+      // The trigger will auto-generate the referral_code, so we don't need to provide it
       const { error } = await supabase
         .from('agents')
         .insert({

@@ -59,10 +59,11 @@ const CompetitionParticipationForm = ({ competitionId, onClose, onSuccess }: Com
 
       if (error) throw error;
 
-      // Update competition entries count
-      const { error: updateError } = await supabase.rpc('increment_competition_entries', {
-        competition_id: competitionId
-      });
+      // Update competition entries count using direct SQL
+      const { error: updateError } = await supabase
+        .rpc('increment_competition_entries' as any, {
+          competition_id: competitionId
+        });
 
       if (updateError) throw updateError;
     },
