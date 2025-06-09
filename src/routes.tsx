@@ -1,4 +1,3 @@
-
 import { createBrowserRouter } from 'react-router-dom';
 import Index from '@/pages/Index';
 import Login from '@/pages/Login';
@@ -68,22 +67,60 @@ export const router = createBrowserRouter([
     path: '/dashboard',
     element: <Dashboard />,
   },
+  // Our Cards (ZENIKA)
   {
-    path: '/discounts',
-    element: <Discounts />,
+    path: '/cards',
+    element: <Cards />,
   },
-  {
-    path: '/competitions',
-    element: <Competitions />,
-  },
-  {
-    path: '/agents',
-    element: <Agents />,
-  },
+  // Our App
   {
     path: '/app',
     element: <AppPage />,
   },
+  // Discounts
+  {
+    path: '/discounts',
+    element: <Discounts />,
+  },
+  // Services & Products
+  {
+    path: '/services',
+    element: <ServicesIndex />,
+  },
+  {
+    path: '/services/credit-system',
+    element: <CreditSystem />,
+  },
+  {
+    path: '/services/credit-account',
+    element: <CreditAccount />,
+  },
+  {
+    path: '/services/payday-loan',
+    element: <PaydayLoan />,
+  },
+  {
+    path: '/services/hire-purchase',
+    element: <HirePurchase />,
+  },
+  // Our Affiliates
+  {
+    path: '/affiliates/members',
+    element: <AffiliateMembers />,
+  },
+  {
+    path: '/affiliates/merchants',
+    element: <AffiliateMerchants />,
+  },
+  {
+    path: '/affiliates/distributors',
+    element: <AffiliateDistributors />,
+  },
+  {
+    path: '/affiliate-dashboard',
+    element: <AffiliateDashboard />,
+  },
+  // About section
   {
     path: '/about',
     element: <About />,
@@ -120,10 +157,7 @@ export const router = createBrowserRouter([
     path: '/about/privacy',
     element: <Privacy />,
   },
-  {
-    path: '/faq',
-    element: <FAQ />,
-  },
+  // Job Center Portal
   {
     path: '/jobs',
     element: <Jobs />,
@@ -137,16 +171,34 @@ export const router = createBrowserRouter([
     element: <JobCenter />,
   },
   {
+    path: '/employee-dashboard',
+    element: <EmployeeDashboard />,
+  },
+  {
+    path: '/employer-dashboard',
+    element: <EmployerDashboard />,
+  },
+  // FAQ
+  {
+    path: '/faq',
+    element: <FAQ />,
+  },
+  // Other pages
+  {
+    path: '/competitions',
+    element: <Competitions />,
+  },
+  {
+    path: '/agents',
+    element: <Agents />,
+  },
+  {
     path: '/membership-payment',
     element: <MembershipPayment />,
   },
   {
     path: '/activate-card',
     element: <ActivateCard />,
-  },
-  {
-    path: '/cards',
-    element: <Cards />,
   },
   {
     path: '/reset-password',
@@ -157,56 +209,12 @@ export const router = createBrowserRouter([
     element: <ForgotPassword />,
   },
   {
-    path: '/services',
-    element: <ServicesIndex />,
-  },
-  {
-    path: '/services/credit-system',
-    element: <CreditSystem />,
-  },
-  {
-    path: '/services/credit-account',
-    element: <CreditAccount />,
-  },
-  {
-    path: '/services/payday-loan',
-    element: <PaydayLoan />,
-  },
-  {
-    path: '/services/hire-purchase',
-    element: <HirePurchase />,
-  },
-  {
     path: '/admin',
     element: <AdminDashboard />,
   },
   {
     path: '/admin/agents',
     element: <AgentPanel />,
-  },
-  {
-    path: '/affiliates/members',
-    element: <AffiliateMembers />,
-  },
-  {
-    path: '/affiliates/merchants',
-    element: <AffiliateMerchants />,
-  },
-  {
-    path: '/affiliates/distributors',
-    element: <AffiliateDistributors />,
-  },
-  {
-    path: '/affiliate-dashboard',
-    element: <AffiliateDashboard />,
-  },
-  {
-    path: '/employee-dashboard',
-    element: <EmployeeDashboard />,
-  },
-  {
-    path: '/employer-dashboard',
-    element: <EmployerDashboard />,
   },
   {
     path: '*',

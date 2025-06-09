@@ -33,19 +33,30 @@ const Header = () => {
 
   const navigationItems = [
     { title: 'Home', href: '/' },
+    { title: 'Our Cards', href: '/cards' },
+    { title: 'Our App', href: '/app' },
     { title: 'Discounts', href: '/discounts' },
-    { title: 'Competitions', href: '/competitions' },
-    { title: 'Jobs', href: '/jobs' },
-    { title: 'Agents', href: '/agents' },
-    { title: 'Mobile App', href: '/app' },
+    { title: 'Services & Products', href: '/services' },
+    { title: 'Job Center Portal', href: '/job-center' },
+    { title: 'FAQ', href: '/faq' },
+  ];
+
+  const affiliateItems = [
+    { title: 'Members', href: '/affiliates/members' },
+    { title: 'Merchants', href: '/affiliates/merchants' },
+    { title: 'Distributors', href: '/affiliates/distributors' },
   ];
 
   const aboutItems = [
-    { title: 'About Us', href: '/about' },
-    { title: 'Contact', href: '/about/contact' },
+    { title: 'Who is behind C66?', href: '/about' },
+    { title: 'Changing Lives!', href: '/about/changing-lives' },
+    { title: 'Association Members', href: '/about/association-members' },
+    { title: 'Partners & Endorsements', href: '/about/partners' },
     { title: 'Projects', href: '/about/projects' },
-    { title: 'Partners', href: '/about/partners' },
-    { title: 'News', href: '/about/news' },
+    { title: 'News & Press', href: '/about/news' },
+    { title: 'Contact Us', href: '/about/contact' },
+    { title: 'Terms of Use', href: '/about/terms' },
+    { title: 'Privacy Policy', href: '/about/privacy' },
   ];
 
   return (
@@ -77,6 +88,24 @@ const Header = () => {
                   </NavigationMenuItem>
                 ))}
                 
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Our Affiliates</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-6 w-[400px]">
+                      {affiliateItems.map((item) => (
+                        <NavigationMenuLink asChild key={item.href}>
+                          <Link
+                            to={item.href}
+                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                          >
+                            <div className="text-sm font-medium leading-none">{item.title}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      ))}
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+
                 <NavigationMenuItem>
                   <NavigationMenuTrigger>About</NavigationMenuTrigger>
                   <NavigationMenuContent>
@@ -148,6 +177,20 @@ const Header = () => {
                     </Link>
                   ))}
                   
+                  <div className="border-t pt-4">
+                    <p className="font-medium text-gray-900 mb-2">Our Affiliates</p>
+                    {affiliateItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        className="block py-2 text-gray-600 hover:text-purple-600 transition-colors"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
+                  </div>
+
                   <div className="border-t pt-4">
                     <p className="font-medium text-gray-900 mb-2">About</p>
                     {aboutItems.map((item) => (
