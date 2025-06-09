@@ -1,220 +1,221 @@
 
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Clock, Star, ShoppingBag, Percent, Gift } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { MapPin, Phone, Mail, Percent, Search } from 'lucide-react';
+import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
+
+interface Merchant {
+  id: string;
+  name: string;
+  logo_url: string;
+  sector: string;
+  location: string;
+  contact_phone: string;
+  contact_email: string;
+  discount_percentage: number;
+  is_active: boolean;
+}
 
 const Discounts = () => {
-  const discounts = [
-    {
-      id: 1,
-      merchant: 'TechHub Electronics',
-      discount: '25% OFF',
-      category: 'Electronics',
-      description: 'Get 25% off on all smartphones, laptops, and accessories',
-      validUntil: '2024-02-29',
-      location: 'Bamako, Mali',
-      rating: 4.8,
-      image: '/placeholder.svg',
-      featured: true
-    },
-    {
-      id: 2,
-      merchant: 'Fashion Central',
-      discount: '30% OFF',
-      category: 'Fashion',
-      description: 'Exclusive discount on designer clothing and accessories',
-      validUntil: '2024-02-15',
-      location: 'Dakar, Senegal',
-      rating: 4.6,
-      image: '/placeholder.svg',
-      featured: false
-    },
-    {
-      id: 3,
-      merchant: 'Gourmet Restaurant',
-      discount: '20% OFF',
-      category: 'Food & Dining',
-      description: 'Enjoy premium dining experience with exclusive member discount',
-      validUntil: '2024-03-10',
-      location: 'Abidjan, Côte d\'Ivoire',
-      rating: 4.9,
-      image: '/placeholder.svg',
-      featured: true
-    },
-    {
-      id: 4,
-      merchant: 'AutoCare Services',
-      discount: '15% OFF',
-      category: 'Automotive',
-      description: 'Professional car maintenance and repair services',
-      validUntil: '2024-02-20',
-      location: 'Accra, Ghana',
-      rating: 4.5,
-      image: '/placeholder.svg',
-      featured: false
-    }
-  ];
+  const { user } = useAuth();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSector, setSelectedSector] = useState<string>('all');
+  const queryClient = useQueryClient();
 
-  const categories = ['All', 'Electronics', 'Fashion', 'Food & Dining', 'Automotive', 'Healthcare', 'Travel'];
+  const { data: merchants, isLoading } = useQuery({
+    queryKey: ['merchants'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('merchants')
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+      
+      if (error) throw error;
+      return data as Merchant[];
+    }
+  });
+
+  const useDiscountMutation = useMutation({
+    mutationFn: async (merchantId: string) => {
+      if (!user) throw new Error('Please login to use discounts');
+
+      const { error } = await supabase
+        .from('discount_usage')
+        .insert({
+          user_id: user.id,
+          merchant_id: merchantId,
+          used_at: new Date().toISOString()
+        });
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success('Discount usage recorded! Show this to the merchant.');
+      queryClient.invalidateQueries({ queryKey: ['discount-usage'] });
+    },
+    onError: (error: any) => {
+      toast.error('Failed to record discount usage');
+      console.error('Discount usage error:', error);
+    }
+  });
+
+  const sectors = [...new Set(merchants?.map(m => m.sector) || [])];
+  
+  const filteredMerchants = merchants?.filter(merchant => {
+    const matchesSearch = merchant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         merchant.location.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSector = selectedSector === 'all' || merchant.sector === selectedSector;
+    return matchesSearch && matchesSector;
+  });
+
+  const getSectorColor = (sector: string) => {
+    const colors: { [key: string]: string } = {
+      health: 'bg-red-100 text-red-800',
+      food: 'bg-orange-100 text-orange-800',
+      transport: 'bg-blue-100 text-blue-800',
+      education: 'bg-green-100 text-green-800',
+      retail: 'bg-purple-100 text-purple-800',
+      finance: 'bg-yellow-100 text-yellow-800',
+      technology: 'bg-indigo-100 text-indigo-800',
+    };
+    return colors[sector] || 'bg-gray-100 text-gray-800';
+  };
+
+  const handleUseDiscount = (merchantId: string) => {
+    if (!user) {
+      toast.error('Please login to use discounts');
+      return;
+    }
+    useDiscountMutation.mutate(merchantId);
+  };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="flex justify-center items-center min-h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       <PremiumBanner
-        title="Exclusive Member Discounts"
-        description="Unlock amazing savings with your Club66 membership. Enjoy exclusive discounts from top merchants across Africa."
-      >
-        <div className="flex flex-wrap gap-4 justify-center mt-6">
-          <Link to="/register">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-              Join Club66
-            </Button>
-          </Link>
-          <Link to="/cards">
-            <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-              <ShoppingBag className="h-4 w-4 mr-2" />
-              Get Your Card
-            </Button>
-          </Link>
-        </div>
-      </PremiumBanner>
+        title="Member Discounts"
+        description="Exclusive discounts for Club66 Global members across various sectors including health, food, transport, and education."
+        backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+      />
 
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Categories Filter */}
-            <div className="mb-8">
-              <div className="flex flex-wrap gap-2 justify-center">
-                {categories.map((category) => (
-                  <Button
-                    key={category}
-                    variant={category === 'All' ? 'default' : 'outline'}
-                    className={category === 'All' ? '' : 'bg-white hover:bg-purple-50'}
-                  >
-                    {category}
-                  </Button>
-                ))}
+          {/* Search and Filter Section */}
+          <div className="mb-8">
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Input
+                  placeholder="Search merchants or locations..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
               </div>
-            </div>
-
-            {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-              <Card className="text-center">
-                <CardContent className="p-4">
-                  <div className="text-2xl font-bold text-purple-600 mb-1">500+</div>
-                  <div className="text-sm text-gray-600">Partner Merchants</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="p-4">
-                  <div className="text-2xl font-bold text-green-600 mb-1">25%</div>
-                  <div className="text-sm text-gray-600">Average Savings</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="p-4">
-                  <div className="text-2xl font-bold text-blue-600 mb-1">15</div>
-                  <div className="text-sm text-gray-600">Cities Covered</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center">
-                <CardContent className="p-4">
-                  <div className="text-2xl font-bold text-orange-600 mb-1">50K+</div>
-                  <div className="text-sm text-gray-600">Happy Members</div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Discounts Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {discounts.map((discount) => (
-                <Card key={discount.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  {discount.featured && (
-                    <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-center py-2 text-sm font-medium">
-                      <Gift className="h-4 w-4 inline mr-1" />
-                      Featured Deal
-                    </div>
-                  )}
-                  
-                  <div className="relative">
-                    <img 
-                      src={discount.image} 
-                      alt={discount.merchant}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-green-500 text-white text-lg font-bold px-3 py-1">
-                        <Percent className="h-4 w-4 mr-1" />
-                        {discount.discount}
-                      </Badge>
-                    </div>
-                  </div>
-
-                  <CardHeader>
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <CardTitle className="text-lg">{discount.merchant}</CardTitle>
-                        <Badge variant="outline" className="mt-1 bg-purple-50">
-                          {discount.category}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center text-sm text-yellow-600">
-                        <Star className="h-4 w-4 mr-1 fill-current" />
-                        {discount.rating}
-                      </div>
-                    </div>
-                  </CardHeader>
-
-                  <CardContent>
-                    <p className="text-gray-600 mb-4">{discount.description}</p>
-                    
-                    <div className="space-y-2 text-sm text-gray-500 mb-4">
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-2" />
-                        {discount.location}
-                      </div>
-                      <div className="flex items-center">
-                        <Clock className="h-4 w-4 mr-2" />
-                        Valid until {discount.validUntil}
-                      </div>
-                    </div>
-
-                    <Button className="w-full">
-                      Claim Discount
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* CTA Section */}
-            <div className="mt-16 text-center">
-              <Card className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
-                <CardContent className="p-12">
-                  <ShoppingBag className="h-16 w-16 mx-auto mb-6 opacity-90" />
-                  <h2 className="text-3xl font-bold mb-4">Want More Exclusive Deals?</h2>
-                  <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Upgrade to Premium or VIP membership for access to even better discounts and exclusive merchant partnerships.
-                  </p>
-                  <div className="flex flex-wrap gap-4 justify-center">
-                    <Link to="/register">
-                      <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-                        Upgrade Membership
-                      </Button>
-                    </Link>
-                    <Link to="/about/contact">
-                      <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                        Contact Us
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+              <Select value={selectedSector} onValueChange={setSelectedSector}>
+                <SelectTrigger className="w-full md:w-48">
+                  <SelectValue placeholder="Select sector" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Sectors</SelectItem>
+                  {sectors.map(sector => (
+                    <SelectItem key={sector} value={sector}>
+                      {sector.charAt(0).toUpperCase() + sector.slice(1)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
+
+          {/* Merchants Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredMerchants?.map((merchant) => (
+              <Card key={merchant.id} className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <div className="mx-auto mb-4">
+                    <img 
+                      src={merchant.logo_url || 'https://placehold.co/100x100/e9d5ff/7c3aed?text=' + merchant.name.charAt(0)}
+                      alt={merchant.name}
+                      className="w-16 h-16 rounded-full object-cover mx-auto"
+                    />
+                  </div>
+                  <CardTitle className="text-lg">{merchant.name}</CardTitle>
+                  <CardDescription>
+                    <Badge className={getSectorColor(merchant.sector)}>
+                      {merchant.sector.charAt(0).toUpperCase() + merchant.sector.slice(1)}
+                    </Badge>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center mb-2">
+                        <Percent className="h-6 w-6 mr-2 text-green-600" />
+                        <span className="text-2xl font-bold text-green-600">
+                          {merchant.discount_percentage}% OFF
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 text-sm">
+                      <div className="flex items-center">
+                        <MapPin className="h-4 w-4 mr-2 text-gray-500" />
+                        <span>{merchant.location}</span>
+                      </div>
+                      
+                      {merchant.contact_phone && (
+                        <div className="flex items-center">
+                          <Phone className="h-4 w-4 mr-2 text-gray-500" />
+                          <span>{merchant.contact_phone}</span>
+                        </div>
+                      )}
+                      
+                      {merchant.contact_email && (
+                        <div className="flex items-center">
+                          <Mail className="h-4 w-4 mr-2 text-gray-500" />
+                          <span className="truncate">{merchant.contact_email}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    <Button 
+                      onClick={() => handleUseDiscount(merchant.id)}
+                      className="w-full bg-purple-600 hover:bg-purple-700"
+                      disabled={useDiscountMutation.isPending}
+                    >
+                      {useDiscountMutation.isPending ? 'Recording...' : 'Use Discount'}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {filteredMerchants?.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No merchants found matching your criteria</p>
+            </div>
+          )}
         </div>
       </div>
     </Layout>

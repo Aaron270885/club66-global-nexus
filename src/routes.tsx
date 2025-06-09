@@ -1,137 +1,215 @@
 
 import { createBrowserRouter } from 'react-router-dom';
-import App from '@/pages/App';
 import Index from '@/pages/Index';
-import About from '@/pages/About';
 import Login from '@/pages/Login';
 import Register from '@/pages/Register';
-import ForgotPassword from '@/pages/ForgotPassword';
-import ResetPassword from '@/pages/ResetPassword';
 import Dashboard from '@/pages/Dashboard';
+import Discounts from '@/pages/Discounts';
+import Competitions from '@/pages/Competitions';
+import Agents from '@/pages/Agents';
+import AppPage from '@/pages/App';
+import About from '@/pages/About';
+import FAQ from '@/pages/FAQ';
+import Jobs from '@/pages/Jobs';
+import JobDetail from '@/pages/JobDetail';
+import JobCenter from '@/pages/JobCenter';
+import MembershipPayment from '@/pages/MembershipPayment';
 import ActivateCard from '@/pages/ActivateCard';
 import Cards from '@/pages/Cards';
-import Discounts from '@/pages/Discounts';
-import Jobs from '@/pages/Jobs';
+import ResetPassword from '@/pages/ResetPassword';
+import ForgotPassword from '@/pages/ForgotPassword';
 import NotFound from '@/pages/NotFound';
-import FAQ from '@/pages/FAQ';
-import AffiliateDashboard from '@/pages/AffiliateDashboard';
 
-// Services
+// About sub-pages
+import Contact from '@/pages/about/Contact';
+import Projects from '@/pages/about/Projects';
+import Partners from '@/pages/about/Partners';
+import News from '@/pages/about/News';
+import AssociationMembers from '@/pages/about/AssociationMembers';
+import ChangingLives from '@/pages/about/ChangingLives';
+import Terms from '@/pages/about/Terms';
+import Privacy from '@/pages/about/Privacy';
+
+// Services pages
 import ServicesIndex from '@/pages/services/index';
+import CreditSystem from '@/pages/services/CreditSystem';
+import CreditAccount from '@/pages/services/CreditAccount';
 import PaydayLoan from '@/pages/services/PaydayLoan';
 import HirePurchase from '@/pages/services/HirePurchase';
-import CreditAccount from '@/pages/services/CreditAccount';
-import CreditSystem from '@/pages/services/CreditSystem';
 
-// Affiliates
-import Merchants from '@/pages/affiliates/Merchants';
-import Members from '@/pages/affiliates/Members';
-import Distributors from '@/pages/affiliates/Distributors';
-
-// Admin
+// Admin pages
 import AdminDashboard from '@/pages/admin/Dashboard';
 import AgentPanel from '@/pages/admin/AgentPanel';
 
-const router = createBrowserRouter([
+// Affiliate pages
+import AffiliateMembers from '@/pages/affiliates/Members';
+import AffiliateMerchants from '@/pages/affiliates/Merchants';
+import AffiliateDistributors from '@/pages/affiliates/Distributors';
+import AffiliateDashboard from '@/pages/AffiliateDashboard';
+
+// Job dashboard pages
+import EmployeeDashboard from '@/pages/job-dashboard/EmployeeDashboard';
+import EmployerDashboard from '@/pages/job-dashboard/EmployerDashboard';
+
+export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    errorElement: <NotFound />,
-    children: [
-      {
-        index: true,
-        element: <Index />,
-      },
-      {
-        path: '/about',
-        element: <About />,
-      },
-      {
-        path: '/login',
-        element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-      },
-      {
-        path: '/forgot-password',
-        element: <ForgotPassword />,
-      },
-      {
-        path: '/reset-password',
-        element: <ResetPassword />,
-      },
-      {
-        path: '/dashboard',
-        element: <Dashboard />,
-      },
-      {
-        path: '/activate-card',
-        element: <ActivateCard />,
-      },
-      {
-        path: '/cards',
-        element: <Cards />,
-      },
-      {
-        path: '/discounts',
-        element: <Discounts />,
-      },
-      {
-        path: '/jobs',
-        element: <Jobs />,
-      },
-      {
-        path: '/faq',
-        element: <FAQ />,
-      },
-      {
-        path: '/affiliate-dashboard',
-        element: <AffiliateDashboard />,
-      },
-      {
-        path: '/services',
-        element: <ServicesIndex />,
-      },
-      {
-        path: '/services/payday-loan',
-        element: <PaydayLoan />,
-      },
-      {
-        path: '/services/hire-purchase',
-        element: <HirePurchase />,
-      },
-      {
-        path: '/services/credit-account',
-        element: <CreditAccount />,
-      },
-      {
-        path: '/services/credit-system',
-        element: <CreditSystem />,
-      },
-      {
-        path: '/affiliates/merchants',
-        element: <Merchants />,
-      },
-      {
-        path: '/affiliates/members',
-        element: <Members />,
-      },
-      {
-        path: '/affiliates/distributors',
-        element: <Distributors />,
-      },
-      {
-        path: '/admin',
-        element: <AdminDashboard />,
-      },
-      {
-        path: '/admin/agents',
-        element: <AgentPanel />,
-      },
-    ],
+    element: <Index />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />,
+  },
+  {
+    path: '/discounts',
+    element: <Discounts />,
+  },
+  {
+    path: '/competitions',
+    element: <Competitions />,
+  },
+  {
+    path: '/agents',
+    element: <Agents />,
+  },
+  {
+    path: '/app',
+    element: <AppPage />,
+  },
+  {
+    path: '/about',
+    element: <About />,
+  },
+  {
+    path: '/about/contact',
+    element: <Contact />,
+  },
+  {
+    path: '/about/projects',
+    element: <Projects />,
+  },
+  {
+    path: '/about/partners',
+    element: <Partners />,
+  },
+  {
+    path: '/about/news',
+    element: <News />,
+  },
+  {
+    path: '/about/association-members',
+    element: <AssociationMembers />,
+  },
+  {
+    path: '/about/changing-lives',
+    element: <ChangingLives />,
+  },
+  {
+    path: '/about/terms',
+    element: <Terms />,
+  },
+  {
+    path: '/about/privacy',
+    element: <Privacy />,
+  },
+  {
+    path: '/faq',
+    element: <FAQ />,
+  },
+  {
+    path: '/jobs',
+    element: <Jobs />,
+  },
+  {
+    path: '/jobs/:id',
+    element: <JobDetail />,
+  },
+  {
+    path: '/job-center',
+    element: <JobCenter />,
+  },
+  {
+    path: '/membership-payment',
+    element: <MembershipPayment />,
+  },
+  {
+    path: '/activate-card',
+    element: <ActivateCard />,
+  },
+  {
+    path: '/cards',
+    element: <Cards />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />,
+  },
+  {
+    path: '/services',
+    element: <ServicesIndex />,
+  },
+  {
+    path: '/services/credit-system',
+    element: <CreditSystem />,
+  },
+  {
+    path: '/services/credit-account',
+    element: <CreditAccount />,
+  },
+  {
+    path: '/services/payday-loan',
+    element: <PaydayLoan />,
+  },
+  {
+    path: '/services/hire-purchase',
+    element: <HirePurchase />,
+  },
+  {
+    path: '/admin',
+    element: <AdminDashboard />,
+  },
+  {
+    path: '/admin/agents',
+    element: <AgentPanel />,
+  },
+  {
+    path: '/affiliates/members',
+    element: <AffiliateMembers />,
+  },
+  {
+    path: '/affiliates/merchants',
+    element: <AffiliateMerchants />,
+  },
+  {
+    path: '/affiliates/distributors',
+    element: <AffiliateDistributors />,
+  },
+  {
+    path: '/affiliate-dashboard',
+    element: <AffiliateDashboard />,
+  },
+  {
+    path: '/employee-dashboard',
+    element: <EmployeeDashboard />,
+  },
+  {
+    path: '/employer-dashboard',
+    element: <EmployerDashboard />,
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ]);
-
-export default router;
