@@ -844,6 +844,116 @@ export type Database = {
         }
         Relationships: []
       }
+      project_contributions: {
+        Row: {
+          amount: number
+          contributor_email: string | null
+          contributor_id: string | null
+          contributor_name: string | null
+          created_at: string
+          currency: string
+          id: string
+          is_anonymous: boolean
+          message: string | null
+          payment_method: string
+          project_id: string
+          status: string
+          transaction_id: string | null
+        }
+        Insert: {
+          amount: number
+          contributor_email?: string | null
+          contributor_id?: string | null
+          contributor_name?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_anonymous?: boolean
+          message?: string | null
+          payment_method: string
+          project_id: string
+          status?: string
+          transaction_id?: string | null
+        }
+        Update: {
+          amount?: number
+          contributor_email?: string | null
+          contributor_id?: string | null
+          contributor_name?: string | null
+          created_at?: string
+          currency?: string
+          id?: string
+          is_anonymous?: boolean
+          message?: string | null
+          payment_method?: string
+          project_id?: string
+          status?: string
+          transaction_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_contributions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "project_funding"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_funding: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          currency: string
+          current_amount: number
+          description: string
+          end_date: string
+          goal_amount: number
+          id: string
+          image_url: string | null
+          location: string | null
+          project_name: string
+          start_date: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          current_amount?: number
+          description: string
+          end_date: string
+          goal_amount: number
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          project_name: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          currency?: string
+          current_amount?: number
+          description?: string
+          end_date?: string
+          goal_amount?: number
+          id?: string
+          image_url?: string | null
+          location?: string | null
+          project_name?: string
+          start_date?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       referrals: {
         Row: {
           agent_id: string

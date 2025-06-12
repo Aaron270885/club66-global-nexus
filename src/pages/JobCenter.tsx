@@ -5,10 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, Users, Building, TrendingUp, Search, MapPin, Award, Clock, DollarSign } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { jobListings } from '@/data/jobListings';
 
 const JobCenter = () => {
+  const navigate = useNavigate();
   const featuredJobs = jobListings.slice(0, 6);
   const topCompanies = [
     { name: 'Club66 Global', jobs: 12, logo: '/placeholder.svg' },
@@ -31,24 +32,32 @@ const JobCenter = () => {
         description="Your gateway to career opportunities across Africa. Connect with top employers and advance your professional journey."
       >
         <div className="flex flex-wrap gap-4 justify-center mt-6">
-          <Link to="/jobs">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-              <Search className="h-4 w-4 mr-2" />
-              Browse Jobs
-            </Button>
-          </Link>
-          <Link to="/job-dashboard/employee">
-            <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-              <Users className="h-4 w-4 mr-2" />
-              Job Seeker Portal
-            </Button>
-          </Link>
-          <Link to="/job-dashboard/employer">
-            <Button size="lg" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
-              <Building className="h-4 w-4 mr-2" />
-              Employer Portal
-            </Button>
-          </Link>
+          <Button 
+            size="lg" 
+            className="bg-white text-purple-600 hover:bg-gray-100"
+            onClick={() => navigate('/jobs')}
+          >
+            <Search className="h-4 w-4 mr-2" />
+            Browse Jobs
+          </Button>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+            onClick={() => navigate('/job-dashboard/employee')}
+          >
+            <Users className="h-4 w-4 mr-2" />
+            Job Seeker Portal
+          </Button>
+          <Button 
+            size="lg" 
+            variant="outline" 
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+            onClick={() => navigate('/job-dashboard/employer')}
+          >
+            <Building className="h-4 w-4 mr-2" />
+            Employer Portal
+          </Button>
         </div>
       </PremiumBanner>
 
@@ -94,18 +103,21 @@ const JobCenter = () => {
                     Find your dream job with our comprehensive job search platform. Access exclusive opportunities and career resources.
                   </p>
                   <div className="space-y-3">
-                    <Link to="/jobs">
-                      <Button className="w-full justify-start">
-                        <Search className="h-4 w-4 mr-2" />
-                        Search Jobs
-                      </Button>
-                    </Link>
-                    <Link to="/job-dashboard/employee">
-                      <Button variant="outline" className="w-full justify-start">
-                        <Briefcase className="h-4 w-4 mr-2" />
-                        My Dashboard
-                      </Button>
-                    </Link>
+                    <Button 
+                      className="w-full justify-start"
+                      onClick={() => navigate('/jobs')}
+                    >
+                      <Search className="h-4 w-4 mr-2" />
+                      Search Jobs
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => navigate('/job-dashboard/employee')}
+                    >
+                      <Briefcase className="h-4 w-4 mr-2" />
+                      My Dashboard
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -122,13 +134,18 @@ const JobCenter = () => {
                     Post jobs and find talented candidates from our premium network of professionals across Africa.
                   </p>
                   <div className="space-y-3">
-                    <Link to="/job-dashboard/employer">
-                      <Button className="w-full justify-start bg-green-600 hover:bg-green-700">
-                        <Building className="h-4 w-4 mr-2" />
-                        Employer Dashboard
-                      </Button>
-                    </Link>
-                    <Button variant="outline" className="w-full justify-start">
+                    <Button 
+                      className="w-full justify-start bg-green-600 hover:bg-green-700"
+                      onClick={() => navigate('/job-dashboard/employer')}
+                    >
+                      <Building className="h-4 w-4 mr-2" />
+                      Employer Dashboard
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full justify-start"
+                      onClick={() => navigate('/job-dashboard/employer')}
+                    >
                       <Award className="h-4 w-4 mr-2" />
                       Post a Job
                     </Button>
@@ -141,14 +158,14 @@ const JobCenter = () => {
             <div className="mb-16">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl font-bold">Featured Jobs</h2>
-                <Link to="/jobs">
-                  <Button variant="outline">View All Jobs</Button>
-                </Link>
+                <Button variant="outline" onClick={() => navigate('/jobs')}>
+                  View All Jobs
+                </Button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {featuredJobs.map((job) => (
-                  <Card key={job.id} className="hover:shadow-lg transition-shadow">
+                  <Card key={job.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/jobs/${job.id}`)}>
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <Badge variant={job.type === 'Full-time' ? 'default' : 'secondary'}>
@@ -179,9 +196,12 @@ const JobCenter = () => {
                         </div>
                       </div>
                       <p className="text-gray-700 text-sm mb-4 line-clamp-2">{job.description}</p>
-                      <Link to={`/jobs/${job.id}`}>
-                        <Button className="w-full">View Details</Button>
-                      </Link>
+                      <Button className="w-full" onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/jobs/${job.id}`);
+                      }}>
+                        View Details
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -193,7 +213,7 @@ const JobCenter = () => {
               <h2 className="text-3xl font-bold mb-8 text-center">Top Hiring Companies</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                 {topCompanies.map((company, index) => (
-                  <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                  <Card key={index} className="text-center hover:shadow-lg transition-shadow cursor-pointer">
                     <CardContent className="p-6">
                       <img 
                         src={company.logo} 
@@ -218,16 +238,21 @@ const JobCenter = () => {
                     Join thousands of professionals who have found their dream jobs through Club66 Global's Job Center.
                   </p>
                   <div className="flex flex-wrap gap-4 justify-center">
-                    <Link to="/register">
-                      <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-                        Create Account
-                      </Button>
-                    </Link>
-                    <Link to="/jobs">
-                      <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                        Browse Jobs Now
-                      </Button>
-                    </Link>
+                    <Button 
+                      size="lg" 
+                      className="bg-white text-purple-600 hover:bg-gray-100"
+                      onClick={() => navigate('/register')}
+                    >
+                      Create Account
+                    </Button>
+                    <Button 
+                      size="lg" 
+                      variant="outline" 
+                      className="border-white text-white hover:bg-white/10"
+                      onClick={() => navigate('/jobs')}
+                    >
+                      Browse Jobs Now
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
