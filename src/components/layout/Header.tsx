@@ -66,7 +66,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/lovable-uploads/c7e102a1-7d8a-4184-be93-4094e5c02ecd.png" 
+              src="/lovable-uploads/63353393-5041-4ab6-a66f-fb3be5d284f3.png" 
               alt="Club66 Global Logo" 
               className="h-10 w-auto"
             />
