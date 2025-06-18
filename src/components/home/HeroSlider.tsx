@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Crown, Users, Gift, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -21,7 +20,7 @@ const HeroSlider = () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
 
-    // Auto-scroll every 4 seconds with infinite loop
+    // Auto-scroll every 6 seconds (increased from 4 seconds) with infinite loop
     const interval = setInterval(() => {
       if (api.canScrollNext()) {
         api.scrollNext();
@@ -29,7 +28,7 @@ const HeroSlider = () => {
         // Reset to first slide for infinite loop
         api.scrollTo(0);
       }
-    }, 4000);
+    }, 6000);
 
     return () => clearInterval(interval);
   }, [api]);
@@ -81,16 +80,17 @@ const HeroSlider = () => {
         opts={{
           align: "start",
           loop: true,
+          duration: 25, // Slower transition duration (increased from default)
         }}
       >
-        <CarouselContent>
+        <CarouselContent className="transition-transform duration-700 ease-in-out">
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
-              <div className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
+              <div className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden transition-all duration-700 ease-in-out">
                 {/* Background image with transparency */}
                 <div className="absolute inset-0 opacity-20">
                   <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000"
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-1000 ease-in-out"
                     style={{
                       backgroundImage: `url('${slide.backgroundImage}')`
                     }}
@@ -167,7 +167,6 @@ const HeroSlider = () => {
                       </div>
                     </div>
 
-                    {/* Right Content - Membership Cards */}
                     <div className="relative">
                       <div className="relative z-20">
                         {/* Elite Card */}
@@ -237,15 +236,15 @@ const HeroSlider = () => {
         </CarouselContent>
         
         {/* Custom Navigation */}
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm" />
+        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300" />
+        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 border-white/20 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300" />
         
         {/* Slide Indicators */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex space-x-2">
           {Array.from({ length: count }).map((_, index) => (
             <button
               key={index}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`w-3 h-3 rounded-full transition-all duration-500 ${
                 current === index + 1 
                   ? 'bg-white' 
                   : 'bg-white/30 hover:bg-white/50'
