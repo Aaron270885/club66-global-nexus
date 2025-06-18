@@ -378,6 +378,45 @@ export type Database = {
         }
         Relationships: []
       }
+      companies: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          industry: string | null
+          location: string | null
+          logo_url: string | null
+          name: string
+          size: string | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          size?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          industry?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          size?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       competition_participants: {
         Row: {
           competition_id: string
@@ -545,33 +584,74 @@ export type Database = {
         Row: {
           applicant_id: string
           applied_at: string | null
+          available_from: string | null
           cover_letter: string | null
+          expected_salary: number | null
+          experience_years: number | null
           id: string
           job_id: string
+          portfolio_url: string | null
           resume_url: string | null
           status: string | null
         }
         Insert: {
           applicant_id: string
           applied_at?: string | null
+          available_from?: string | null
           cover_letter?: string | null
+          expected_salary?: number | null
+          experience_years?: number | null
           id?: string
           job_id: string
+          portfolio_url?: string | null
           resume_url?: string | null
           status?: string | null
         }
         Update: {
           applicant_id?: string
           applied_at?: string | null
+          available_from?: string | null
           cover_letter?: string | null
+          expected_salary?: number | null
+          experience_years?: number | null
           id?: string
           job_id?: string
+          portfolio_url?: string | null
           resume_url?: string | null
           status?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "job_applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      job_bookmarks: {
+        Row: {
+          created_at: string | null
+          id: string
+          job_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          job_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          job_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "job_bookmarks_job_id_fkey"
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "jobs"
@@ -602,59 +682,74 @@ export type Database = {
       }
       jobs: {
         Row: {
+          application_count: number | null
           application_deadline: string | null
           benefits: string | null
           category_id: string | null
           company: string
+          company_id: string | null
           created_at: string | null
           currency: string | null
           description: string
           employment_type: string
+          experience_level: string | null
           id: string
           is_active: boolean | null
           location: string
           posted_by: string | null
+          remote_allowed: boolean | null
           requirements: string | null
           salary_max: number | null
           salary_min: number | null
+          skills: string[] | null
           title: string
           updated_at: string | null
         }
         Insert: {
+          application_count?: number | null
           application_deadline?: string | null
           benefits?: string | null
           category_id?: string | null
           company: string
+          company_id?: string | null
           created_at?: string | null
           currency?: string | null
           description: string
           employment_type: string
+          experience_level?: string | null
           id?: string
           is_active?: boolean | null
           location: string
           posted_by?: string | null
+          remote_allowed?: boolean | null
           requirements?: string | null
           salary_max?: number | null
           salary_min?: number | null
+          skills?: string[] | null
           title: string
           updated_at?: string | null
         }
         Update: {
+          application_count?: number | null
           application_deadline?: string | null
           benefits?: string | null
           category_id?: string | null
           company?: string
+          company_id?: string | null
           created_at?: string | null
           currency?: string | null
           description?: string
           employment_type?: string
+          experience_level?: string | null
           id?: string
           is_active?: boolean | null
           location?: string
           posted_by?: string | null
+          remote_allowed?: boolean | null
           requirements?: string | null
           salary_max?: number | null
           salary_min?: number | null
+          skills?: string[] | null
           title?: string
           updated_at?: string | null
         }
@@ -664,6 +759,13 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "job_categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "jobs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
@@ -988,6 +1090,105 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      user_education: {
+        Row: {
+          created_at: string | null
+          degree: string
+          end_date: string | null
+          field_of_study: string | null
+          grade: string | null
+          id: string
+          institution: string
+          is_current: boolean | null
+          start_date: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          degree: string
+          end_date?: string | null
+          field_of_study?: string | null
+          grade?: string | null
+          id?: string
+          institution: string
+          is_current?: boolean | null
+          start_date: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          degree?: string
+          end_date?: string | null
+          field_of_study?: string | null
+          grade?: string | null
+          id?: string
+          institution?: string
+          is_current?: boolean | null
+          start_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_experience: {
+        Row: {
+          company_name: string
+          created_at: string | null
+          description: string | null
+          end_date: string | null
+          id: string
+          is_current: boolean | null
+          position: string
+          start_date: string
+          user_id: string
+        }
+        Insert: {
+          company_name: string
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean | null
+          position: string
+          start_date: string
+          user_id: string
+        }
+        Update: {
+          company_name?: string
+          created_at?: string | null
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean | null
+          position?: string
+          start_date?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_skills: {
+        Row: {
+          created_at: string | null
+          experience_level: string | null
+          id: string
+          skill_name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          experience_level?: string | null
+          id?: string
+          skill_name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          experience_level?: string | null
+          id?: string
+          skill_name?: string
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {

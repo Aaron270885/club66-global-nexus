@@ -1,76 +1,77 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
-import { Search, MapPin, Building, Clock, DollarSign, Filter, Briefcase } from 'lucide-react';
+import { Search, MapPin, Building, Clock, DollarSign, Filter, Briefcase, Bookmark, BookmarkCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link } from 'react-router-dom';
-
-// Sample job data - replace with actual data source
-const jobListings = [
-  {
-    id: 1,
-    title: 'Senior Software Engineer',
-    company: { name: 'Tech Solutions Mali' },
-    location: 'Bamako, Mali',
-    salary: '150,000',
-    type: 'Full-time',
-    department: 'Engineering',
-    posted: '2 days ago',
-    featured: true,
-    description: 'Join our dynamic team to build cutting-edge applications that serve millions of users across Africa.',
-    technologies: ['React', 'Node.js', 'TypeScript', 'AWS', 'MongoDB']
-  },
-  {
-    id: 2,
-    title: 'Marketing Manager',
-    company: { name: 'Club66 Global' },
-    location: 'Bamako, Mali',
-    salary: '120,000',
-    type: 'Full-time',
-    department: 'Marketing',
-    posted: '1 week ago',
-    featured: false,
-    description: 'Lead our marketing initiatives to expand Club66 Global membership across West Africa.',
-    technologies: ['Digital Marketing', 'SEO', 'Social Media', 'Analytics']
-  },
-  {
-    id: 3,
-    title: 'Customer Success Representative',
-    company: { name: 'Club66 Global' },
-    location: 'Remote',
-    salary: '80,000',
-    type: 'Part-time',
-    department: 'Customer Service',
-    posted: '3 days ago',
-    featured: false,
-    description: 'Help our members get the most value from their Club66 Global membership experience.',
-    technologies: ['Customer Support', 'CRM', 'Communication']
-  }
-];
+import { useJobs, useJobBookmarks } from '@/hooks/useJobs';
+import { useAuth } from '@/hooks/useAuth';
 
 const Jobs = () => {
+  const { user } = useAuth();
+  const { jobs, loading, error, fetchJobs } = useJobs();
+  const { bookmarks, toggleBookmark } = useJobBookmarks();
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
-  const filteredJobs = jobListings.filter(job => {
-    return (
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      (locationFilter === '' || job.location.includes(locationFilter)) &&
-      (departmentFilter === '' || job.department === departmentFilter) &&
-      (typeFilter === '' || job.type === typeFilter)
-    );
-  });
+  const handleSearch = () => {
+    fetchJobs({
+      search: searchTerm,
+      location: locationFilter,
+      employmentType: typeFilter,
+      experienceLevel: departmentFilter
+    });
+  };
 
-  const departments = [...new Set(jobListings.map(job => job.department))];
-  const locations = [...new Set(jobListings.map(job => job.location))];
-  const types = [...new Set(jobListings.map(job => job.type))];
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchTerm) {
+        handleSearch();
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setLocationFilter('');
+    setDepartmentFilter('');
+    setTypeFilter('');
+    fetchJobs();
+  };
+
+  const formatSalary = (min?: number, max?: number, currency = 'CFA') => {
+    if (!min && !max) return 'Salary not specified';
+    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${currency}/month`;
+    if (min) return `From ${min.toLocaleString()} ${currency}/month`;
+    if (max) return `Up to ${max.toLocaleString()} ${currency}/month`;
+    return 'Salary not specified';
+  };
+
+  const getTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return 'Today';
+    if (diffInDays === 1) return '1 day ago';
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} week${Math.floor(diffInDays / 7) > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diffInDays / 30)} month${Math.floor(diffInDays / 30) > 1 ? 's' : ''} ago`;
+  };
+
+  const experienceLevels = ['entry', 'mid', 'senior', 'lead'];
+  const employmentTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
 
   return (
     <Layout>
@@ -99,12 +100,12 @@ const Jobs = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="">All Locations</SelectItem>
-                    {locations.map(location => (
-                      <SelectItem key={location} value={location}>{location}</SelectItem>
-                    ))}
+                    <SelectItem value="Bamako">Bamako, Mali</SelectItem>
+                    <SelectItem value="Remote">Remote</SelectItem>
+                    <SelectItem value="Multiple">Multiple Locations</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-gray-100">
+                <Button size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-gray-100" onClick={handleSearch}>
                   Search Jobs
                 </Button>
               </div>
@@ -128,15 +129,17 @@ const Jobs = () => {
                   </CardHeader>
                   <CardContent className="space-y-6">
                     <div>
-                      <label className="block text-sm font-medium mb-2">Department</label>
+                      <label className="block text-sm font-medium mb-2">Experience Level</label>
                       <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
                         <SelectTrigger>
-                          <SelectValue placeholder="All Departments" />
+                          <SelectValue placeholder="All Levels" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="">All Departments</SelectItem>
-                          {departments.map(dept => (
-                            <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                          <SelectItem value="">All Levels</SelectItem>
+                          {experienceLevels.map(level => (
+                            <SelectItem key={level} value={level}>
+                              {level.charAt(0).toUpperCase() + level.slice(1)} Level
+                            </SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
@@ -150,7 +153,7 @@ const Jobs = () => {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="">All Types</SelectItem>
-                          {types.map(type => (
+                          {employmentTypes.map(type => (
                             <SelectItem key={type} value={type}>{type}</SelectItem>
                           ))}
                         </SelectContent>
@@ -159,12 +162,7 @@ const Jobs = () => {
 
                     <Button 
                       variant="outline" 
-                      onClick={() => {
-                        setDepartmentFilter('');
-                        setLocationFilter('');
-                        setTypeFilter('');
-                        setSearchTerm('');
-                      }}
+                      onClick={clearFilters}
                       className="w-full"
                     >
                       Clear Filters
@@ -177,7 +175,7 @@ const Jobs = () => {
               <div className="lg:w-3/4">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold">
-                    {filteredJobs.length} Job{filteredJobs.length !== 1 ? 's' : ''} Found
+                    {loading ? 'Loading...' : `${jobs.length} Job${jobs.length !== 1 ? 's' : ''} Found`}
                   </h2>
                   <Select defaultValue="newest">
                     <SelectTrigger className="w-48">
@@ -192,19 +190,33 @@ const Jobs = () => {
                   </Select>
                 </div>
 
+                {error && (
+                  <Card className="mb-6">
+                    <CardContent className="p-6 text-center text-red-600">
+                      <p>Error loading jobs: {error}</p>
+                      <Button variant="outline" onClick={() => fetchJobs()} className="mt-2">
+                        Try Again
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )}
+
                 <div className="space-y-6">
-                  {filteredJobs.map((job) => (
+                  {jobs.map((job) => (
                     <Card key={job.id} className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-6">
                         <div className="flex justify-between items-start mb-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <Badge variant={job.type === 'Full-time' ? 'default' : 'secondary'}>
-                                {job.type}
+                              <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
+                                {job.employment_type}
                               </Badge>
-                              {job.featured && (
-                                <Badge className="bg-orange-500">Featured</Badge>
+                              {job.remote_allowed && (
+                                <Badge className="bg-green-500">Remote OK</Badge>
                               )}
+                              <Badge variant="outline" className="bg-blue-50">
+                                {job.experience_level} level
+                              </Badge>
                             </div>
                             <h3 className="text-xl font-semibold mb-2">
                               <Link to={`/jobs/${job.id}`} className="hover:text-purple-600 transition-colors">
@@ -214,7 +226,7 @@ const Jobs = () => {
                             <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
                               <div className="flex items-center">
                                 <Building className="h-4 w-4 mr-1" />
-                                <span>{job.company?.name || 'Club66 Global'}</span>
+                                <span>{job.company}</span>
                               </div>
                               <div className="flex items-center">
                                 <MapPin className="h-4 w-4 mr-1" />
@@ -222,34 +234,53 @@ const Jobs = () => {
                               </div>
                               <div className="flex items-center">
                                 <DollarSign className="h-4 w-4 mr-1" />
-                                <span>{job.salary} FCFA/month</span>
+                                <span>{formatSalary(job.salary_min, job.salary_max, job.currency)}</span>
                               </div>
                               <div className="flex items-center">
                                 <Clock className="h-4 w-4 mr-1" />
-                                <span>Posted {job.posted}</span>
+                                <span>Posted {getTimeAgo(job.created_at)}</span>
                               </div>
                             </div>
                             <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {job.technologies.slice(0, 3).map((tech) => (
-                                <Badge key={tech} variant="outline" className="bg-blue-50">
-                                  {tech}
-                                </Badge>
-                              ))}
-                              {job.technologies.length > 3 && (
-                                <Badge variant="outline" className="bg-gray-50">
-                                  +{job.technologies.length - 3} more
-                                </Badge>
-                              )}
-                            </div>
+                            {job.skills && job.skills.length > 0 && (
+                              <div className="flex flex-wrap gap-2 mb-4">
+                                {job.skills.slice(0, 3).map((skill) => (
+                                  <Badge key={skill} variant="outline" className="bg-blue-50">
+                                    {skill}
+                                  </Badge>
+                                ))}
+                                {job.skills.length > 3 && (
+                                  <Badge variant="outline" className="bg-gray-50">
+                                    +{job.skills.length - 3} more
+                                  </Badge>
+                                )}
+                              </div>
+                            )}
                           </div>
                           <div className="flex flex-col gap-2 ml-4">
                             <Link to={`/jobs/${job.id}`}>
                               <Button>View Details</Button>
                             </Link>
-                            <Button variant="outline" size="sm">
-                              Save Job
-                            </Button>
+                            {user && (
+                              <Button 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => toggleBookmark(job.id)}
+                                className="flex items-center gap-2"
+                              >
+                                {bookmarks.includes(job.id) ? (
+                                  <>
+                                    <BookmarkCheck className="h-4 w-4" />
+                                    Saved
+                                  </>
+                                ) : (
+                                  <>
+                                    <Bookmark className="h-4 w-4" />
+                                    Save Job
+                                  </>
+                                )}
+                              </Button>
+                            )}
                           </div>
                         </div>
                       </CardContent>
@@ -257,7 +288,7 @@ const Jobs = () => {
                   ))}
                 </div>
 
-                {filteredJobs.length === 0 && (
+                {!loading && jobs.length === 0 && (
                   <Card className="text-center py-12">
                     <CardContent>
                       <Briefcase className="h-12 w-12 mx-auto text-gray-300 mb-4" />
@@ -267,12 +298,7 @@ const Jobs = () => {
                       </p>
                       <Button 
                         variant="outline"
-                        onClick={() => {
-                          setDepartmentFilter('');
-                          setLocationFilter('');
-                          setTypeFilter('');
-                          setSearchTerm('');
-                        }}
+                        onClick={clearFilters}
                       >
                         Clear All Filters
                       </Button>
