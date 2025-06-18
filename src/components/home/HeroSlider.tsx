@@ -21,10 +21,15 @@ const HeroSlider = () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
 
-    // Auto-scroll every 5 seconds
+    // Auto-scroll every 4 seconds with infinite loop
     const interval = setInterval(() => {
-      api.scrollNext();
-    }, 5000);
+      if (api.canScrollNext()) {
+        api.scrollNext();
+      } else {
+        // Reset to first slide for infinite loop
+        api.scrollTo(0);
+      }
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [api]);
@@ -56,12 +61,28 @@ const HeroSlider = () => {
       backgroundImage: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Download App', link: '/app' },
       secondaryButton: { text: 'Learn More', link: '/app' }
+    },
+    {
+      id: 4,
+      title: 'Job Center',
+      subtitle: 'Career Opportunities',
+      description: 'Find your dream job or hire top talent through our comprehensive job portal designed for African professionals.',
+      backgroundImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      primaryButton: { text: 'Browse Jobs', link: '/jobs' },
+      secondaryButton: { text: 'Post Jobs', link: '/job-dashboard/employer' }
     }
   ];
 
   return (
     <section className="relative overflow-hidden">
-      <Carousel setApi={setApi} className="w-full">
+      <Carousel 
+        setApi={setApi} 
+        className="w-full"
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+      >
         <CarouselContent>
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
@@ -96,9 +117,13 @@ const HeroSlider = () => {
                           <>
                             ZENIKA<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Cards</span>
                           </>
-                        ) : (
+                        ) : slide.title.includes('Mobile') ? (
                           <>
                             Mobile<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> App</span>
+                          </>
+                        ) : (
+                          <>
+                            Job<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Center</span>
                           </>
                         )}
                       </h1>

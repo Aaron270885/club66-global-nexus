@@ -173,11 +173,11 @@ export const router = createBrowserRouter([
     element: <JobCenter />,
   },
   {
-    path: '/employee-dashboard',
+    path: '/job-dashboard/employee',
     element: <EmployeeDashboard />,
   },
   {
-    path: '/employer-dashboard',
+    path: '/job-dashboard/employer',
     element: <EmployerDashboard />,
   },
   // Project Requests
