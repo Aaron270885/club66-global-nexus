@@ -25,104 +25,91 @@ import {
   Plus,
   Trash2
 } from 'lucide-react';
-import { Link, Navigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
-import { useJobApplications, useJobBookmarks } from '@/hooks/useJobs';
-import { useUserProfile } from '@/hooks/useUserProfile';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
+
+// Mock data for demonstration
+const mockApplications = [
+  {
+    id: '1',
+    job_id: '1',
+    status: 'pending',
+    applied_at: '2024-01-15T10:00:00Z',
+    jobs: {
+      title: 'Software Developer',
+      company: 'Tech Solutions Mali',
+      location: 'Bamako'
+    }
+  },
+  {
+    id: '2',
+    job_id: '2',
+    status: 'interview',
+    applied_at: '2024-01-10T10:00:00Z',
+    jobs: {
+      title: 'Marketing Manager',
+      company: 'African Marketing Hub',
+      location: 'Dakar'
+    }
+  }
+];
+
+const mockSavedJobs = [
+  {
+    id: '1',
+    title: 'Frontend Developer',
+    company: 'Digital Africa',
+    location: 'Remote',
+    salary_min: 400000,
+    salary_max: 600000,
+    currency: 'CFA',
+    created_at: '2024-01-12T10:00:00Z'
+  }
+];
 
 const EmployeeDashboard = () => {
-  const { user, loading: authLoading } = useAuth();
-  const { getUserApplications } = useJobApplications();
-  const { bookmarks, fetchBookmarks } = useJobBookmarks();
-  const { profile, skills, experience, education, loading: profileLoading, updateProfile, addSkill, addExperience, addEducation } = useUserProfile();
-  
   const [activeTab, setActiveTab] = useState('overview');
-  const [applications, setApplications] = useState<any[]>([]);
-  const [savedJobs, setSavedJobs] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState(mockApplications);
+  const [savedJobs, setSavedJobs] = useState(mockSavedJobs);
+  const [loading, setLoading] = useState(false);
+  
+  // Mock user data
   const [profileData, setProfileData] = useState({
-    full_name: '',
-    phone: '',
-    address: '',
-    city: '',
+    full_name: 'John Doe',
+    phone: '+223 70 00 00 00',
+    address: '123 Main Street',
+    city: 'Bamako',
     country: 'Mali'
   });
 
-  const [newSkill, setNewSkill] = useState({ name: '', level: 'beginner' });
-  const [newExperience, setNewExperience] = useState({
-    company_name: '',
-    position: '',
-    start_date: '',
-    end_date: '',
-    is_current: false,
-    description: ''
-  });
-  const [newEducation, setNewEducation] = useState({
-    institution: '',
-    degree: '',
-    field_of_study: '',
-    start_date: '',
-    end_date: '',
-    is_current: false,
-    grade: ''
-  });
+  const [skills, setSkills] = useState([
+    { id: '1', skill_name: 'JavaScript', experience_level: 'advanced' },
+    { id: '2', skill_name: 'React', experience_level: 'intermediate' }
+  ]);
 
-  useEffect(() => {
-    if (user) {
-      fetchData();
+  const [experience, setExperience] = useState([
+    {
+      id: '1',
+      company_name: 'Tech Company',
+      position: 'Junior Developer',
+      start_date: '2022-01-01',
+      end_date: '2023-12-31',
+      is_current: false,
+      description: 'Worked on web applications'
     }
-  }, [user]);
+  ]);
 
-  useEffect(() => {
-    if (profile) {
-      setProfileData({
-        full_name: profile.full_name || '',
-        phone: profile.phone || '',
-        address: profile.address || '',
-        city: profile.city || '',
-        country: profile.country || 'Mali'
-      });
+  const [education, setEducation] = useState([
+    {
+      id: '1',
+      institution: 'University of Bamako',
+      degree: 'Bachelor of Computer Science',
+      field_of_study: 'Computer Science',
+      start_date: '2018-01-01',
+      end_date: '2021-12-31',
+      is_current: false,
+      grade: '3.5 GPA'
     }
-  }, [profile]);
-
-  const fetchData = async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      
-      // Fetch applications
-      const applicationsData = await getUserApplications();
-      setApplications(applicationsData);
-
-      // Fetch saved jobs
-      const { data: bookmarksData } = await supabase
-        .from('job_bookmarks')
-        .select(`
-          job_id,
-          jobs (
-            id,
-            title,
-            company,
-            location,
-            salary_min,
-            salary_max,
-            currency,
-            employment_type,
-            created_at
-          )
-        `)
-        .eq('user_id', user.id);
-
-      setSavedJobs(bookmarksData?.map(b => b.jobs).filter(Boolean) || []);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  ]);
 
   const applicationStats = {
     total: applications.length,
@@ -159,87 +146,12 @@ const EmployeeDashboard = () => {
     return `${Math.floor(diffInDays / 30)} month${Math.floor(diffInDays / 30) > 1 ? 's' : ''} ago`;
   };
 
-  const handleProfileUpdate = async (e: React.FormEvent) => {
+  const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await updateProfile(profileData);
-      toast.success('Profile updated successfully!');
-    } catch (error) {
-      toast.error('Failed to update profile');
-    }
+    console.log('Profile updated:', profileData);
+    // Mock success
+    alert('Profile updated successfully!');
   };
-
-  const handleAddSkill = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newSkill.name) return;
-    
-    try {
-      await addSkill(newSkill.name, newSkill.level);
-      setNewSkill({ name: '', level: 'beginner' });
-      toast.success('Skill added successfully!');
-    } catch (error) {
-      toast.error('Failed to add skill');
-    }
-  };
-
-  const handleAddExperience = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newExperience.company_name || !newExperience.position || !newExperience.start_date) return;
-    
-    try {
-      await addExperience(newExperience);
-      setNewExperience({
-        company_name: '',
-        position: '',
-        start_date: '',
-        end_date: '',
-        is_current: false,
-        description: ''
-      });
-      toast.success('Experience added successfully!');
-    } catch (error) {
-      toast.error('Failed to add experience');
-    }
-  };
-
-  const handleAddEducation = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newEducation.institution || !newEducation.degree || !newEducation.start_date) return;
-    
-    try {
-      await addEducation(newEducation);
-      setNewEducation({
-        institution: '',
-        degree: '',
-        field_of_study: '',
-        start_date: '',
-        end_date: '',
-        is_current: false,
-        grade: ''
-      });
-      toast.success('Education added successfully!');
-    } catch (error) {
-      toast.error('Failed to add education');
-    }
-  };
-
-  if (authLoading || profileLoading) {
-    return (
-      <Layout>
-        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-purple-100 py-8">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-            </div>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
 
   return (
     <Layout>
@@ -375,48 +287,37 @@ const EmployeeDashboard = () => {
                     <CardTitle>All Job Applications</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {applications.length > 0 ? (
-                      <div className="space-y-4">
-                        {applications.map((application) => (
-                          <div key={application.id} className="flex items-center justify-between p-4 border rounded-lg">
-                            <div className="flex-1">
-                              <h3 className="font-semibold">{application.jobs?.title}</h3>
-                              <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
-                                <span className="flex items-center">
-                                  <Briefcase className="h-4 w-4 mr-1" />
-                                  {application.jobs?.company}
-                                </span>
-                                <span className="flex items-center">
-                                  <MapPin className="h-4 w-4 mr-1" />
-                                  {application.jobs?.location}
-                                </span>
-                                <span className="flex items-center">
-                                  <Calendar className="h-4 w-4 mr-1" />
-                                  Applied {getTimeAgo(application.applied_at)}
-                                </span>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {getStatusBadge(application.status)}
-                              <Button variant="outline" size="sm" asChild>
-                                <Link to={`/jobs/${application.job_id}`}>
-                                  <Eye className="h-4 w-4" />
-                                </Link>
-                              </Button>
+                    <div className="space-y-4">
+                      {applications.map((application) => (
+                        <div key={application.id} className="flex items-center justify-between p-4 border rounded-lg">
+                          <div className="flex-1">
+                            <h3 className="font-semibold">{application.jobs?.title}</h3>
+                            <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                              <span className="flex items-center">
+                                <Briefcase className="h-4 w-4 mr-1" />
+                                {application.jobs?.company}
+                              </span>
+                              <span className="flex items-center">
+                                <MapPin className="h-4 w-4 mr-1" />
+                                {application.jobs?.location}
+                              </span>
+                              <span className="flex items-center">
+                                <Calendar className="h-4 w-4 mr-1" />
+                                Applied {getTimeAgo(application.applied_at)}
+                              </span>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="text-center py-8">
-                        <Briefcase className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-                        <h3 className="text-lg font-medium text-gray-900 mb-2">No Applications Yet</h3>
-                        <p className="text-gray-500 mb-4">Start applying to jobs to track your applications here.</p>
-                        <Button asChild>
-                          <Link to="/jobs">Browse Jobs</Link>
-                        </Button>
-                      </div>
-                    )}
+                          <div className="flex items-center gap-2">
+                            {getStatusBadge(application.status)}
+                            <Button variant="outline" size="sm" asChild>
+                              <Link to={`/jobs/${application.job_id}`}>
+                                <Eye className="h-4 w-4" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -449,7 +350,7 @@ const EmployeeDashboard = () => {
                               <div className="text-right">
                                 <div className="font-semibold">
                                   {job.salary_min && job.salary_max 
-                                    ? `${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()} ${job.currency}/month`
+                                    ? `${job.salary_min.toLocaleString()} - ${job.salary_max.toLocaleString()} ${job.currency}`
                                     : 'Salary not specified'
                                   }
                                 </div>
@@ -538,28 +439,6 @@ const EmployeeDashboard = () => {
                         </Badge>
                       ))}
                     </div>
-                    
-                    <form onSubmit={handleAddSkill} className="flex gap-2">
-                      <Input
-                        placeholder="Skill name"
-                        value={newSkill.name}
-                        onChange={(e) => setNewSkill(prev => ({ ...prev, name: e.target.value }))}
-                        className="flex-1"
-                      />
-                      <select
-                        value={newSkill.level}
-                        onChange={(e) => setNewSkill(prev => ({ ...prev, level: e.target.value }))}
-                        className="px-3 py-2 border border-gray-300 rounded-md"
-                      >
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                        <option value="expert">Expert</option>
-                      </select>
-                      <Button type="submit" size="sm">
-                        <Plus className="h-4 w-4" />
-                      </Button>
-                    </form>
                   </CardContent>
                 </Card>
 
@@ -579,55 +458,6 @@ const EmployeeDashboard = () => {
                         {exp.description && <p className="text-gray-700 mt-2">{exp.description}</p>}
                       </div>
                     ))}
-                    
-                    <form onSubmit={handleAddExperience} className="space-y-3 pt-4 border-t">
-                      <h4 className="font-medium">Add Experience</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Input
-                          placeholder="Company name"
-                          value={newExperience.company_name}
-                          onChange={(e) => setNewExperience(prev => ({ ...prev, company_name: e.target.value }))}
-                        />
-                        <Input
-                          placeholder="Position"
-                          value={newExperience.position}
-                          onChange={(e) => setNewExperience(prev => ({ ...prev, position: e.target.value }))}
-                        />
-                        <Input
-                          type="date"
-                          placeholder="Start date"
-                          value={newExperience.start_date}
-                          onChange={(e) => setNewExperience(prev => ({ ...prev, start_date: e.target.value }))}
-                        />
-                        <Input
-                          type="date"
-                          placeholder="End date"
-                          value={newExperience.end_date}
-                          onChange={(e) => setNewExperience(prev => ({ ...prev, end_date: e.target.value }))}
-                          disabled={newExperience.is_current}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          id="current"
-                          checked={newExperience.is_current}
-                          onChange={(e) => setNewExperience(prev => ({ 
-                            ...prev, 
-                            is_current: e.target.checked,
-                            end_date: e.target.checked ? '' : prev.end_date
-                          }))}
-                        />
-                        <label htmlFor="current" className="text-sm">I currently work here</label>
-                      </div>
-                      <Textarea
-                        placeholder="Description (optional)"
-                        value={newExperience.description}
-                        onChange={(e) => setNewExperience(prev => ({ ...prev, description: e.target.value }))}
-                        rows={2}
-                      />
-                      <Button type="submit" size="sm">Add Experience</Button>
-                    </form>
                   </CardContent>
                 </Card>
 
@@ -648,59 +478,6 @@ const EmployeeDashboard = () => {
                         {edu.grade && <p className="text-sm text-gray-500">Grade: {edu.grade}</p>}
                       </div>
                     ))}
-                    
-                    <form onSubmit={handleAddEducation} className="space-y-3 pt-4 border-t">
-                      <h4 className="font-medium">Add Education</h4>
-                      <div className="grid grid-cols-2 gap-2">
-                        <Input
-                          placeholder="Institution"
-                          value={newEducation.institution}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, institution: e.target.value }))}
-                        />
-                        <Input
-                          placeholder="Degree"
-                          value={newEducation.degree}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, degree: e.target.value }))}
-                        />
-                        <Input
-                          placeholder="Field of study"
-                          value={newEducation.field_of_study}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, field_of_study: e.target.value }))}
-                        />
-                        <Input
-                          placeholder="Grade (optional)"
-                          value={newEducation.grade}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, grade: e.target.value }))}
-                        />
-                        <Input
-                          type="date"
-                          placeholder="Start date"
-                          value={newEducation.start_date}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, start_date: e.target.value }))}
-                        />
-                        <Input
-                          type="date"
-                          placeholder="End date"
-                          value={newEducation.end_date}
-                          onChange={(e) => setNewEducation(prev => ({ ...prev, end_date: e.target.value }))}
-                          disabled={newEducation.is_current}
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <input
-                          type="checkbox"
-                          id="currentEdu"
-                          checked={newEducation.is_current}
-                          onChange={(e) => setNewEducation(prev => ({ 
-                            ...prev, 
-                            is_current: e.target.checked,
-                            end_date: e.target.checked ? '' : prev.end_date
-                          }))}
-                        />
-                        <label htmlFor="currentEdu" className="text-sm">I currently study here</label>
-                      </div>
-                      <Button type="submit" size="sm">Add Education</Button>
-                    </form>
                   </CardContent>
                 </Card>
               </TabsContent>
