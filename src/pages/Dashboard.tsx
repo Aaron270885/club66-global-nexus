@@ -78,6 +78,22 @@ const Dashboard = () => {
     }
   };
 
+  // Mock data for components that need props
+  const mockCompetitions = [
+    { id: '1', name: 'Tech Innovation Challenge', date: '2024-01-15', status: 'Participated' },
+    { id: '2', name: 'Business Plan Competition', date: '2024-02-20', status: 'Voted' }
+  ];
+
+  const mockDiscountUsage = [
+    { id: '1', date: '2024-01-10', merchant: 'Tech Store', discount: '10%', saved: 'CFA 2,500' },
+    { id: '2', date: '2024-01-05', merchant: 'Restaurant Mali', discount: '15%', saved: 'CFA 1,800' }
+  ];
+
+  const mockPayments = [
+    { id: 'PAY001', date: '2024-01-01', description: 'Monthly Membership', amount: 'CFA 5,000', status: 'Paid' as const },
+    { id: 'PAY002', date: '2023-12-01', description: 'Monthly Membership', amount: 'CFA 5,000', status: 'Paid' as const }
+  ];
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'interview':
@@ -237,7 +253,12 @@ const Dashboard = () => {
                 </Card>
 
                 {/* Membership Status */}
-                <MembershipStatus />
+                <MembershipStatus 
+                  membershipTier={membership?.tier || 'Essential'}
+                  memberSince={membership?.start_date ? new Date(membership.start_date).toLocaleDateString() : 'N/A'}
+                  expiryDate={membership?.expiry_date ? new Date(membership.expiry_date).toLocaleDateString() : 'N/A'}
+                  nextPayment="Next month"
+                />
 
                 {/* Projects and Scholarships */}
                 <ProjectsAndScholarships />
@@ -246,7 +267,13 @@ const Dashboard = () => {
               {/* Right Column */}
               <div className="space-y-8">
                 {/* Digital Membership Card */}
-                <MemberDigitalCard />
+                <MemberDigitalCard 
+                  memberName={profile?.full_name || user.email?.split('@')[0] || 'Member'}
+                  memberID={membership?.member_id || 'C66-ML-00000'}
+                  expiryDate={membership?.expiry_date ? new Date(membership.expiry_date).toLocaleDateString() : 'N/A'}
+                  membershipTier={membership?.tier || 'Essential'}
+                  profileImage={profile?.profile_image_url}
+                />
 
                 {/* Job Center Quick Access */}
                 <JobCenter />
@@ -258,14 +285,18 @@ const Dashboard = () => {
                 <CurrencyConverterWidget />
 
                 {/* Competition Participation */}
-                <CompetitionParticipation />
+                <CompetitionParticipation competitions={mockCompetitions} />
               </div>
             </div>
 
             {/* Bottom Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-              <DiscountUsage />
-              <PaymentHistory />
+              <DiscountUsage discountUsage={mockDiscountUsage} />
+              <PaymentHistory 
+                payments={mockPayments}
+                nextPaymentDate="February 1, 2024"
+                nextPaymentAmount="CFA 5,000"
+              />
             </div>
           </div>
         </div>

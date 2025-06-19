@@ -107,12 +107,16 @@ export const useUserProfile = () => {
     if (!user) return;
 
     try {
+      // Ensure full_name is provided when creating new profile
+      const profileData = {
+        id: user.id,
+        full_name: updates.full_name || profile?.full_name || user.email?.split('@')[0] || 'User',
+        ...updates
+      };
+
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          id: user.id,
-          ...updates
-        });
+        .upsert(profileData);
 
       if (error) throw error;
       await fetchProfile();
