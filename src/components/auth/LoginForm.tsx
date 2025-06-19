@@ -9,25 +9,46 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LockIcon, KeyIcon, Mail, Phone, User } from 'lucide-react';
 import OTPVerification from './OTPVerification';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/hooks/useAuth';
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showOTPVerification, setShowOTPVerification] = useState(false);
+  const [loading, setLoading] = useState(false);
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Login logic - integrate with auth system later
-    console.log('Logging in with:', { emailOrPhone, password });
-    toast({
-      title: "Login successful!",
-      description: "Welcome back to Club66 Global."
-    });
+    setLoading(true);
     
-    // Navigate to dashboard on successful login
-    navigate('/dashboard');
+    try {
+      const { data, error } = await signIn(emailOrPhone, password);
+      
+      if (error) {
+        toast({
+          title: "Login failed",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Login successful!",
+          description: "Welcome back to Club66 Global."
+        });
+        // Navigation handled by auth context
+      }
+    } catch (error) {
+      toast({
+        title: "Login failed",
+        description: "An unexpected error occurred.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePhoneSubmit = (e: React.FormEvent) => {
@@ -58,8 +79,8 @@ const LoginForm = () => {
       description: "Welcome back to Club66 Global."
     });
     
-    // Navigate to dashboard on successful login
-    navigate('/dashboard');
+    // Navigate to home page
+    navigate('/');
   };
   
   const handleResendOTP = async () => {
@@ -130,8 +151,12 @@ const LoginForm = () => {
                   required
                 />
               </div>
-              <Button type="submit" className="w-full bg-club66-purple hover:bg-club66-darkpurple">
-                Log In
+              <Button 
+                type="submit" 
+                className="w-full bg-club66-purple hover:bg-club66-darkpurple"
+                disabled={loading}
+              >
+                {loading ? 'Logging in...' : 'Log In'}
               </Button>
             </form>
           </TabsContent>

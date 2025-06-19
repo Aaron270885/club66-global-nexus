@@ -1,34 +1,26 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, ChevronDown, User, LogOut, CreditCard, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
-  NavigationMenu, 
-  NavigationMenuContent, 
-  NavigationMenuItem, 
-  NavigationMenuLink, 
-  NavigationMenuList, 
-  NavigationMenuTrigger 
-} from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, X, User, LogOut } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
-import { toast } from 'sonner';
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from '@/components/ui/dropdown-menu';
 import CountrySelector from './CountrySelector';
+import { useAuth } from '@/hooks/useAuth';
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
-    try {
-      await signOut();
-      toast.success('Signed out successfully');
-      navigate('/');
-    } catch (error) {
-      toast.error('Error signing out');
-    }
+    await signOut();
+    navigate('/');
   };
 
   const navigationItems = [
@@ -60,186 +52,257 @@ const Header = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b shadow-sm">
-      <div className="w-full px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="bg-white shadow-sm border-b sticky top-0 z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <img 
-              src="/lovable-uploads/63353393-5041-4ab6-a66f-fb3be5d284f3.png" 
-              alt="Club66 Global Logo" 
-              className="h-10 w-auto"
-            />
+          <Link to="/" className="flex items-center space-x-2">
+            <div className="bg-club66-purple text-white px-3 py-1 rounded-md font-bold text-xl">
+              66
+            </div>
+            <span className="font-bold text-xl text-gray-900">Club66 Global</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navigationItems.map((item) => (
-                  <NavigationMenuItem key={item.href}>
-                    <NavigationMenuLink asChild>
-                      <Link 
-                        to={item.href}
-                        className="px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
-                      >
-                        {item.title}
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-                
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>Our Affiliates</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-3 p-6 w-[400px]">
-                      {affiliateItems.map((item) => (
-                        <NavigationMenuLink asChild key={item.href}>
-                          <Link
-                            to={item.href}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium leading-none">{item.title}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link to="/cards" className="text-gray-700 hover:text-club66-purple font-medium">
+              Our Cards
+            </Link>
+            <Link to="/app" className="text-gray-700 hover:text-club66-purple font-medium">
+              Our App
+            </Link>
+            <Link to="/discounts" className="text-gray-700 hover:text-club66-purple font-medium">
+              Discounts
+            </Link>
+            
+            {/* Services Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center text-gray-700 hover:text-club66-purple font-medium">
+                Services <ChevronDown className="h-4 w-4 ml-1" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Link to="/services">All Services</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/credit-system">Credit System</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/credit-account">Credit Account</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/payday-loan">Payday Loan</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/hire-purchase">Hire Purchase</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger>About</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="grid gap-3 p-6 w-[400px]">
-                      {aboutItems.map((item) => (
-                        <NavigationMenuLink asChild key={item.href}>
-                          <Link
-                            to={item.href}
-                            className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                          >
-                            <div className="text-sm font-medium leading-none">{item.title}</div>
-                          </Link>
-                        </NavigationMenuLink>
-                      ))}
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+            {/* Affiliates Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center text-gray-700 hover:text-club66-purple font-medium">
+                Our Affiliates <ChevronDown className="h-4 w-4 ml-1" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/members">Members</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/merchants">Merchants</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/distributors">Distributors</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
-          {/* Right Side - Country Selector and Auth */}
-          <div className="hidden lg:flex items-center space-x-4">
+            {/* About Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center text-gray-700 hover:text-club66-purple font-medium">
+                About <ChevronDown className="h-4 w-4 ml-1" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem asChild>
+                  <Link to="/about">About Us</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/contact">Contact</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/projects">Projects</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/partners">Partners</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/news">News</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/association-members">Association Members</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/changing-lives">Changing Lives</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            <Link to="/jobs" className="text-gray-700 hover:text-club66-purple font-medium">
+              Jobs
+            </Link>
+            <Link to="/faq" className="text-gray-700 hover:text-club66-purple font-medium">
+              FAQ
+            </Link>
+          </nav>
+
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-4">
             <CountrySelector />
             
-            {user ? (
-              <div className="flex items-center space-x-2">
-                <Button variant="outline" asChild>
-                  <Link to="/dashboard">
-                    <User className="h-4 w-4 mr-2" />
-                    Dashboard
-                  </Link>
-                </Button>
-                <Button variant="ghost" onClick={handleSignOut}>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Sign Out
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button asChild className="bg-blue-600 hover:bg-blue-700">
-                  <Link to="/register">Join Club66</Link>
-                </Button>
-              </div>
+            {!loading && (
+              <>
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="flex items-center space-x-2">
+                        <User className="h-4 w-4" />
+                        <span>Account</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem asChild>
+                        <Link to="/dashboard" className="flex items-center">
+                          <Settings className="h-4 w-4 mr-2" />
+                          Dashboard
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link to="/cards" className="flex items-center">
+                          <CreditCard className="h-4 w-4 mr-2" />
+                          My Cards
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleSignOut}>
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Sign Out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="flex items-center space-x-2">
+                    <Button asChild variant="outline">
+                      <Link to="/login">Sign In</Link>
+                    </Button>
+                    <Button asChild className="bg-club66-purple hover:bg-club66-darkpurple">
+                      <Link to="/register">Join Now</Link>
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
-          </div>
 
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px]">
-                <div className="flex flex-col space-y-4 mt-8">
-                  {navigationItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      className="text-lg font-medium hover:text-blue-600 transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
-                  
-                  <div className="border-t pt-4">
-                    <p className="font-medium text-gray-900 mb-2">Our Affiliates</p>
-                    {affiliateItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <p className="font-medium text-gray-900 mb-2">About</p>
-                    {aboutItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        className="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
-                  </div>
-
-                  <div className="border-t pt-4">
-                    <CountrySelector />
-                  </div>
-
-                  <div className="border-t pt-4 space-y-2">
-                    {user ? (
-                      <>
-                        <Button variant="outline" className="w-full" asChild>
-                          <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                            <User className="h-4 w-4 mr-2" />
-                            Dashboard
-                          </Link>
-                        </Button>
-                        <Button variant="ghost" className="w-full" onClick={() => { handleSignOut(); setIsOpen(false); }}>
-                          <LogOut className="h-4 w-4 mr-2" />
-                          Sign Out
-                        </Button>
-                      </>
-                    ) : (
-                      <>
-                        <Button variant="ghost" className="w-full" asChild>
-                          <Link to="/login" onClick={() => setIsOpen(false)}>Login</Link>
-                        </Button>
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700" asChild>
-                          <Link to="/register" onClick={() => setIsOpen(false)}>Join Club66</Link>
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t">
+            <div className="flex flex-col space-y-4">
+              <Link 
+                to="/cards" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Our Cards
+              </Link>
+              <Link 
+                to="/app" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Our App
+              </Link>
+              <Link 
+                to="/discounts" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Discounts
+              </Link>
+              <Link 
+                to="/services" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Services
+              </Link>
+              <Link 
+                to="/about" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link 
+                to="/jobs" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Jobs
+              </Link>
+              <Link 
+                to="/faq" 
+                className="text-gray-700 hover:text-club66-purple font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                FAQ
+              </Link>
+              
+              {user ? (
+                <>
+                  <Link 
+                    to="/dashboard" 
+                    className="text-gray-700 hover:text-club66-purple font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    to="/cards" 
+                    className="text-gray-700 hover:text-club66-purple font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    My Cards
+                  </Link>
+                  <button 
+                    onClick={() => { handleSignOut(); setIsMenuOpen(false); }}
+                    className="text-left text-gray-700 hover:text-club66-purple font-medium"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <div className="flex flex-col space-y-2">
+                  <Button asChild variant="outline" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/login">Sign In</Link>
+                  </Button>
+                  <Button asChild className="bg-club66-purple hover:bg-club66-darkpurple" onClick={() => setIsMenuOpen(false)}>
+                    <Link to="/register">Join Now</Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

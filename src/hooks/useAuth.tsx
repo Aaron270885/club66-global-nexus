@@ -2,6 +2,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: User | null;
@@ -29,6 +30,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       async (event, session) => {
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        // Redirect to home page after successful login
+        if (event === 'SIGNED_IN' && session?.user) {
+          window.location.href = '/';
+        }
       }
     );
 
@@ -40,7 +46,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       email,
       password,
       options: {
-        data: userData
+        data: userData,
+        emailRedirectTo: `${window.location.origin}/`
       }
     });
     return { data, error };

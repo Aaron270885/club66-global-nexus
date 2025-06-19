@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
+import UserTypeSelector from '@/components/auth/UserTypeSelector';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,11 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 const Register = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const referralCode = searchParams.get('ref');
+  const planFromUrl = searchParams.get('plan');
+  const { signUp } = useAuth();
   
   const [formData, setFormData] = useState({
     full_name: '',
@@ -27,9 +31,10 @@ const Register = () => {
     country: 'Mali',
     password: '',
     confirmPassword: '',
-    tier: 'essential' as 'essential' | 'premium' | 'elite',
+    tier: (planFromUrl || 'essential') as 'essential' | 'premium' | 'elite',
     physical_card_requested: false,
-    referral_code: referralCode || ''
+    referral_code: referralCode || '',
+    user_type: 'member'
   });
 
   const membershipTiers = {
@@ -66,16 +71,11 @@ const Register = () => {
         throw new Error('Password must be at least 6 characters');
       }
 
-      // Sign up the user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            full_name: data.full_name,
-            phone: data.phone
-          }
-        }
+      // Sign up the user with additional metadata
+      const { data: authData, error: authError } = await signUp(data.email, data.password, {
+        full_name: data.full_name,
+        phone: data.phone,
+        user_type: data.user_type
       });
 
       if (authError) throw authError;
@@ -95,20 +95,22 @@ const Register = () => {
 
       if (profileError) throw profileError;
 
-      // Create membership
-      const expiryDate = new Date();
-      expiryDate.setFullYear(expiryDate.getFullYear() + 1);
+      // Create membership only for regular members
+      if (data.user_type === 'member') {
+        const expiryDate = new Date();
+        expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
-      const { error: membershipError } = await supabase
-        .from('memberships')
-        .insert({
-          user_id: authData.user.id,
-          tier: data.tier,
-          physical_card_requested: data.physical_card_requested,
-          expiry_date: expiryDate.toISOString()
-        });
+        const { error: membershipError } = await supabase
+          .from('memberships')
+          .insert({
+            user_id: authData.user.id,
+            tier: data.tier,
+            physical_card_requested: data.physical_card_requested,
+            expiry_date: expiryDate.toISOString()
+          });
 
-      if (membershipError) throw membershipError;
+        if (membershipError) throw membershipError;
+      }
 
       // Handle referral if provided
       if (data.referral_code) {
@@ -133,9 +135,26 @@ const Register = () => {
 
       return authData;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success('Registration successful! Please check your email for verification.');
-      navigate('/membership-payment');
+      
+      // Redirect based on user type
+      switch (formData.user_type) {
+        case 'member':
+          navigate('/membership-payment');
+          break;
+        case 'employee':
+          navigate('/job-dashboard/employee');
+          break;
+        case 'employer':
+          navigate('/job-dashboard/employer');
+          break;
+        case 'partner':
+          navigate('/affiliate-dashboard');
+          break;
+        default:
+          navigate('/dashboard');
+      }
     },
     onError: (error: any) => {
       toast.error(error.message || 'Registration failed. Please try again.');
@@ -149,6 +168,7 @@ const Register = () => {
 
   const selectedTier = membershipTiers[formData.tier];
   const totalFirstPayment = selectedTier.registration + selectedTier.monthly;
+  const showMembershipOptions = formData.user_type === 'member';
 
   return (
     <Layout>
@@ -165,6 +185,19 @@ const Register = () => {
             <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Registration Form */}
               <div className="lg:col-span-2">
+                <Card className="mb-6">
+                  <CardHeader>
+                    <CardTitle>Account Type</CardTitle>
+                    <CardDescription>Select your account type to get started</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <UserTypeSelector 
+                      selectedType={formData.user_type}
+                      onSelect={(type) => setFormData(prev => ({ ...prev, user_type: type }))}
+                    />
+                  </CardContent>
+                </Card>
+
                 <Card>
                   <CardHeader>
                     <CardTitle>Create Your Account</CardTitle>
@@ -178,6 +211,7 @@ const Register = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-4">
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="full_name">Full Name *</Label>
@@ -268,16 +302,18 @@ const Register = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="physical_card"
-                        checked={formData.physical_card_requested}
-                        onCheckedChange={(checked) => setFormData(prev => ({ ...prev, physical_card_requested: checked as boolean }))}
-                      />
-                      <Label htmlFor="physical_card">
-                        Request physical membership card (optional)
-                      </Label>
-                    </div>
+                    {showMembershipOptions && (
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="physical_card"
+                          checked={formData.physical_card_requested}
+                          onCheckedChange={(checked) => setFormData(prev => ({ ...prev, physical_card_requested: checked as boolean }))}
+                        />
+                        <Label htmlFor="physical_card">
+                          Request physical membership card (optional)
+                        </Label>
+                      </div>
+                    )}
 
                     <Button 
                       type="submit" 
@@ -299,58 +335,60 @@ const Register = () => {
                 </Card>
               </div>
 
-              {/* Membership Selection */}
-              <div className="lg:col-span-1">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Choose Your Membership</CardTitle>
-                    <CardDescription>Select the tier that works best for you</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {Object.entries(membershipTiers).map(([key, tier]) => (
-                      <div
-                        key={key}
-                        className={`p-4 border rounded-lg cursor-pointer transition-colors ${
-                          formData.tier === key 
-                            ? 'border-purple-500 bg-purple-50' 
-                            : 'border-gray-200 hover:border-purple-300'
-                        }`}
-                        onClick={() => setFormData(prev => ({ ...prev, tier: key as any }))}
-                      >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium">{tier.name}</h4>
-                          <Badge className="bg-green-100 text-green-800">
-                            {tier.discount}% OFF
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-2">{tier.description}</p>
-                        <div className="space-y-1 text-sm">
-                          <div className="flex justify-between">
-                            <span>Registration Fee:</span>
-                            <span>CFA {tier.registration.toLocaleString()}</span>
+              {/* Membership Selection - Only show for regular members */}
+              {showMembershipOptions && (
+                <div className="lg:col-span-1">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Choose Your Membership</CardTitle>
+                      <CardDescription>Select the tier that works best for you</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {Object.entries(membershipTiers).map(([key, tier]) => (
+                        <div
+                          key={key}
+                          className={`p-4 border rounded-lg cursor-pointer transition-colors ${
+                            formData.tier === key 
+                              ? 'border-purple-500 bg-purple-50' 
+                              : 'border-gray-200 hover:border-purple-300'
+                          }`}
+                          onClick={() => setFormData(prev => ({ ...prev, tier: key as any }))}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-medium">{tier.name}</h4>
+                            <Badge className="bg-green-100 text-green-800">
+                              {tier.discount}% OFF
+                            </Badge>
                           </div>
-                          <div className="flex justify-between">
-                            <span>Monthly Fee:</span>
-                            <span>CFA {tier.monthly.toLocaleString()}</span>
+                          <p className="text-sm text-gray-600 mb-2">{tier.description}</p>
+                          <div className="space-y-1 text-sm">
+                            <div className="flex justify-between">
+                              <span>Registration Fee:</span>
+                              <span>CFA {tier.registration.toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Monthly Fee:</span>
+                              <span>CFA {tier.monthly.toLocaleString()}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
-                    <div className="pt-4 border-t">
-                      <div className="flex justify-between items-center font-medium">
-                        <span>First Payment Total:</span>
-                        <span className="text-lg text-purple-600">
-                          CFA {totalFirstPayment.toLocaleString()}
-                        </span>
+                      <div className="pt-4 border-t">
+                        <div className="flex justify-between items-center font-medium">
+                          <span>First Payment Total:</span>
+                          <span className="text-lg text-purple-600">
+                            CFA {totalFirstPayment.toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Registration fee + First month
+                        </p>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Registration fee + First month
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </form>
           </div>
         </div>

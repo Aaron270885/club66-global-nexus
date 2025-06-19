@@ -65,9 +65,27 @@ export const router = createBrowserRouter([
     path: '/register',
     element: <Register />,
   },
+  // Main Dashboard - redirects based on user type
   {
     path: '/dashboard',
     element: <Dashboard />,
+  },
+  // User Type Specific Dashboards
+  {
+    path: '/dashboard/member',
+    element: <Dashboard />,
+  },
+  {
+    path: '/dashboard/employee',
+    element: <EmployeeDashboard />,
+  },
+  {
+    path: '/dashboard/employer',
+    element: <EmployerDashboard />,
+  },
+  {
+    path: '/dashboard/partner',
+    element: <AffiliateDashboard />,
   },
   // Our Cards (ZENIKA)
   {

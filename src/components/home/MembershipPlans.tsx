@@ -2,9 +2,23 @@
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/hooks/useAuth';
 
 const MembershipPlans = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSelectPlan = (planName: string) => {
+    if (user) {
+      // User is logged in, go directly to payment
+      navigate('/membership-payment');
+    } else {
+      // User not logged in, redirect to register with plan info
+      navigate(`/register?plan=${planName.toLowerCase()}`);
+    }
+  };
+
   const plans = [
     {
       name: 'Essential',
@@ -110,14 +124,13 @@ const MembershipPlans = () => {
                 </ul>
               </CardContent>
               <CardFooter>
-                <Button asChild
+                <Button 
+                  onClick={() => handleSelectPlan(plan.name)}
                   className={`w-full ${plan.buttonVariant === 'default' ? 'bg-club66-purple hover:bg-club66-darkpurple' : ''}`}
                   variant={plan.buttonVariant === 'default' ? 'default' : 
                           plan.buttonVariant === 'secondary' ? 'secondary' : 'outline'}
                 >
-                  <Link to="/membership-payment">
-                    Select {plan.name}
-                  </Link>
+                  Select {plan.name}
                 </Button>
               </CardFooter>
             </Card>
