@@ -1,158 +1,181 @@
 
-import React from "react";
-import Layout from "@/components/layout/Layout";
-import { CalendarIcon } from "lucide-react";
+import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar, User, ArrowRight } from 'lucide-react';
 
 const News = () => {
-  // Sample news data
   const newsArticles = [
     {
-      title: "Club66 Expands to Nigeria",
-      date: "May 15, 2025",
-      summary: "Following our success in Mali, Club66 is proud to announce our expansion into Nigeria, Africa's most populous country.",
-      image: "/placeholder.svg",
+      id: 1,
+      title: "Club66 Global Expands to Three New Countries",
+      excerpt: "We're excited to announce our expansion into Ghana, Nigeria, and Benin, bringing our membership benefits to even more people across West Africa.",
       category: "Expansion",
-      url: "#",
+      author: "Club66 Team",
+      date: "2024-01-15",
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      featured: true
     },
     {
-      title: "Partnership Announcement with Global Bank",
-      date: "April 28, 2025",
-      summary: "Club66 members will now enjoy exclusive banking benefits through our new partnership with Global Bank.",
-      image: "/placeholder.svg",
-      category: "Partnerships",
-      url: "#",
+      id: 2,
+      title: "New Partnership with West African Development Bank",
+      excerpt: "Our strategic partnership will enable us to offer micro-lending services and financial advisory to small businesses.",
+      category: "Partnership",
+      author: "Business Development",
+      date: "2024-01-10",
+      image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      featured: false
     },
     {
-      title: "Youth Entrepreneurship Program Graduates 100 New Business Owners",
-      date: "April 10, 2025",
-      summary: "Our flagship entrepreneurship program celebrates the graduation of 100 young Malians who have now launched their own businesses.",
-      image: "/placeholder.svg",
-      category: "Community Impact",
-      url: "#",
+      id: 3,
+      title: "Digital Literacy Program Launches in Rural Mali",
+      excerpt: "Our new initiative aims to bridge the digital divide by teaching essential digital skills to rural communities.",
+      category: "Community",
+      author: "Project Team",
+      date: "2024-01-05",
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      featured: false
     },
     {
-      title: "Club66 Wins Social Enterprise of the Year Award",
-      date: "March 22, 2025",
-      summary: "We are honored to be recognized for our innovative approach to community development and economic empowerment.",
-      image: "/placeholder.svg",
-      category: "Awards",
-      url: "#",
-    },
+      id: 4,
+      title: "Club66 Mobile App Now Available",
+      excerpt: "Download our new mobile app for easy access to member benefits, digital card, and exclusive offers.",
+      category: "Technology",
+      author: "Tech Team",
+      date: "2023-12-20",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      featured: false
+    }
   ];
-  
-  const pressReleases = [
-    {
-      title: "Club66 Secures $5M Funding to Expand Across West Africa",
-      date: "May 1, 2025",
-      url: "#",
-    },
-    {
-      title: "Club66 Launches Mobile App for Enhanced Member Experience",
-      date: "April 15, 2025",
-      url: "#",
-    },
-    {
-      title: "Club66 and Ministry of Education Announce Scholarship Program",
-      date: "March 30, 2025",
-      url: "#",
-    },
-    {
-      title: "Annual Report Reveals Club66's Economic Impact on Local Communities",
-      date: "February 12, 2025",
-      url: "#",
-    },
-  ];
+
+  const categories = ["All", "Expansion", "Partnership", "Community", "Technology"];
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-club66-purple">
-          News & Press
-        </h1>
-        
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8">
-            {/* Main content - News articles */}
-            <div className="md:w-2/3">
-              <h2 className="text-2xl font-bold mb-6 text-club66-purple">Latest News</h2>
-              
-              <div className="space-y-8">
-                {newsArticles.map((article, index) => (
-                  <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md">
+      <PremiumBanner
+        title="News & Updates"
+        description="Stay informed about the latest developments, partnerships, and initiatives from Club66 Global."
+        backgroundImage="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        showBackButton
+        backUrl="/about"
+      />
+
+      <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {categories.map((category) => (
+                <Button
+                  key={category}
+                  variant={category === "All" ? "default" : "outline"}
+                  className={category === "All" ? "bg-purple-600 hover:bg-purple-700" : ""}
+                >
+                  {category}
+                </Button>
+              ))}
+            </div>
+
+            {/* Featured Article */}
+            {newsArticles.filter(article => article.featured).map((article) => (
+              <Card key={article.id} className="mb-12 overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="h-64 lg:h-auto">
                     <img 
                       src={article.image} 
-                      alt={article.title} 
-                      className="w-full h-48 object-cover"
+                      alt={article.title}
+                      className="w-full h-full object-cover"
                     />
-                    <div className="p-6">
-                      <div className="flex items-center mb-2">
-                        <span className="text-xs bg-club66-purple/10 text-club66-purple px-2 py-1 rounded-full">
-                          {article.category}
-                        </span>
-                        <div className="flex items-center ml-3 text-gray-500 text-sm">
-                          <CalendarIcon className="h-3 w-3 mr-1" />
-                          {article.date}
+                  </div>
+                  <div className="p-8 flex flex-col justify-center">
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Badge className="bg-red-500">Featured</Badge>
+                      <Badge variant="outline">{article.category}</Badge>
+                    </div>
+                    <CardTitle className="text-2xl mb-4">{article.title}</CardTitle>
+                    <CardDescription className="text-base mb-6">
+                      {article.excerpt}
+                    </CardDescription>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4 text-sm text-gray-600">
+                        <div className="flex items-center space-x-1">
+                          <User className="h-4 w-4" />
+                          <span>{article.author}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{new Date(article.date).toLocaleDateString()}</span>
                         </div>
                       </div>
-                      
-                      <h3 className="font-bold text-xl mb-2">{article.title}</h3>
-                      <p className="text-gray-600 mb-4">{article.summary}</p>
-                      
-                      <a 
-                        href={article.url} 
-                        className="text-club66-purple font-medium hover:underline"
-                      >
-                        Read more →
-                      </a>
+                      <Button className="bg-purple-600 hover:bg-purple-700">
+                        Read More <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-            
-            {/* Sidebar - Press releases and media contacts */}
-            <div className="md:w-1/3">
-              <div className="bg-white rounded-lg shadow-md p-6 mb-8">
-                <h2 className="text-xl font-bold mb-4">Press Releases</h2>
-                <ul className="space-y-4">
-                  {pressReleases.map((release, index) => (
-                    <li key={index}>
-                      <a href={release.url} className="block hover:bg-gray-50 p-2 rounded">
-                        <p className="font-medium text-gray-900">{release.title}</p>
-                        <div className="flex items-center text-gray-500 text-sm mt-1">
-                          <CalendarIcon className="h-3 w-3 mr-1" />
-                          {release.date}
-                        </div>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <a href="#" className="block text-center mt-4 text-club66-purple font-medium hover:underline">
-                  View all press releases
-                </a>
-              </div>
-              
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-xl font-bold mb-4">Media Contact</h2>
-                <p className="text-gray-600 mb-4">
-                  For media inquiries, please contact our press office:
-                </p>
-                <div className="space-y-2">
-                  <p className="font-medium">Mariam Coulibaly</p>
-                  <p>Press Relations Manager</p>
-                  <p>
-                    <a href="mailto:press@club66global.com" className="text-club66-purple hover:underline">
-                      press@club66global.com
-                    </a>
-                  </p>
-                  <p>
-                    <a href="tel:+22379000000" className="text-club66-purple hover:underline">
-                      +223 79 00 00 00
-                    </a>
-                  </p>
                 </div>
-              </div>
+              </Card>
+            ))}
+
+            {/* News Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {newsArticles.filter(article => !article.featured).map((article) => (
+                <Card key={article.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                  <div className="h-48">
+                    <img 
+                      src={article.image} 
+                      alt={article.title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <CardHeader>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <Badge variant="outline">{article.category}</Badge>
+                    </div>
+                    <CardTitle className="text-lg">{article.title}</CardTitle>
+                    <CardDescription>{article.excerpt}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4 text-sm text-gray-600">
+                        <div className="flex items-center space-x-1">
+                          <User className="h-4 w-4" />
+                          <span>{article.author}</span>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <Calendar className="h-4 w-4" />
+                          <span>{new Date(article.date).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Button className="w-full mt-4 bg-purple-600 hover:bg-purple-700">
+                      Read More
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
+
+            {/* Newsletter Signup */}
+            <Card className="mt-16">
+              <CardContent className="p-8 text-center">
+                <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
+                <p className="text-gray-600 mb-6">
+                  Subscribe to our newsletter to receive the latest news and updates directly in your inbox.
+                </p>
+                <div className="flex max-w-md mx-auto space-x-2">
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email"
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  />
+                  <Button className="bg-purple-600 hover:bg-purple-700">
+                    Subscribe
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

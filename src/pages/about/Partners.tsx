@@ -1,114 +1,139 @@
 
-import React from "react";
-import Layout from "@/components/layout/Layout";
+import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Building, Users, Globe, Award } from 'lucide-react';
 
 const Partners = () => {
-  // Sample partners data
-  const corporatePartners = [
+  const partners = [
     {
-      name: "Mali Bank",
-      logo: "/placeholder.svg",
-      description: "Providing financial services and solutions for Club66 members.",
-      website: "https://example.com",
+      id: 1,
+      name: "West African Development Bank",
+      type: "Financial Partner",
+      description: "Supporting our financial services and micro-lending initiatives across the region.",
+      logo: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+      partnership_since: "2023",
+      services: ["Microloans", "Financial Advisory", "Business Development"]
     },
     {
-      name: "Telecom Mali",
-      logo: "/placeholder.svg",
-      description: "Offering exclusive communication packages for Club66 members.",
-      website: "https://example.com",
+      id: 2,
+      name: "African Telecommunications Union",
+      type: "Technology Partner",
+      description: "Enabling digital transformation and telecommunications infrastructure development.",
+      logo: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+      partnership_since: "2024",
+      services: ["Digital Solutions", "Mobile Services", "Internet Connectivity"]
     },
     {
-      name: "Retail Chain",
-      logo: "/placeholder.svg",
-      description: "Providing discounts on groceries and household items.",
-      website: "https://example.com",
-    },
-    {
-      name: "Mali Health Insurance",
-      logo: "/placeholder.svg",
-      description: "Offering healthcare coverage at reduced rates for Club66 members.",
-      website: "https://example.com",
-    },
+      id: 3,
+      name: "Mali Chamber of Commerce",
+      type: "Business Partner",
+      description: "Facilitating business connections and trade opportunities for our members.",
+      logo: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+      partnership_since: "2023",
+      services: ["Business Networking", "Trade Facilitation", "Member Discounts"]
+    }
   ];
-  
-  const endorsements = [
-    {
-      name: "Ministry of Trade and Industry",
-      logo: "/placeholder.svg",
-      statement: "Club66 represents an innovative approach to stimulating local economies and creating opportunities for small businesses.",
-      representative: "Hon. Minister Issa Diallo",
-    },
-    {
-      name: "Chamber of Commerce",
-      logo: "/placeholder.svg",
-      statement: "The Club66 initiative aligns with our goals of fostering entrepreneurship and creating a vibrant business ecosystem.",
-      representative: "President, Bamako Chamber of Commerce",
-    },
-    {
-      name: "Women Entrepreneurs Association",
-      logo: "/placeholder.svg",
-      statement: "Club66 has created unprecedented opportunities for women-owned businesses to thrive and expand their customer base.",
-      representative: "Chairperson, Mali Women Entrepreneurs Association",
-    },
+
+  const partnerStats = [
+    { icon: Building, label: "Partner Organizations", value: "25+" },
+    { icon: Globe, label: "Countries Covered", value: "8" },
+    { icon: Users, label: "Combined Network", value: "100K+" },
+    { icon: Award, label: "Years of Partnership", value: "5+" }
   ];
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-club66-purple">
-          Partners & Endorsements
-        </h1>
-        
-        <div className="max-w-4xl mx-auto">
-          <p className="text-lg text-center mb-12">
-            Club66 partners with leading organizations and institutions to bring the best possible 
-            benefits and services to our members. We are also honored to be endorsed by respected 
-            entities that share our vision for community development.
-          </p>
-          
-          <h2 className="text-2xl font-bold mb-6 text-club66-purple">Corporate Partners</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {corporatePartners.map((partner, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md p-6">
-                <div className="flex items-center mb-4">
-                  <img 
-                    src={partner.logo} 
-                    alt={partner.name} 
-                    className="w-16 h-16 object-contain mr-4"
-                  />
-                  <h3 className="font-bold text-xl">{partner.name}</h3>
+      <PremiumBanner
+        title="Our Partners"
+        description="Meet the organizations and institutions that help us deliver exceptional value to our members."
+        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        showBackButton
+        backUrl="/about"
+      />
+
+      <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Partnership Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {partnerStats.map((stat, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6 text-center">
+                    <stat.icon className="h-8 w-8 text-purple-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-purple-600 mb-2">{stat.value}</h3>
+                    <p className="text-gray-600">{stat.label}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Strategic Partners</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                We collaborate with leading organizations across Africa to provide 
+                comprehensive services and benefits to our members.
+              </p>
+            </div>
+
+            {/* Partners Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {partners.map((partner) => (
+                <Card key={partner.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center space-x-4 mb-4">
+                      <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <Building className="h-8 w-8 text-gray-600" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-lg">{partner.name}</CardTitle>
+                        <Badge className="bg-purple-100 text-purple-800">
+                          {partner.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <CardDescription>{partner.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Services</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {partner.services.map((service, index) => (
+                          <Badge key={index} variant="outline" className="bg-blue-50">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      Partnership since {partner.partnership_since}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Partnership CTA */}
+            <Card>
+              <CardContent className="p-8 text-center">
+                <h3 className="text-2xl font-bold mb-4">Become a Partner</h3>
+                <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                  Join our network of partners and help us create more value for our members. 
+                  We're always looking for organizations that share our vision of 
+                  empowering communities across Africa.
+                </p>
+                <div className="space-x-4">
+                  <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                    Partnership Inquiry
+                  </Button>
+                  <Button size="lg" variant="outline">
+                    Download Partner Guide
+                  </Button>
                 </div>
-                <p className="text-gray-600 mb-4">{partner.description}</p>
-                <a 
-                  href={partner.website} 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="text-club66-purple hover:underline"
-                >
-                  Visit website
-                </a>
-              </div>
-            ))}
-          </div>
-          
-          <h2 className="text-2xl font-bold mb-6 text-club66-purple">Endorsements</h2>
-          <div className="space-y-6">
-            {endorsements.map((endorsement, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md p-6">
-                <div className="flex items-center mb-4">
-                  <img 
-                    src={endorsement.logo} 
-                    alt={endorsement.name} 
-                    className="w-16 h-16 object-contain mr-4"
-                  />
-                  <h3 className="font-bold text-xl">{endorsement.name}</h3>
-                </div>
-                <blockquote className="border-l-4 border-club66-purple pl-4 italic mb-4">
-                  "{endorsement.statement}"
-                </blockquote>
-                <p className="text-right text-gray-600">— {endorsement.representative}</p>
-              </div>
-            ))}
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

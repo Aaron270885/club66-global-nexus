@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
@@ -157,6 +156,7 @@ const Register = () => {
         title="Join Club66 Global"
         description="Become a member and enjoy exclusive discounts, competitions, and networking opportunities."
         backgroundImage="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        variant="compact"
       />
 
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">

@@ -11,13 +11,24 @@ interface PremiumBannerProps {
   backgroundImage?: string;
   showBackButton?: boolean;
   backUrl?: string;
+  variant?: 'default' | 'compact';
 }
 
-const PremiumBanner = ({ title, description, children, backgroundImage, showBackButton, backUrl }: PremiumBannerProps) => {
+const PremiumBanner = ({ 
+  title, 
+  description, 
+  children, 
+  backgroundImage, 
+  showBackButton, 
+  backUrl,
+  variant = 'default'
+}: PremiumBannerProps) => {
   const defaultBgImage = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80';
   
+  const heightClasses = variant === 'compact' ? 'py-12 md:py-16' : 'py-20 md:py-32';
+  
   return (
-    <section className="relative py-20 md:py-32 bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 overflow-hidden">
+    <section className={`relative ${heightClasses} bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 overflow-hidden`}>
       {/* Background image with transparency */}
       <div className="absolute inset-0 opacity-30">
         <div 
@@ -41,10 +52,10 @@ const PremiumBanner = ({ title, description, children, backgroundImage, showBack
               </Button>
             </div>
           )}
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          <h1 className={`font-bold mb-6 leading-tight ${variant === 'compact' ? 'text-3xl md:text-4xl' : 'text-4xl md:text-6xl'}`}>
             {title}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
+          <p className={`text-gray-200 mb-8 leading-relaxed ${variant === 'compact' ? 'text-lg md:text-xl' : 'text-xl md:text-2xl'}`}>
             {description}
           </p>
           {children}

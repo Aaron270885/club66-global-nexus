@@ -12,6 +12,7 @@ const Login = () => {
         title="Welcome Back"
         description="Sign in to access your Club66 membership benefits and exclusive features."
         backgroundImage="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        variant="compact"
       />
       
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">

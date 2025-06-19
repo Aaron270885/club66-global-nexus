@@ -1,110 +1,204 @@
 
-import React from "react";
-import Layout from "@/components/layout/Layout";
+import Layout from '@/components/layout/Layout';
+import PremiumBanner from '@/components/layout/PremiumBanner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Users, Award, MapPin, Building } from 'lucide-react';
 
 const AssociationMembers = () => {
-  // Sample members data
   const boardMembers = [
     {
-      name: "Dr. Amadou Koné",
-      position: "President",
-      bio: "Dr. Koné brings over 20 years of experience in economic development across West Africa.",
-      image: "https://randomuser.me/api/portraits/men/1.jpg",
+      id: 1,
+      name: "Amadou Diallo",
+      position: "Chairman",
+      location: "Bamako, Mali",
+      experience: "15 years in Financial Services",
+      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      bio: "Leading the strategic direction of Club66 Global with extensive experience in financial services and community development."
     },
     {
-      name: "Fatima Tall",
-      position: "Vice President",
-      bio: "As a leading entrepreneur in Mali, Fatima has founded several successful businesses in the retail sector.",
-      image: "https://randomuser.me/api/portraits/women/2.jpg",
+      id: 2,
+      name: "Fatou Kone",
+      position: "Vice Chairwoman",
+      location: "Abidjan, Ivory Coast",
+      experience: "12 years in Business Development",
+      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b932?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      bio: "Driving business expansion and partnership development across West Africa."
     },
     {
-      name: "Jean-Baptiste Cissé",
+      id: 3,
+      name: "Ibrahim Traore",
       position: "Secretary General",
-      bio: "With a background in international relations, Jean-Baptiste oversees Club66's expansion strategy.",
-      image: "https://randomuser.me/api/portraits/men/3.jpg",
+      location: "Ouagadougou, Burkina Faso",
+      experience: "10 years in Operations",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      bio: "Overseeing daily operations and ensuring efficient service delivery to our members."
     },
     {
-      name: "Aisha Diallo",
+      id: 4,
+      name: "Aisha Sy",
       position: "Treasurer",
-      bio: "Aisha's financial expertise has been instrumental in creating sustainable business models for Club66.",
-      image: "https://randomuser.me/api/portraits/women/4.jpg",
+      location: "Dakar, Senegal",
+      experience: "14 years in Finance",
+      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80",
+      bio: "Managing financial strategy and ensuring fiscal responsibility across all operations."
     }
   ];
-  
-  const executiveMembers = [
-    {
-      name: "Omar Traoré",
-      position: "Chief Executive Officer",
-      bio: "Omar leads the day-to-day operations of Club66 with a focus on innovation and growth.",
-      image: "https://randomuser.me/api/portraits/men/5.jpg",
-    },
-    {
-      name: "Mariam Touré",
-      position: "Chief Operating Officer",
-      bio: "Mariam ensures that Club66's operations run smoothly across all countries and divisions.",
-      image: "https://randomuser.me/api/portraits/women/6.jpg",
-    },
-    {
-      name: "Ibrahim Keita",
-      position: "Chief Financial Officer",
-      bio: "Ibrahim oversees the financial health of Club66 and directs investment strategies.",
-      image: "https://randomuser.me/api/portraits/men/7.jpg",
-    },
-    {
-      name: "Sophie Sidibé",
-      position: "Chief Marketing Officer",
-      bio: "Sophie develops Club66's brand strategy and directs all marketing initiatives.",
-      image: "https://randomuser.me/api/portraits/women/8.jpg",
-    }
+
+  const stats = [
+    { icon: Users, label: "Board Members", value: "12" },
+    { icon: MapPin, label: "Countries Represented", value: "6" },
+    { icon: Award, label: "Combined Experience", value: "150+ Years" },
+    { icon: Building, label: "Partner Organizations", value: "25+" }
   ];
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-center mb-8 text-club66-purple">
-          Association Members
-        </h1>
-        
-        <div className="max-w-4xl mx-auto">
-          <p className="text-lg text-center mb-12">
-            Club66 is governed by a dedicated group of professionals committed to our mission of 
-            creating economic opportunities and fostering community development across Africa.
-          </p>
-          
-          <h2 className="text-2xl font-bold mb-6 text-club66-purple">Board of Directors</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {boardMembers.map((member, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md flex flex-col sm:flex-row">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="w-full sm:w-1/3 h-48 sm:h-auto object-cover"
-                />
-                <div className="p-4 flex-1">
-                  <h3 className="font-bold text-xl mb-1">{member.name}</h3>
-                  <p className="text-club66-purple mb-2">{member.position}</p>
-                  <p className="text-gray-600">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          <h2 className="text-2xl font-bold mb-6 text-club66-purple">Executive Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {executiveMembers.map((member, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-md flex flex-col sm:flex-row">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  className="w-full sm:w-1/3 h-48 sm:h-auto object-cover"
-                />
-                <div className="p-4 flex-1">
-                  <h3 className="font-bold text-xl mb-1">{member.name}</h3>
-                  <p className="text-club66-purple mb-2">{member.position}</p>
-                  <p className="text-gray-600">{member.bio}</p>
-                </div>
-              </div>
-            ))}
+      <PremiumBanner
+        title="Association Members"
+        description="Meet the dedicated individuals who guide Club66 Global's mission and strategic direction."
+        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        showBackButton
+        backUrl="/about"
+      />
+
+      <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            {/* Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              {stats.map((stat, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6 text-center">
+                    <stat.icon className="h-8 w-8 text-purple-600 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-purple-600 mb-2">{stat.value}</h3>
+                    <p className="text-gray-600">{stat.label}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold mb-4">Board of Directors</h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Our board consists of experienced professionals from various fields, 
+                united by a common vision of empowering communities across Africa.
+              </p>
+            </div>
+
+            {/* Board Members Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+              {boardMembers.map((member) => (
+                <Card key={member.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center space-x-4">
+                      <Avatar className="h-16 w-16">
+                        <AvatarImage src={member.avatar} alt={member.name} />
+                        <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <CardTitle className="text-xl">{member.name}</CardTitle>
+                        <Badge className="bg-purple-100 text-purple-800">
+                          {member.position}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <CardDescription className="text-base">
+                      {member.bio}
+                    </CardDescription>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center space-x-2">
+                        <MapPin className="h-4 w-4" />
+                        <span>{member.location}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Award className="h-4 w-4" />
+                        <span>{member.experience}</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Membership Structure */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Executive Committee</CardTitle>
+                  <CardDescription>
+                    The executive committee handles day-to-day decision making and strategic implementation.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2">
+                    <li className="flex justify-between">
+                      <span>Chairman</span>
+                      <span className="font-medium">Amadou Diallo</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Vice Chairwoman</span>
+                      <span className="font-medium">Fatou Kone</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Secretary General</span>
+                      <span className="font-medium">Ibrahim Traore</span>
+                    </li>
+                    <li className="flex justify-between">
+                      <span>Treasurer</span>
+                      <span className="font-medium">Aisha Sy</span>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Advisory Board</CardTitle>
+                  <CardDescription>
+                    Our advisory board provides expertise and guidance across various sectors.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div>
+                      <h4 className="font-medium">Technology Advisory</h4>
+                      <p className="text-sm text-gray-600">Digital transformation and innovation</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Financial Advisory</h4>
+                      <p className="text-sm text-gray-600">Financial services and risk management</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Legal Advisory</h4>
+                      <p className="text-sm text-gray-600">Compliance and regulatory matters</p>
+                    </div>
+                    <div>
+                      <h4 className="font-medium">Community Advisory</h4>
+                      <p className="text-sm text-gray-600">Community engagement and social impact</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Join CTA */}
+            <Card>
+              <CardContent className="p-8 text-center">
+                <h3 className="text-2xl font-bold mb-4">Interested in Contributing?</h3>
+                <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                  We're always looking for dedicated individuals who share our vision 
+                  and want to contribute to the growth of our community.
+                </p>
+                <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
+                  Get Involved
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
