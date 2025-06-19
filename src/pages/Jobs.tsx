@@ -19,41 +19,46 @@ const Jobs = () => {
   
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState('');
+  const [experienceFilter, setExperienceFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
   const handleSearch = () => {
+    console.log('Searching with filters:', { searchTerm, locationFilter, experienceFilter, typeFilter });
     fetchJobs({
       search: searchTerm,
       location: locationFilter,
       employmentType: typeFilter,
-      experienceLevel: departmentFilter
+      experienceLevel: experienceFilter
     });
   };
 
+  // Auto-search when search term changes
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchTerm) {
+      if (searchTerm || locationFilter || experienceFilter || typeFilter) {
         handleSearch();
+      } else {
+        // If all filters are empty, fetch all jobs
+        fetchJobs();
       }
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [searchTerm]);
+  }, [searchTerm, locationFilter, experienceFilter, typeFilter]);
 
   const clearFilters = () => {
     setSearchTerm('');
     setLocationFilter('');
-    setDepartmentFilter('');
+    setExperienceFilter('');
     setTypeFilter('');
-    fetchJobs();
+    fetchJobs(); // Fetch all jobs when clearing filters
   };
 
   const formatSalary = (min?: number, max?: number, currency = 'CFA') => {
     if (!min && !max) return 'Salary not specified';
-    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${currency}/month`;
-    if (min) return `From ${min.toLocaleString()} ${currency}/month`;
-    if (max) return `Up to ${max.toLocaleString()} ${currency}/month`;
+    if (min && max) return `${min.toLocaleString()} - ${max.toLocaleString()} ${currency}`;
+    if (min) return `From ${min.toLocaleString()} ${currency}`;
+    if (max) return `Up to ${max.toLocaleString()} ${currency}`;
     return 'Salary not specified';
   };
 
@@ -64,7 +69,7 @@ const Jobs = () => {
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
     
     if (diffInDays === 0) return 'Today';
-    if (diffInDays === 1) return '1 day ago';
+    if (diffInDays === 1) return 'Yesterday';
     if (diffInDays < 7) return `${diffInDays} days ago`;
     if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} week${Math.floor(diffInDays / 7) > 1 ? 's' : ''} ago`;
     return `${Math.floor(diffInDays / 30)} month${Math.floor(diffInDays / 30) > 1 ? 's' : ''} ago`;
@@ -72,6 +77,7 @@ const Jobs = () => {
 
   const experienceLevels = ['entry', 'mid', 'senior', 'lead'];
   const employmentTypes = ['Full-time', 'Part-time', 'Contract', 'Internship'];
+  const locations = ['Bamako', 'Abidjan', 'Dakar', 'Accra', 'Lagos', 'Remote'];
 
   return (
     <Layout>
@@ -98,11 +104,11 @@ const Jobs = () => {
                   <SelectTrigger className="w-40 h-12 bg-white/90 border-0 text-gray-900">
                     <SelectValue placeholder="Location" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white">
                     <SelectItem value="">All Locations</SelectItem>
-                    <SelectItem value="Bamako">Bamako, Mali</SelectItem>
-                    <SelectItem value="Remote">Remote</SelectItem>
-                    <SelectItem value="Multiple">Multiple Locations</SelectItem>
+                    {locations.map(location => (
+                      <SelectItem key={location} value={location}>{location}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <Button size="lg" className="h-12 px-8 bg-white text-purple-600 hover:bg-gray-100" onClick={handleSearch}>
@@ -130,11 +136,11 @@ const Jobs = () => {
                   <CardContent className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium mb-2">Experience Level</label>
-                      <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
+                      <Select value={experienceFilter} onValueChange={setExperienceFilter}>
                         <SelectTrigger>
                           <SelectValue placeholder="All Levels" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-white">
                           <SelectItem value="">All Levels</SelectItem>
                           {experienceLevels.map(level => (
                             <SelectItem key={level} value={level}>
@@ -151,7 +157,7 @@ const Jobs = () => {
                         <SelectTrigger>
                           <SelectValue placeholder="All Types" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-white">
                           <SelectItem value="">All Types</SelectItem>
                           {employmentTypes.map(type => (
                             <SelectItem key={type} value={type}>{type}</SelectItem>
@@ -181,7 +187,7 @@ const Jobs = () => {
                     <SelectTrigger className="w-48">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       <SelectItem value="newest">Newest First</SelectItem>
                       <SelectItem value="salary-high">Highest Salary</SelectItem>
                       <SelectItem value="salary-low">Lowest Salary</SelectItem>
@@ -201,109 +207,115 @@ const Jobs = () => {
                   </Card>
                 )}
 
-                <div className="space-y-6">
-                  {jobs.map((job) => (
-                    <Card key={job.id} className="hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex justify-between items-start mb-4">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
-                                {job.employment_type}
-                              </Badge>
-                              {job.remote_allowed && (
-                                <Badge className="bg-green-500">Remote OK</Badge>
+                {loading ? (
+                  <div className="flex items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                  </div>
+                ) : (
+                  <div className="space-y-6">
+                    {jobs.map((job) => (
+                      <Card key={job.id} className="hover:shadow-lg transition-shadow">
+                        <CardContent className="p-6">
+                          <div className="flex justify-between items-start mb-4">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-2">
+                                <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
+                                  {job.employment_type}
+                                </Badge>
+                                {job.remote_allowed && (
+                                  <Badge className="bg-green-500">Remote OK</Badge>
+                                )}
+                                <Badge variant="outline" className="bg-blue-50">
+                                  {job.experience_level} level
+                                </Badge>
+                              </div>
+                              <h3 className="text-xl font-semibold mb-2">
+                                <Link to={`/jobs/${job.id}`} className="hover:text-purple-600 transition-colors">
+                                  {job.title}
+                                </Link>
+                              </h3>
+                              <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+                                <div className="flex items-center">
+                                  <Building className="h-4 w-4 mr-1" />
+                                  <span>{job.company}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <MapPin className="h-4 w-4 mr-1" />
+                                  <span>{job.location}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <DollarSign className="h-4 w-4 mr-1" />
+                                  <span>{formatSalary(job.salary_min, job.salary_max, job.currency)}</span>
+                                </div>
+                                <div className="flex items-center">
+                                  <Clock className="h-4 w-4 mr-1" />
+                                  <span>Posted {getTimeAgo(job.created_at)}</span>
+                                </div>
+                              </div>
+                              <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
+                              {job.skills && job.skills.length > 0 && (
+                                <div className="flex flex-wrap gap-2 mb-4">
+                                  {job.skills.slice(0, 3).map((skill) => (
+                                    <Badge key={skill} variant="outline" className="bg-blue-50">
+                                      {skill}
+                                    </Badge>
+                                  ))}
+                                  {job.skills.length > 3 && (
+                                    <Badge variant="outline" className="bg-gray-50">
+                                      +{job.skills.length - 3} more
+                                    </Badge>
+                                  )}
+                                </div>
                               )}
-                              <Badge variant="outline" className="bg-blue-50">
-                                {job.experience_level} level
-                              </Badge>
                             </div>
-                            <h3 className="text-xl font-semibold mb-2">
-                              <Link to={`/jobs/${job.id}`} className="hover:text-purple-600 transition-colors">
-                                {job.title}
+                            <div className="flex flex-col gap-2 ml-4">
+                              <Link to={`/jobs/${job.id}`}>
+                                <Button>View Details</Button>
                               </Link>
-                            </h3>
-                            <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
-                              <div className="flex items-center">
-                                <Building className="h-4 w-4 mr-1" />
-                                <span>{job.company}</span>
-                              </div>
-                              <div className="flex items-center">
-                                <MapPin className="h-4 w-4 mr-1" />
-                                <span>{job.location}</span>
-                              </div>
-                              <div className="flex items-center">
-                                <DollarSign className="h-4 w-4 mr-1" />
-                                <span>{formatSalary(job.salary_min, job.salary_max, job.currency)}</span>
-                              </div>
-                              <div className="flex items-center">
-                                <Clock className="h-4 w-4 mr-1" />
-                                <span>Posted {getTimeAgo(job.created_at)}</span>
-                              </div>
+                              {user && (
+                                <Button 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => toggleBookmark(job.id)}
+                                  className="flex items-center gap-2"
+                                >
+                                  {bookmarks.includes(job.id) ? (
+                                    <>
+                                      <BookmarkCheck className="h-4 w-4" />
+                                      Saved
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Bookmark className="h-4 w-4" />
+                                      Save Job
+                                    </>
+                                  )}
+                                </Button>
+                              )}
                             </div>
-                            <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
-                            {job.skills && job.skills.length > 0 && (
-                              <div className="flex flex-wrap gap-2 mb-4">
-                                {job.skills.slice(0, 3).map((skill) => (
-                                  <Badge key={skill} variant="outline" className="bg-blue-50">
-                                    {skill}
-                                  </Badge>
-                                ))}
-                                {job.skills.length > 3 && (
-                                  <Badge variant="outline" className="bg-gray-50">
-                                    +{job.skills.length - 3} more
-                                  </Badge>
-                                )}
-                              </div>
-                            )}
                           </div>
-                          <div className="flex flex-col gap-2 ml-4">
-                            <Link to={`/jobs/${job.id}`}>
-                              <Button>View Details</Button>
-                            </Link>
-                            {user && (
-                              <Button 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => toggleBookmark(job.id)}
-                                className="flex items-center gap-2"
-                              >
-                                {bookmarks.includes(job.id) ? (
-                                  <>
-                                    <BookmarkCheck className="h-4 w-4" />
-                                    Saved
-                                  </>
-                                ) : (
-                                  <>
-                                    <Bookmark className="h-4 w-4" />
-                                    Save Job
-                                  </>
-                                )}
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                        </CardContent>
+                      </Card>
+                    ))}
 
-                {!loading && jobs.length === 0 && (
-                  <Card className="text-center py-12">
-                    <CardContent>
-                      <Briefcase className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-                      <h3 className="text-lg font-medium mb-2">No jobs found</h3>
-                      <p className="text-gray-500 mb-4">
-                        Try adjusting your search criteria or browse all available positions.
-                      </p>
-                      <Button 
-                        variant="outline"
-                        onClick={clearFilters}
-                      >
-                        Clear All Filters
-                      </Button>
-                    </CardContent>
-                  </Card>
+                    {!loading && jobs.length === 0 && (
+                      <Card className="text-center py-12">
+                        <CardContent>
+                          <Briefcase className="h-12 w-12 mx-auto text-gray-300 mb-4" />
+                          <h3 className="text-lg font-medium mb-2">No jobs found</h3>
+                          <p className="text-gray-500 mb-4">
+                            Try adjusting your search criteria or browse all available positions.
+                          </p>
+                          <Button 
+                            variant="outline"
+                            onClick={clearFilters}
+                          >
+                            Clear All Filters
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
