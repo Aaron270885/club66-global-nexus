@@ -1,74 +1,100 @@
 
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Users, Target, Heart, Globe } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const About = () => {
   return (
     <Layout>
       <PremiumBanner
-        title="Who is behind Club66 Global?"
-        description="Learn about our mission, vision, and the passionate team building the future of premium membership in Africa."
-        backgroundImage="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        title="About Club66 Global"
+        description="Learn about our mission, vision, and commitment to empowering African communities through innovative membership benefits."
+        backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
-      
-      <div className="py-16 bg-gradient-to-br from-blue-50 to-blue-100">
+
+      <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Our Story</h2>
-              <p className="text-lg text-gray-600">
-                Club66 Global was founded with a vision to create a premium membership platform that connects people, businesses, and opportunities across Africa.
+          <div className="max-w-6xl mx-auto">
+            {/* Mission Section */}
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                To create a comprehensive membership platform that provides financial services, 
+                business opportunities, and community benefits to people across Africa, 
+                fostering economic growth and social development.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-              <Card>
-                <CardHeader>
-                  <div className="bg-blue-100 p-3 rounded-full w-16 h-16 mb-4 flex items-center justify-center">
-                    <Target className="h-8 w-8 text-blue-600" />
-                  </div>
-                  <CardTitle>Our Mission</CardTitle>
+            {/* Quick Links */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <Users className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Our Team</CardTitle>
+                  <CardDescription>Meet the people behind Club66</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">To empower individuals and businesses through exclusive benefits, networking opportunities, and premium services.</p>
+                <CardContent className="text-center">
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/about/association-members">View Team</Link>
+                  </Button>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <div className="bg-purple-100 p-3 rounded-full w-16 h-16 mb-4 flex items-center justify-center">
-                    <Globe className="h-8 w-8 text-purple-600" />
-                  </div>
-                  <CardTitle>Our Vision</CardTitle>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <Target className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Our Projects</CardTitle>
+                  <CardDescription>Community impact initiatives</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">To become Africa's leading premium membership platform, fostering growth and prosperity across the continent.</p>
+                <CardContent className="text-center">
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/about/projects">View Projects</Link>
+                  </Button>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <div className="bg-green-100 p-3 rounded-full w-16 h-16 mb-4 flex items-center justify-center">
-                    <Heart className="h-8 w-8 text-green-600" />
-                  </div>
-                  <CardTitle>Our Values</CardTitle>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <Globe className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Partners</CardTitle>
+                  <CardDescription>Our trusted partners</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">Excellence, integrity, innovation, and community empowerment guide everything we do.</p>
+                <CardContent className="text-center">
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/about/partners">View Partners</Link>
+                  </Button>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardHeader>
-                  <div className="bg-yellow-100 p-3 rounded-full w-16 h-16 mb-4 flex items-center justify-center">
-                    <Users className="h-8 w-8 text-yellow-600" />
-                  </div>
-                  <CardTitle>Our Community</CardTitle>
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <Heart className="h-8 w-8 text-purple-600 mx-auto mb-2" />
+                  <CardTitle className="text-lg">Impact Stories</CardTitle>
+                  <CardDescription>Lives we've changed</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">A diverse network of professionals, entrepreneurs, and visionaries working together for success.</p>
+                <CardContent className="text-center">
+                  <Button asChild variant="outline" className="w-full">
+                    <Link to="/about/changing-lives">View Stories</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Contact Section */}
+            <div className="text-center">
+              <Card>
+                <CardContent className="p-8">
+                  <h3 className="text-2xl font-bold mb-4">Get in Touch</h3>
+                  <p className="text-gray-600 mb-6">
+                    Have questions about our services or want to learn more? 
+                    We'd love to hear from you.
+                  </p>
+                  <Button asChild size="lg" className="bg-purple-600 hover:bg-purple-700">
+                    <Link to="/about/contact">Contact Us</Link>
+                  </Button>
                 </CardContent>
               </Card>
             </div>
