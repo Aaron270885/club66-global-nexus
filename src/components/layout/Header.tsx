@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus, ChevronDown, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu, 
@@ -48,12 +48,66 @@ const Header = () => {
               Home
             </Link>
             
-            <Link 
-              to="/about" 
-              className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
-            >
-              About
-            </Link>
+            {/* About Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
+                  <Info className="h-4 w-4 mr-1" />
+                  About
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 bg-white border shadow-lg">
+                <DropdownMenuItem asChild>
+                  <Link to="/about" className="flex items-center">
+                    <Info className="h-4 w-4 mr-2" />
+                    About Us
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/about/contact" className="flex items-center">
+                    Contact
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/projects" className="flex items-center">
+                    Projects
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/partners" className="flex items-center">
+                    Partners
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/news" className="flex items-center">
+                    News
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/association-members" className="flex items-center">
+                    Team Members
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/changing-lives" className="flex items-center">
+                    Changing Lives
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/about/terms" className="flex items-center">
+                    Terms of Use
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/about/privacy" className="flex items-center">
+                    Privacy Policy
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             <Link 
               to="/services" 
@@ -68,6 +122,7 @@ const Header = () => {
                 <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
                   <Briefcase className="h-4 w-4 mr-1" />
                   Jobs
+                  <ChevronDown className="h-4 w-4 ml-1" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56 bg-white border shadow-lg">
@@ -187,6 +242,34 @@ const Header = () => {
                 onClick={toggleMenu}
               >
                 About
+              </Link>
+              <Link 
+                to="/about/contact" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                onClick={toggleMenu}
+              >
+                Contact
+              </Link>
+              <Link 
+                to="/about/projects" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                onClick={toggleMenu}
+              >
+                Projects
+              </Link>
+              <Link 
+                to="/about/partners" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                onClick={toggleMenu}
+              >
+                Partners
+              </Link>
+              <Link 
+                to="/about/news" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                onClick={toggleMenu}
+              >
+                News
               </Link>
               <Link 
                 to="/services" 
