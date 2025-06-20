@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -9,6 +8,7 @@ export interface Job {
   company: string;
   location: string;
   employment_type: string;
+  type: string; // alias for employment_type
   salary_min?: number;
   salary_max?: number;
   currency: string;
@@ -16,6 +16,7 @@ export interface Job {
   requirements?: string;
   benefits?: string;
   experience_level: string;
+  experience_required: number; // years of experience
   skills?: string[];
   remote_allowed: boolean;
   application_count: number;
@@ -23,6 +24,8 @@ export interface Job {
   application_deadline?: string;
   posted_by?: string;
   company_id?: string;
+  featured?: boolean;
+  urgent?: boolean;
 }
 
 export const useJobs = () => {
@@ -63,7 +66,18 @@ export const useJobs = () => {
       const { data, error } = await query;
 
       if (error) throw error;
-      setJobs(data || []);
+      
+      // Transform data to match our interface
+      const transformedJobs = (data || []).map(job => ({
+        ...job,
+        type: job.employment_type,
+        experience_required: job.experience_level === 'entry' ? 0 : 
+                           job.experience_level === 'mid' ? 3 : 5,
+        featured: Math.random() > 0.8, // Random featured status for demo
+        urgent: Math.random() > 0.9, // Random urgent status for demo
+      }));
+      
+      setJobs(transformedJobs);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch jobs');
       console.error('Error fetching jobs:', err);
@@ -72,11 +86,37 @@ export const useJobs = () => {
     }
   };
 
+  const searchJobs = async (filters: {
+    title?: string;
+    location?: string;
+    type?: string;
+    experience?: string;
+    salary?: string;
+    company?: string;
+  }) => {
+    await fetchJobs({
+      search: filters.title,
+      location: filters.location,
+      employmentType: filters.type,
+      experienceLevel: filters.experience,
+    });
+  };
+
+  const bookmarkJob = async (jobId: string) => {
+    // Implementation for bookmarking
+    console.log('Bookmarking job:', jobId);
+  };
+
+  const applyToJob = async (jobId: string) => {
+    // Implementation for applying to job
+    console.log('Applying to job:', jobId);
+  };
+
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  return { jobs, loading, error, fetchJobs };
+  return { jobs, loading, error, fetchJobs, searchJobs, bookmarkJob, applyToJob };
 };
 
 export const useJobDetails = (jobId: string) => {

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Search, MapPin, Briefcase, Clock, DollarSign, Building, Heart, Share2, Filter, ChevronDown, Star, Users, Calendar } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
@@ -36,7 +35,7 @@ const Jobs = () => {
       salary: salary === 'all' ? undefined : salary,
       company: company === 'all' ? undefined : company
     });
-  }, [searchTerm, location, jobType, experience, salary, company]);
+  }, [searchTerm, location, jobType, experience, salary, company, searchJobs]);
 
   const handleBookmark = async (jobId: string) => {
     if (!user) {
@@ -78,7 +77,7 @@ const Jobs = () => {
   };
 
   const formatSalary = (min: number, max: number) => {
-    return `CFA ${min.toLocaleString()} - ${max.toLocaleString()}`;
+    return `CFA ${min?.toLocaleString() || 0} - ${max?.toLocaleString() || 0}`;
   };
 
   const getExperienceLevel = (years: number) => {
@@ -242,7 +241,7 @@ const Jobs = () => {
                             </div>
                             <div className="flex items-center gap-1">
                               <Briefcase className="h-4 w-4" />
-                              <span className="capitalize">{job.type}</span>
+                              <span className="capitalize">{job.employment_type}</span>
                             </div>
                           </div>
                         </div>
@@ -281,12 +280,12 @@ const Jobs = () => {
                           <div className="flex items-center gap-1">
                             <DollarSign className="h-4 w-4" />
                             <span className="font-medium">
-                              {formatSalary(job.salary_min, job.salary_max)}
+                              {job.salary_min && job.salary_max ? formatSalary(job.salary_min, job.salary_max) : 'Salary not specified'}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Star className="h-4 w-4" />
-                            <span>{getExperienceLevel(job.experience_required)}</span>
+                            <span>{getExperienceLevel(job.experience_required || 0)}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
