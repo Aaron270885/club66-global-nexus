@@ -7,16 +7,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { useJobs } from '@/hooks/useJobs';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { dummyJobs } from '@/data/dummyJobs';
 
 const Jobs = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { jobs, loading, searchJobs, bookmarkJob, applyToJob } = useJobs();
   
+  const [jobs, setJobs] = useState(dummyJobs);
+  const [filteredJobs, setFilteredJobs] = useState(dummyJobs);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [jobType, setJobType] = useState('all');
@@ -26,16 +28,44 @@ const Jobs = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [bookmarkedJobs, setBookmarkedJobs] = useState<string[]>([]);
 
+  // Filter jobs based on search criteria
   useEffect(() => {
-    searchJobs({ 
-      title: searchTerm, 
-      location, 
-      type: jobType === 'all' ? undefined : jobType,
-      experience: experience === 'all' ? undefined : experience,
-      salary: salary === 'all' ? undefined : salary,
-      company: company === 'all' ? undefined : company
-    });
-  }, [searchTerm, location, jobType, experience, salary, company, searchJobs]);
+    let filtered = jobs;
+
+    if (searchTerm) {
+      filtered = filtered.filter(job => 
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (location) {
+      filtered = filtered.filter(job => 
+        job.location.toLowerCase().includes(location.toLowerCase())
+      );
+    }
+
+    if (jobType !== 'all') {
+      filtered = filtered.filter(job => job.employment_type === jobType);
+    }
+
+    if (experience !== 'all') {
+      filtered = filtered.filter(job => job.experience_level === experience);
+    }
+
+    if (salary !== 'all') {
+      const [min, max] = salary.split('-').map(s => parseInt(s));
+      filtered = filtered.filter(job => {
+        if (job.salary_min && job.salary_max) {
+          return job.salary_min >= min && job.salary_max <= (max || Infinity);
+        }
+        return true;
+      });
+    }
+
+    setFilteredJobs(filtered);
+  }, [searchTerm, location, jobType, experience, salary, jobs]);
 
   const handleBookmark = async (jobId: string) => {
     if (!user) {
@@ -45,7 +75,6 @@ const Jobs = () => {
     }
     
     try {
-      await bookmarkJob(jobId);
       setBookmarkedJobs(prev => 
         prev.includes(jobId) 
           ? prev.filter(id => id !== jobId)
@@ -57,27 +86,13 @@ const Jobs = () => {
     }
   };
 
-  const handleApply = async (jobId: string) => {
-    if (!user) {
-      toast.error('Please login to apply for jobs');
-      navigate('/login');
-      return;
-    }
-    
-    try {
-      await applyToJob(jobId);
-      toast.success('Application submitted successfully!');
-    } catch (error) {
-      toast.error('Failed to apply for job');
-    }
-  };
-
   const handleQuickApply = (jobId: string) => {
     navigate(`/jobs/${jobId}?apply=true`);
   };
 
-  const formatSalary = (min: number, max: number) => {
-    return `CFA ${min?.toLocaleString() || 0} - ${max?.toLocaleString() || 0}`;
+  const formatSalary = (min?: number, max?: number) => {
+    if (!min || !max) return 'Salary not specified';
+    return `CFA ${min.toLocaleString()} - ${max.toLocaleString()}`;
   };
 
   const getExperienceLevel = (years: number) => {
@@ -151,7 +166,7 @@ const Jobs = () => {
                   <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
                 </Button>
                 <div className="text-sm text-gray-600">
-                  {jobs.length} jobs found
+                  {filteredJobs.length} jobs found
                 </div>
               </div>
               
@@ -178,7 +193,7 @@ const Jobs = () => {
                       <SelectItem value="0-500000">Under CFA 500K</SelectItem>
                       <SelectItem value="500000-1000000">CFA 500K - 1M</SelectItem>
                       <SelectItem value="1000000-2000000">CFA 1M - 2M</SelectItem>
-                      <SelectItem value="2000000+">CFA 2M+</SelectItem>
+                      <SelectItem value="2000000-5000000">CFA 2M+</SelectItem>
                     </SelectContent>
                   </Select>
                   
@@ -218,7 +233,7 @@ const Jobs = () => {
                   ))}
                 </div>
               ) : (
-                jobs.map((job) => (
+                filteredJobs.map((job) => (
                   <Card key={job.id} className="hover:shadow-lg transition-shadow border-l-4 border-l-purple-500">
                     <CardContent className="p-6">
                       <div className="flex justify-between items-start mb-4">
@@ -280,7 +295,7 @@ const Jobs = () => {
                           <div className="flex items-center gap-1">
                             <DollarSign className="h-4 w-4" />
                             <span className="font-medium">
-                              {job.salary_min && job.salary_max ? formatSalary(job.salary_min, job.salary_max) : 'Salary not specified'}
+                              {formatSalary(job.salary_min, job.salary_max)}
                             </span>
                           </div>
                           <div className="flex items-center gap-1">

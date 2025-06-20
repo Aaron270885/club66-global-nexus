@@ -1,4 +1,3 @@
-
 import { createBrowserRouter } from 'react-router-dom';
 import Index from '@/pages/Index';
 import Login from '@/pages/Login';
@@ -13,6 +12,7 @@ import FAQ from '@/pages/FAQ';
 import Jobs from '@/pages/Jobs';
 import JobDetail from '@/pages/JobDetail';
 import JobCenter from '@/pages/JobCenter';
+import PostJob from '@/pages/PostJob';
 import MembershipPayment from '@/pages/MembershipPayment';
 import ActivateCard from '@/pages/ActivateCard';
 import Cards from '@/pages/Cards';
@@ -197,6 +197,10 @@ export const router = createBrowserRouter([
   {
     path: '/job-dashboard/employer',
     element: <EmployerDashboard />,
+  },
+  {
+    path: '/post-job',
+    element: <PostJob />,
   },
   // Project Requests
   {

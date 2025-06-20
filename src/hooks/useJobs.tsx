@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
@@ -135,7 +136,18 @@ export const useJobDetails = (jobId: string) => {
           .single();
 
         if (error) throw error;
-        setJob(data);
+        
+        // Transform data to match our interface
+        const transformedJob = {
+          ...data,
+          type: data.employment_type,
+          experience_required: data.experience_level === 'entry' ? 0 : 
+                             data.experience_level === 'mid' ? 3 : 5,
+          featured: Math.random() > 0.8,
+          urgent: Math.random() > 0.9,
+        };
+        
+        setJob(transformedJob);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch job details');
         console.error('Error fetching job:', err);
