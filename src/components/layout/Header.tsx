@@ -1,7 +1,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus, ChevronDown, Info } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus, ChevronDown, Info, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu, 
@@ -161,6 +161,44 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* Our Affiliates Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
+                  <UserCheck className="h-4 w-4 mr-1" />
+                  Our Affiliates
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 bg-white border shadow-lg">
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/members" className="flex items-center">
+                    <Users className="h-4 w-4 mr-2" />
+                    Member Affiliates
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/merchants" className="flex items-center">
+                    <Building className="h-4 w-4 mr-2" />
+                    Merchant Partners
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliates/distributors" className="flex items-center">
+                    <UserCheck className="h-4 w-4 mr-2" />
+                    Distributors
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/affiliate-dashboard" className="flex items-center">
+                    <Settings className="h-4 w-4 mr-2" />
+                    Affiliate Dashboard
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Link 
               to="/discounts" 
               className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
@@ -298,6 +336,34 @@ const Header = () => {
                 onClick={toggleMenu}
               >
                 Post a Job
+              </Link>
+              <Link 
+                to="/affiliates/members" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
+                onClick={toggleMenu}
+              >
+                Member Affiliates
+              </Link>
+              <Link 
+                to="/affiliates/merchants" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
+                onClick={toggleMenu}
+              >
+                Merchant Partners
+              </Link>
+              <Link 
+                to="/affiliates/distributors" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
+                onClick={toggleMenu}
+              >
+                Distributors
+              </Link>
+              <Link 
+                to="/affiliate-dashboard" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
+                onClick={toggleMenu}
+              >
+                Affiliate Dashboard
               </Link>
               <Link 
                 to="/discounts" 
