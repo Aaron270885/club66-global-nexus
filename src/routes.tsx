@@ -52,6 +52,9 @@ import AffiliateDashboard from '@/pages/AffiliateDashboard';
 import EmployeeDashboard from '@/pages/job-dashboard/EmployeeDashboard';
 import EmployerDashboard from '@/pages/job-dashboard/EmployerDashboard';
 
+// Debug page
+import Debug from '@/pages/Debug';
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -244,6 +247,10 @@ export const router = createBrowserRouter([
   {
     path: '/admin/agents',
     element: <AgentPanel />,
+  },
+  {
+    path: '/debug',
+    element: <Debug />,
   },
   {
     path: '*',

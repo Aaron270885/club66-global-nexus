@@ -63,6 +63,8 @@ const Register = () => {
 
   const registerMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
+      console.log('🚀 Starting registration process...', { email: data.email, user_type: data.user_type });
+
       if (data.password !== data.confirmPassword) {
         throw new Error('Passwords do not match');
       }
@@ -72,45 +74,78 @@ const Register = () => {
       }
 
       // Sign up the user with additional metadata
+      console.log('📝 Calling Supabase signUp...');
       const { data: authData, error: authError } = await signUp(data.email, data.password, {
         full_name: data.full_name,
         phone: data.phone,
         user_type: data.user_type
       });
 
+      console.log('✅ SignUp result:', {
+        success: !authError,
+        userId: authData.user?.id,
+        email: authData.user?.email,
+        error: authError?.message
+      });
+
       if (authError) throw authError;
       if (!authData.user) throw new Error('Registration failed');
 
       // Create profile
-      const { error: profileError } = await supabase
+      console.log('👤 Creating profile for user:', authData.user.id);
+      const profileData = {
+        id: authData.user.id,
+        full_name: data.full_name,
+        phone: data.phone,
+        address: data.address,
+        city: data.city,
+        country: data.country
+      };
+
+      const { data: insertedProfile, error: profileError } = await supabase
         .from('profiles')
-        .insert({
-          id: authData.user.id,
-          full_name: data.full_name,
-          phone: data.phone,
-          address: data.address,
-          city: data.city,
-          country: data.country
-        });
+        .insert(profileData)
+        .select()
+        .single();
+
+      console.log('✅ Profile creation result:', {
+        success: !profileError,
+        profile: insertedProfile,
+        error: profileError?.message
+      });
 
       if (profileError) throw profileError;
 
       // Create membership only for regular members
       if (data.user_type === 'member') {
+        console.log('🎫 Creating membership for user:', authData.user.id);
         const expiryDate = new Date();
         expiryDate.setFullYear(expiryDate.getFullYear() + 1);
 
-        const { error: membershipError } = await supabase
+        const membershipData = {
+          user_id: authData.user.id,
+          tier: data.tier,
+          physical_card_requested: data.physical_card_requested,
+          expiry_date: expiryDate.toISOString()
+        };
+
+        const { data: insertedMembership, error: membershipError } = await supabase
           .from('memberships')
-          .insert({
-            user_id: authData.user.id,
-            tier: data.tier,
-            physical_card_requested: data.physical_card_requested,
-            expiry_date: expiryDate.toISOString()
-          });
+          .insert(membershipData)
+          .select()
+          .single();
+
+        console.log('✅ Membership creation result:', {
+          success: !membershipError,
+          membership: insertedMembership,
+          error: membershipError?.message
+        });
 
         if (membershipError) throw membershipError;
       }
+
+      console.log('🎉 Registration completed successfully!');
+      return { authData, profileData: insertedProfile };
 
       // Handle referral if provided
       if (data.referral_code) {

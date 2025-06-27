@@ -22,22 +22,28 @@ const LoginForm = () => {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Prevent multiple submissions
+    if (loading) return;
+
     setLoading(true);
-    
+
     try {
       const { data, error } = await signIn(emailOrPhone, password);
-      
+
       if (error) {
         toast({
           title: "Login failed",
           description: error.message,
           variant: "destructive"
         });
+        setLoading(false);
       } else {
         toast({
           title: "Login successful!",
-          description: "Welcome back to Club66 Global."
+          description: "Redirecting to your dashboard..."
         });
+        // Keep loading state true until redirect happens
         // Navigation handled by auth context
       }
     } catch (error) {
@@ -46,7 +52,6 @@ const LoginForm = () => {
         description: "An unexpected error occurred.",
         variant: "destructive"
       });
-    } finally {
       setLoading(false);
     }
   };
