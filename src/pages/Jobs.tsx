@@ -168,8 +168,8 @@ const Jobs = () => {
                     <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
                     <div className="flex justify-between items-center">
                       <div className="flex flex-wrap gap-2">
-                        {job.skills?.slice(0, 3).map((skill, index) => (
-                          <Badge key={index} variant="outline">{skill}</Badge>
+                        {job.technologies?.slice(0, 3).map((tech, index) => (
+                          <Badge key={index} variant="outline">{tech}</Badge>
                         ))}
                       </div>
                       <Button onClick={(e) => handleApplyClick(e, job)}>
