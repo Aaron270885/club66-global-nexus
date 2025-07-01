@@ -1091,6 +1091,136 @@ export type Database = {
           },
         ]
       }
+      rescue_requests: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          id: string
+          processed_date: string | null
+          request_date: string
+          request_description: string
+          rescue_value_fcfa: number
+          status: Database["public"]["Enums"]["rescue_status"]
+          subscription_id: string
+          token_balance_at_request: number
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          processed_date?: string | null
+          request_date?: string
+          request_description: string
+          rescue_value_fcfa: number
+          status?: Database["public"]["Enums"]["rescue_status"]
+          subscription_id: string
+          token_balance_at_request: number
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          processed_date?: string | null
+          request_date?: string
+          request_description?: string
+          rescue_value_fcfa?: number
+          status?: Database["public"]["Enums"]["rescue_status"]
+          subscription_id?: string
+          token_balance_at_request?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rescue_requests_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "secours_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      secours_subscriptions: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          last_rescue_claim_date: string | null
+          last_token_purchase_date: string | null
+          subscription_date: string
+          subscription_type: Database["public"]["Enums"]["secours_type"]
+          token_balance: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_rescue_claim_date?: string | null
+          last_token_purchase_date?: string | null
+          subscription_date?: string
+          subscription_type: Database["public"]["Enums"]["secours_type"]
+          token_balance?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          last_rescue_claim_date?: string | null
+          last_token_purchase_date?: string | null
+          subscription_date?: string
+          subscription_type?: Database["public"]["Enums"]["secours_type"]
+          token_balance?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      token_transactions: {
+        Row: {
+          created_at: string
+          id: string
+          payment_method: string | null
+          subscription_id: string
+          token_amount: number
+          token_value_fcfa: number
+          transaction_reference: string | null
+          transaction_type: Database["public"]["Enums"]["token_transaction_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          subscription_id: string
+          token_amount: number
+          token_value_fcfa: number
+          transaction_reference?: string | null
+          transaction_type: Database["public"]["Enums"]["token_transaction_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          payment_method?: string | null
+          subscription_id?: string
+          token_amount?: number
+          token_value_fcfa?: number
+          transaction_reference?: string | null
+          transaction_type?: Database["public"]["Enums"]["token_transaction_type"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "token_transactions_subscription_id_fkey"
+            columns: ["subscription_id"]
+            isOneToOne: false
+            referencedRelation: "secours_subscriptions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_education: {
         Row: {
           created_at: string | null
@@ -1203,6 +1333,19 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_min_max_tokens: {
+        Args: { sub_type: Database["public"]["Enums"]["secours_type"] }
+        Returns: {
+          min_tokens: number
+          max_tokens: number
+          min_value_fcfa: number
+          max_value_fcfa: number
+        }[]
+      }
+      get_token_value: {
+        Args: { sub_type: Database["public"]["Enums"]["secours_type"] }
+        Returns: number
+      }
       increment_competition_entries: {
         Args: { competition_id: string }
         Returns: undefined
@@ -1217,6 +1360,14 @@ export type Database = {
       competition_status: "upcoming" | "active" | "completed" | "cancelled"
       membership_tier: "essential" | "premium" | "elite"
       payment_status: "pending" | "completed" | "failed" | "refunded"
+      rescue_status: "pending" | "approved" | "rejected" | "completed"
+      secours_type:
+        | "motors"
+        | "cata_catanis"
+        | "auto"
+        | "telephone"
+        | "school_fees"
+      token_transaction_type: "purchase" | "rescue_claim" | "refund"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1336,6 +1487,15 @@ export const Constants = {
       competition_status: ["upcoming", "active", "completed", "cancelled"],
       membership_tier: ["essential", "premium", "elite"],
       payment_status: ["pending", "completed", "failed", "refunded"],
+      rescue_status: ["pending", "approved", "rejected", "completed"],
+      secours_type: [
+        "motors",
+        "cata_catanis",
+        "auto",
+        "telephone",
+        "school_fees",
+      ],
+      token_transaction_type: ["purchase", "rescue_claim", "refund"],
     },
   },
 } as const
