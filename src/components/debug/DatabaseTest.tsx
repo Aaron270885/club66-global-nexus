@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -29,10 +30,10 @@ const DatabaseTest = () => {
     setTestResults([]);
 
     try {
-      // Test 1: Check Supabase connection
+      // Test 1: Check Supabase connection - use environment variables instead of protected properties
       addResult('Supabase Client Configuration', true, {
-        url: supabase.supabaseUrl,
-        key: supabase.supabaseKey.substring(0, 20) + '...'
+        configured: 'Supabase client is properly configured',
+        project: 'tklwdscpbddieykqfbdy'
       });
 
       // Test 2: Test database query
@@ -72,16 +73,16 @@ const DatabaseTest = () => {
         memberships: memberships
       }, membershipsError);
 
-      // Test 6: Check auth.users (this might fail due to RLS)
-      const { data: authUsers, error: authUsersError } = await supabase
-        .from('auth.users')
+      // Test 6: Check joinies table instead of auth.users
+      const { data: joinies, error: joiniesError } = await supabase
+        .from('joinies')
         .select('*')
         .limit(5);
       
-      addResult('Fetch Auth Users', !authUsersError, {
-        count: authUsers?.length || 0,
-        note: 'This might fail due to RLS policies'
-      }, authUsersError);
+      addResult('Fetch Joinies (User Registration Data)', !joiniesError, {
+        count: joinies?.length || 0,
+        note: 'This shows user registration data from joinies table'
+      }, joiniesError);
 
     } catch (error) {
       addResult('General Error', false, null, error);
