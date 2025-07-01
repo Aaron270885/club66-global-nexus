@@ -1,4 +1,3 @@
-
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -64,7 +63,6 @@ const JobCenter = () => {
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
-            {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
               {jobStats.map((stat, index) => {
                 const IconComponent = stat.icon;
@@ -89,7 +87,6 @@ const JobCenter = () => {
               })}
             </div>
 
-            {/* Quick Actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
               <Card className="bg-gradient-to-br from-blue-50 to-blue-100">
                 <CardHeader>
@@ -154,7 +151,6 @@ const JobCenter = () => {
               </Card>
             </div>
 
-            {/* Featured Jobs */}
             <div className="mb-16">
               <div className="flex justify-between items-center mb-8">
                 <h2 className="text-3xl font-bold">Featured Jobs</h2>
@@ -208,7 +204,6 @@ const JobCenter = () => {
               </div>
             </div>
 
-            {/* Top Companies */}
             <div className="mb-16">
               <h2 className="text-3xl font-bold mb-8 text-center">Top Hiring Companies</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -228,14 +223,13 @@ const JobCenter = () => {
               </div>
             </div>
 
-            {/* CTA Section */}
             <div className="text-center">
               <Card className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
                 <CardContent className="p-12">
                   <TrendingUp className="h-16 w-16 mx-auto mb-6 opacity-90" />
                   <h2 className="text-3xl font-bold mb-4">Ready to Take the Next Step?</h2>
                   <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                    Join thousands of professionals who have found their dream jobs through Club66 Global's Job Center.
+                    Join millions of professionals who have found their dream jobs through Club66 Global's Job Center.
                   </p>
                   <div className="flex flex-wrap gap-4 justify-center">
                     <Button 

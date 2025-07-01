@@ -1,4 +1,3 @@
-
 import { lazy } from 'react';
 
 import Home from '@/pages/Index';
@@ -21,6 +20,8 @@ import AffiliateDashboard from '@/pages/AffiliateDashboard';
 import Debug from '@/pages/Debug';
 
 import OSecours from '@/pages/services/OSecours';
+import PaydayAdvance from '@/pages/services/PaydayAdvance';
+import Cards from '@/pages/Cards';
 
 // Add the new route to the existing routes array
 const routes = [
@@ -97,8 +98,16 @@ const routes = [
     element: <Debug />,
   },
   {
+    path: '/services/payday-advance',
+    element: <PaydayAdvance />,
+  },
+  {
     path: '/services/o-secours',
     element: <OSecours />,
+  },
+  {
+    path: '/cards',
+    element: <Cards />,
   },
 ];
 
