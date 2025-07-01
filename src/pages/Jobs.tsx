@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { jobListings } from '@/data/jobListings';
+import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
