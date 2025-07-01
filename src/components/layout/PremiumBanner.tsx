@@ -23,20 +23,20 @@ const PremiumBanner = ({
   backUrl,
   variant = 'default'
 }: PremiumBannerProps) => {
-  const defaultBgImage = 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80';
+  const defaultBgImage = 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80';
   
   const heightClasses = variant === 'compact' ? 'py-12 md:py-16' : 'py-20 md:py-32';
   
   return (
     <section className={`relative ${heightClasses} bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 overflow-hidden`}>
-      <div className="absolute inset-0 opacity-30">
+      <div className="absolute inset-0 opacity-60">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${backgroundImage || defaultBgImage}')`
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/70 to-indigo-900/70" />
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-indigo-900/40" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">

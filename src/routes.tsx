@@ -22,6 +22,9 @@ import Debug from '@/pages/Debug';
 import Jobs from '@/pages/Jobs';
 import JobCenter from '@/pages/JobCenter';
 import Discounts from '@/pages/Discounts';
+import Competitions from '@/pages/Competitions';
+import Affiliates from '@/pages/Affiliates';
+import AffiliateProgram from '@/pages/AffiliateProgram';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
@@ -78,6 +81,14 @@ const routes = [
     element: <PaydayLoan />,
   },
   {
+    path: '/services/o-secours',
+    element: <OSecours />,
+  },
+  {
+    path: '/services/payday-advance',
+    element: <PaydayAdvance />,
+  },
+  {
     path: '/membership-payment',
     element: <MembershipPayment />,
   },
@@ -102,14 +113,6 @@ const routes = [
     element: <Debug />,
   },
   {
-    path: '/services/payday-advance',
-    element: <PaydayAdvance />,
-  },
-  {
-    path: '/services/o-secours',
-    element: <OSecours />,
-  },
-  {
     path: '/cards',
     element: <Cards />,
   },
@@ -124,6 +127,18 @@ const routes = [
   {
     path: '/discounts',
     element: <Discounts />,
+  },
+  {
+    path: '/competitions',
+    element: <Competitions />,
+  },
+  {
+    path: '/affiliates',
+    element: <Affiliates />,
+  },
+  {
+    path: '/affiliate-program',
+    element: <AffiliateProgram />,
   },
 ];
 
