@@ -1,221 +1,284 @@
 
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MapPin, Phone, Mail, Percent, Search } from 'lucide-react';
-import { toast } from 'sonner';
-import { useAuth } from '@/hooks/useAuth';
-
-interface Merchant {
-  id: string;
-  name: string;
-  logo_url: string;
-  sector: string;
-  location: string;
-  contact_phone: string;
-  contact_email: string;
-  discount_percentage: number;
-  is_active: boolean;
-}
+import { 
+  Search, 
+  MapPin, 
+  Percent, 
+  Store, 
+  Star,
+  Home,
+  DollarSign,
+  Plane,
+  Hotel,
+  Shirt,
+  Sparkles,
+  Car,
+  Footprints,
+  Bike,
+  Smartphone,
+  Monitor,
+  Sofa,
+  MoreHorizontal
+} from 'lucide-react';
+import { useState } from 'react';
 
 const Discounts = () => {
-  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSector, setSelectedSector] = useState<string>('all');
-  const queryClient = useQueryClient();
+  const [selectedSector, setSelectedSector] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
 
-  const { data: merchants, isLoading } = useQuery({
-    queryKey: ['merchants'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('merchants')
-        .select('*')
-        .eq('is_active', true)
-        .order('name');
-      
-      if (error) throw error;
-      return data as Merchant[];
-    }
-  });
+  const discountSectors = [
+    { name: 'Real Estate Services', icon: Home, color: 'bg-blue-500' },
+    { name: 'Financial Services', icon: DollarSign, color: 'bg-green-500' },
+    { name: 'Travel Agencies', icon: Plane, color: 'bg-purple-500' },
+    { name: 'Hotels and Accommodation', icon: Hotel, color: 'bg-orange-500' },
+    { name: 'Textiles', icon: Shirt, color: 'bg-pink-500' },
+    { name: 'Clothing', icon: Shirt, color: 'bg-indigo-500' },
+    { name: 'Cosmetics and Beauty Spots', icon: Sparkles, color: 'bg-rose-500' },
+    { name: 'Cars', icon: Car, color: 'bg-red-500' },
+    { name: 'Footwears', icon: Footprints, color: 'bg-yellow-500' },
+    { name: 'Motorbikes', icon: Bike, color: 'bg-gray-500' },
+    { name: 'Mobile Phones', icon: Smartphone, color: 'bg-blue-600' },
+    { name: 'Electronic Equipments', icon: Monitor, color: 'bg-cyan-500' },
+    { name: 'Furniture', icon: Sofa, color: 'bg-amber-500' },
+    { name: 'Other Services', icon: MoreHorizontal, color: 'bg-slate-500' }
+  ];
 
-  const useDiscountMutation = useMutation({
-    mutationFn: async (merchantId: string) => {
-      if (!user) throw new Error('Please login to use discounts');
-
-      const { error } = await supabase
-        .from('discount_usage')
-        .insert({
-          user_id: user.id,
-          merchant_id: merchantId,
-          used_at: new Date().toISOString()
-        });
-
-      if (error) throw error;
+  const sampleDiscounts = [
+    {
+      id: 1,
+      merchant: 'TechMart Electronics',
+      sector: 'Electronic Equipments',
+      discount: '25%',
+      description: 'Latest smartphones, laptops, and accessories',
+      location: 'Bamako, Mali',
+      rating: 4.8,
+      image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
     },
-    onSuccess: () => {
-      toast.success('Discount usage recorded! Show this to the merchant.');
-      queryClient.invalidateQueries({ queryKey: ['discount-usage'] });
+    {
+      id: 2,
+      merchant: 'Fashion Forward',
+      sector: 'Clothing',
+      discount: '30%',
+      description: 'Trendy clothing for men and women',
+      location: 'Dakar, Senegal',
+      rating: 4.6,
+      image: 'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
     },
-    onError: (error: any) => {
-      toast.error('Failed to record discount usage');
-      console.error('Discount usage error:', error);
+    {
+      id: 3,
+      merchant: 'BeautyGlow Spa',
+      sector: 'Cosmetics and Beauty Spots',
+      discount: '40%',
+      description: 'Premium beauty treatments and cosmetics',
+      location: 'Abidjan, Ivory Coast',
+      rating: 4.9,
+      image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 4,
+      merchant: 'AutoDeals Mali',
+      sector: 'Cars',
+      discount: '15%',
+      description: 'New and used cars, financing available',
+      location: 'Bamako, Mali',
+      rating: 4.5,
+      image: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 5,
+      merchant: 'Paradise Hotels',
+      sector: 'Hotels and Accommodation',
+      discount: '35%',
+      description: 'Luxury hotels and resorts across Africa',
+      location: 'Multiple Locations',
+      rating: 4.7,
+      image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 6,
+      merchant: 'Home Comfort',
+      sector: 'Furniture',
+      discount: '20%',
+      description: 'Quality furniture for your home and office',
+      location: 'Ouagadougou, Burkina Faso',
+      rating: 4.4,
+      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
     }
+  ];
+
+  const filteredDiscounts = sampleDiscounts.filter(discount => {
+    const matchesSearch = discount.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         discount.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSector = !selectedSector || discount.sector === selectedSector;
+    const matchesLocation = !selectedLocation || discount.location.toLowerCase().includes(selectedLocation.toLowerCase());
+    
+    return matchesSearch && matchesSector && matchesLocation;
   });
-
-  const sectors = [...new Set(merchants?.map(m => m.sector) || [])];
-  
-  const filteredMerchants = merchants?.filter(merchant => {
-    const matchesSearch = merchant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         merchant.location.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSector = selectedSector === 'all' || merchant.sector === selectedSector;
-    return matchesSearch && matchesSector;
-  });
-
-  const getSectorColor = (sector: string) => {
-    const colors: { [key: string]: string } = {
-      health: 'bg-red-100 text-red-800',
-      food: 'bg-orange-100 text-orange-800',
-      transport: 'bg-blue-100 text-blue-800',
-      education: 'bg-green-100 text-green-800',
-      retail: 'bg-purple-100 text-purple-800',
-      finance: 'bg-yellow-100 text-yellow-800',
-      technology: 'bg-indigo-100 text-indigo-800',
-    };
-    return colors[sector] || 'bg-gray-100 text-gray-800';
-  };
-
-  const handleUseDiscount = (merchantId: string) => {
-    if (!user) {
-      toast.error('Please login to use discounts');
-      return;
-    }
-    useDiscountMutation.mutate(merchantId);
-  };
-
-  if (isLoading) {
-    return (
-      <Layout>
-        <div className="flex justify-center items-center min-h-screen">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-500"></div>
-        </div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>
       <PremiumBanner
-        title="Member Discounts"
-        description="Exclusive discounts for Club66 Global members across various sectors including health, food, transport, and education."
-        backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        title="Exclusive Member Discounts"
+        description="Unlock amazing savings with your Club66 membership across thousands of partner merchants"
+        backgroundImage="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
 
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
-          {/* Search and Filter Section */}
-          <div className="mb-8">
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  placeholder="Search merchants or locations..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-              <Select value={selectedSector} onValueChange={setSelectedSector}>
-                <SelectTrigger className="w-full md:w-48">
-                  <SelectValue placeholder="Select sector" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Sectors</SelectItem>
-                  {sectors.map(sector => (
-                    <SelectItem key={sector} value={sector}>
-                      {sector.charAt(0).toUpperCase() + sector.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Merchants Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredMerchants?.map((merchant) => (
-              <Card key={merchant.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader className="text-center">
-                  <div className="mx-auto mb-4">
-                    <img 
-                      src={merchant.logo_url || 'https://placehold.co/100x100/e9d5ff/7c3aed?text=' + merchant.name.charAt(0)}
-                      alt={merchant.name}
-                      className="w-16 h-16 rounded-full object-cover mx-auto"
+          <div className="max-w-7xl mx-auto">
+            
+            {/* Search and Filters */}
+            <Card className="mb-8">
+              <CardContent className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Search merchants..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
                     />
                   </div>
-                  <CardTitle className="text-lg">{merchant.name}</CardTitle>
-                  <CardDescription>
-                    <Badge className={getSectorColor(merchant.sector)}>
-                      {merchant.sector.charAt(0).toUpperCase() + merchant.sector.slice(1)}
-                    </Badge>
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="text-center">
-                      <div className="flex items-center justify-center mb-2">
-                        <Percent className="h-6 w-6 mr-2 text-green-600" />
-                        <span className="text-2xl font-bold text-green-600">
-                          {merchant.discount_percentage}% OFF
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center">
-                        <MapPin className="h-4 w-4 mr-2 text-gray-500" />
-                        <span>{merchant.location}</span>
-                      </div>
-                      
-                      {merchant.contact_phone && (
-                        <div className="flex items-center">
-                          <Phone className="h-4 w-4 mr-2 text-gray-500" />
-                          <span>{merchant.contact_phone}</span>
-                        </div>
-                      )}
-                      
-                      {merchant.contact_email && (
-                        <div className="flex items-center">
-                          <Mail className="h-4 w-4 mr-2 text-gray-500" />
-                          <span className="truncate">{merchant.contact_email}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    <Button 
-                      onClick={() => handleUseDiscount(merchant.id)}
-                      className="w-full bg-purple-600 hover:bg-purple-700"
-                      disabled={useDiscountMutation.isPending}
-                    >
-                      {useDiscountMutation.isPending ? 'Recording...' : 'Use Discount'}
-                    </Button>
+                  <Select value={selectedSector} onValueChange={setSelectedSector}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Sector" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">All Sectors</SelectItem>
+                      {discountSectors.map((sector, index) => (
+                        <SelectItem key={index} value={sector.name}>{sector.name}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <div className="relative">
+                    <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      type="text"
+                      placeholder="Location..."
+                      value={selectedLocation}
+                      onChange={(e) => setSelectedLocation(e.target.value)}
+                      className="pl-10"
+                    />
                   </div>
+                  <Button className="w-full">
+                    <Search className="h-4 w-4 mr-2" />
+                    Search
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Discount Sectors */}
+            <div className="mb-12">
+              <h2 className="text-3xl font-bold text-center mb-8">Discount Sectors</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                {discountSectors.map((sector, index) => {
+                  const Icon = sector.icon;
+                  return (
+                    <Card 
+                      key={index} 
+                      className="hover:shadow-lg transition-shadow cursor-pointer"
+                      onClick={() => setSelectedSector(sector.name)}
+                    >
+                      <CardContent className="p-4 text-center">
+                        <div className={`w-12 h-12 ${sector.color} rounded-full mx-auto mb-3 flex items-center justify-center`}>
+                          <Icon className="h-6 w-6 text-white" />
+                        </div>
+                        <h3 className="font-semibold text-sm">{sector.name}</h3>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Featured Discounts */}
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold mb-6">
+                {filteredDiscounts.length} Discount{filteredDiscounts.length !== 1 ? 's' : ''} Available
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredDiscounts.map((discount) => (
+                <Card key={discount.id} className="hover:shadow-lg transition-shadow overflow-hidden">
+                  <div className="relative">
+                    <img 
+                      src={discount.image} 
+                      alt={discount.merchant}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-red-500 text-white text-lg font-bold">
+                        {discount.discount} OFF
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>{discount.merchant}</span>
+                      <div className="flex items-center">
+                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                        <span className="text-sm text-gray-600 ml-1">{discount.rating}</span>
+                      </div>
+                    </CardTitle>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Store className="h-4 w-4 mr-1" />
+                      {discount.sector}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-700 mb-4">{discount.description}</p>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center text-sm text-gray-600">
+                        <MapPin className="h-4 w-4 mr-1" />
+                        {discount.location}
+                      </div>
+                      <div className="flex items-center text-lg font-bold text-green-600">
+                        <Percent className="h-5 w-5 mr-1" />
+                        {discount.discount}
+                      </div>
+                    </div>
+                    <Button className="w-full">
+                      Claim Discount
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {filteredDiscounts.length === 0 && (
+              <div className="text-center py-12">
+                <Store className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">No discounts found</h3>
+                <p className="text-gray-500">Try adjusting your search criteria</p>
+              </div>
+            )}
+
+            {/* CTA Section */}
+            <div className="mt-16 text-center">
+              <Card className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+                <CardContent className="p-12">
+                  <h2 className="text-3xl font-bold mb-4">Unlock More Discounts</h2>
+                  <p className="text-xl mb-8 opacity-90">
+                    Upgrade your membership to access even more exclusive discounts and benefits
+                  </p>
+                  <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
+                    Upgrade Membership
+                  </Button>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-
-          {filteredMerchants?.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No merchants found matching your criteria</p>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </Layout>

@@ -54,7 +54,7 @@ const Footer = () => {
                 <Link to="/about" className="text-gray-300 hover:text-club66-gold text-sm">About Us</Link>
               </li>
               <li>
-                <Link to="/jobs" className="text-gray-300 hover:text-club66-gold text-sm">Job Center</Link>
+                <Link to="/job-center" className="text-gray-300 hover:text-club66-gold text-sm">Job Center</Link>
               </li>
             </ul>
           </div>
@@ -67,7 +67,7 @@ const Footer = () => {
                 <Link to="/faq" className="text-gray-300 hover:text-club66-gold text-sm">FAQ</Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-300 hover:text-club66-gold text-sm">Contact Us</Link>
+                <Link to="/about/contact" className="text-gray-300 hover:text-club66-gold text-sm">Contact Us</Link>
               </li>
               <li>
                 <Link to="/privacy" className="text-gray-300 hover:text-club66-gold text-sm">Privacy Policy</Link>

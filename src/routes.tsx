@@ -1,3 +1,4 @@
+
 import { lazy } from 'react';
 
 import Home from '@/pages/Index';
@@ -18,6 +19,9 @@ import JobDashboardEmployee from '@/pages/job-dashboard/EmployeeDashboard';
 import JobDashboardEmployer from '@/pages/job-dashboard/EmployerDashboard';
 import AffiliateDashboard from '@/pages/AffiliateDashboard';
 import Debug from '@/pages/Debug';
+import Jobs from '@/pages/Jobs';
+import JobCenter from '@/pages/JobCenter';
+import Discounts from '@/pages/Discounts';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
@@ -108,6 +112,18 @@ const routes = [
   {
     path: '/cards',
     element: <Cards />,
+  },
+  {
+    path: '/jobs',
+    element: <Jobs />,
+  },
+  {
+    path: '/job-center',
+    element: <JobCenter />,
+  },
+  {
+    path: '/discounts',
+    element: <Discounts />,
   },
 ];
 
