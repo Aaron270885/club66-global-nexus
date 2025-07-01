@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { Motorcycle, Car, Phone, GraduationCap, Truck } from 'lucide-react';
+import { Bike, Car, Phone, GraduationCap, Truck } from 'lucide-react';
 
 const SecoursSubscriptions = () => {
   const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ const SecoursSubscriptions = () => {
       type: 'motors',
       name: 'Ô Secours Motors',
       description: 'Motorcycle breakdown assistance',
-      icon: Motorcycle,
+      icon: Bike,
       tokenValue: 250,
       minTokens: 30,
       maxTokens: 60,
@@ -97,7 +97,7 @@ const SecoursSubscriptions = () => {
   });
 
   const createSubscriptionMutation = useMutation({
-    mutationFn: async (subscriptionType: string) => {
+    mutationFn: async (subscriptionType: 'motors' | 'cata_catanis' | 'auto' | 'telephone' | 'school_fees') => {
       const { data, error } = await supabase
         .from('secours_subscriptions')
         .insert({
@@ -208,7 +208,7 @@ const SecoursSubscriptions = () => {
 
                 {!subscription ? (
                   <Button 
-                    onClick={() => createSubscriptionMutation.mutate(subType.type)}
+                    onClick={() => createSubscriptionMutation.mutate(subType.type as 'motors' | 'cata_catanis' | 'auto' | 'telephone' | 'school_fees')}
                     disabled={createSubscriptionMutation.isPending}
                     className="w-full"
                   >

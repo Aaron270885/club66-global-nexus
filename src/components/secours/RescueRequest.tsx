@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from 'sonner';
-import { SOS, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 
 const RescueRequest = () => {
   const queryClient = useQueryClient();
@@ -181,7 +181,7 @@ const RescueRequest = () => {
       <Card className="max-w-2xl mx-auto">
         <CardContent className="pt-6">
           <div className="text-center space-y-4">
-            <SOS className="h-12 w-12 text-gray-400 mx-auto" />
+            <AlertTriangle className="h-12 w-12 text-gray-400 mx-auto" />
             <h3 className="text-lg font-semibold text-gray-900">No Subscriptions Found</h3>
             <p className="text-gray-600">
               You need to subscribe to at least one Ô Secours service before you can request rescue assistance.
@@ -206,7 +206,7 @@ const RescueRequest = () => {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <SOS className="h-5 w-5" />
+              <AlertTriangle className="h-5 w-5" />
               New Rescue Request
             </CardTitle>
             <CardDescription>

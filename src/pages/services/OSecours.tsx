@@ -7,7 +7,7 @@ import TokenPurchase from '@/components/secours/TokenPurchase';
 import RescueRequest from '@/components/secours/RescueRequest';
 import SecoursStats from '@/components/secours/SecoursStats';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Coins, SOS, BarChart3 } from 'lucide-react';
+import { Shield, Coins, AlertTriangle, BarChart3 } from 'lucide-react';
 
 const OSecours = () => {
   const [activeTab, setActiveTab] = useState('subscriptions');
@@ -35,7 +35,7 @@ const OSecours = () => {
                   Buy Tokens
                 </TabsTrigger>
                 <TabsTrigger value="rescue" className="flex items-center gap-2">
-                  <SOS className="h-4 w-4" />
+                  <AlertTriangle className="h-4 w-4" />
                   Request Rescue
                 </TabsTrigger>
                 <TabsTrigger value="stats" className="flex items-center gap-2">

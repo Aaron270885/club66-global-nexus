@@ -10,7 +10,7 @@ import {
   ShoppingCart, 
   PiggyBank,
   Shield,
-  SOS
+  AlertTriangle
 } from 'lucide-react';
 
 const Services = () => {
@@ -46,7 +46,7 @@ const Services = () => {
     {
       title: 'Ô Secours',
       description: 'Emergency assistance through token-based subscriptions',
-      icon: SOS,
+      icon: AlertTriangle,
       path: '/services/o-secours',
       color: 'bg-red-500'
     }

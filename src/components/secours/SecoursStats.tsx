@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { TrendingUp, Shield, Coins, SOS } from 'lucide-react';
+import { TrendingUp, Shield, Coins, AlertTriangle } from 'lucide-react';
 
 const SecoursStats = () => {
   // Fetch user's subscriptions with detailed stats
@@ -162,7 +162,7 @@ const SecoursStats = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Rescue Requests</CardTitle>
-            <SOS className="h-4 w-4 text-orange-600" />
+            <AlertTriangle className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalRescueRequests}</div>
@@ -207,7 +207,7 @@ const SecoursStats = () => {
                 <Tooltip />
                 <Bar 
                   dataKey="tokens" 
-                  fill={(entry) => getSubscriptionTypeColor(entry.type)}
+                  fill="#3b82f6"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>

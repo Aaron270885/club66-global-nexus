@@ -1,11 +1,12 @@
+
 import { lazy } from 'react';
 
-import Home from '@/pages/Home';
+import Home from '@/pages/Index';
 import About from '@/pages/About';
-import Contact from '@/pages/Contact';
+import Contact from '@/pages/about/Contact';
 import Pricing from '@/pages/Pricing';
-import Terms from '@/pages/Terms';
-import Privacy from '@/pages/Privacy';
+import Terms from '@/pages/about/Terms';
+import Privacy from '@/pages/about/Privacy';
 import Register from '@/pages/Register';
 import Login from '@/pages/Login';
 import Logout from '@/pages/Logout';
@@ -17,9 +18,9 @@ import PaydayLoan from '@/pages/services/PaydayLoan';
 import MembershipPayment from '@/pages/MembershipPayment';
 import Profile from '@/pages/Profile';
 import Dashboard from '@/pages/Dashboard';
-import JobDashboardEmployee from '@/pages/job-dashboard/employee';
-import JobDashboardEmployer from '@/pages/job-dashboard/employer';
-import AffiliateDashboard from '@/pages/affiliate-dashboard';
+import JobDashboardEmployee from '@/pages/job-dashboard/EmployeeDashboard';
+import JobDashboardEmployer from '@/pages/job-dashboard/EmployerDashboard';
+import AffiliateDashboard from '@/pages/AffiliateDashboard';
 import Debug from '@/pages/Debug';
 
 import OSecours from '@/pages/services/OSecours';
