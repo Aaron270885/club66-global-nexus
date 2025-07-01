@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -73,16 +72,16 @@ const DatabaseTest = () => {
         memberships: memberships
       }, membershipsError);
 
-      // Test 6: Check joinies table instead of auth.users
-      const { data: joinies, error: joiniesError } = await supabase
-        .from('joinies')
+      // Test 6: Check available tables by testing agents table
+      const { data: agents, error: agentsError } = await supabase
+        .from('agents')
         .select('*')
         .limit(5);
       
-      addResult('Fetch Joinies (User Registration Data)', !joiniesError, {
-        count: joinies?.length || 0,
-        note: 'This shows user registration data from joinies table'
-      }, joiniesError);
+      addResult('Fetch Agents (System Data)', !agentsError, {
+        count: agents?.length || 0,
+        note: 'This shows agent/referral data from agents table'
+      }, agentsError);
 
     } catch (error) {
       addResult('General Error', false, null, error);
