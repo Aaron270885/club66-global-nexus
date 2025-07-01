@@ -7,9 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { Bike, Car, Phone, GraduationCap, Truck } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const SecoursSubscriptions = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   const subscriptionTypes = [
     {
@@ -79,7 +81,8 @@ const SecoursSubscriptions = () => {
       
       if (error) throw error;
       return data;
-    }
+    },
+    enabled: !!user
   });
 
   // Check if user has membership
@@ -93,14 +96,18 @@ const SecoursSubscriptions = () => {
       
       if (error && error.code !== 'PGRST116') throw error;
       return data;
-    }
+    },
+    enabled: !!user
   });
 
   const createSubscriptionMutation = useMutation({
     mutationFn: async (subscriptionType: 'motors' | 'cata_catanis' | 'auto' | 'telephone' | 'school_fees') => {
+      if (!user) throw new Error('User not authenticated');
+      
       const { data, error } = await supabase
         .from('secours_subscriptions')
         .insert({
+          user_id: user.id,
           subscription_type: subscriptionType,
           token_balance: 0
         })
@@ -122,6 +129,24 @@ const SecoursSubscriptions = () => {
   const getSubscriptionStatus = (type: string) => {
     return subscriptions?.find(sub => sub.subscription_type === type);
   };
+
+  if (!user) {
+    return (
+      <Card className="max-w-2xl mx-auto">
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <h3 className="text-lg font-semibold text-gray-900">Authentication Required</h3>
+            <p className="text-gray-600">
+              Please log in to access Ô Secours services.
+            </p>
+            <Button asChild>
+              <a href="/login">Log In</a>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (!membership) {
     return (

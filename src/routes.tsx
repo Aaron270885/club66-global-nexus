@@ -4,19 +4,16 @@ import { lazy } from 'react';
 import Home from '@/pages/Index';
 import About from '@/pages/About';
 import Contact from '@/pages/about/Contact';
-import Pricing from '@/pages/Pricing';
 import Terms from '@/pages/about/Terms';
 import Privacy from '@/pages/about/Privacy';
 import Register from '@/pages/Register';
 import Login from '@/pages/Login';
-import Logout from '@/pages/Logout';
 import Services from '@/pages/services';
 import CreditAccount from '@/pages/services/CreditAccount';
 import CreditSystem from '@/pages/services/CreditSystem';
 import HirePurchase from '@/pages/services/HirePurchase';
 import PaydayLoan from '@/pages/services/PaydayLoan';
 import MembershipPayment from '@/pages/MembershipPayment';
-import Profile from '@/pages/Profile';
 import Dashboard from '@/pages/Dashboard';
 import JobDashboardEmployee from '@/pages/job-dashboard/EmployeeDashboard';
 import JobDashboardEmployer from '@/pages/job-dashboard/EmployerDashboard';
@@ -40,10 +37,6 @@ const routes = [
     element: <Contact />,
   },
   {
-    path: '/pricing',
-    element: <Pricing />,
-  },
-  {
     path: '/terms',
     element: <Terms />,
   },
@@ -58,10 +51,6 @@ const routes = [
   {
     path: '/login',
     element: <Login />,
-  },
-  {
-    path: '/logout',
-    element: <Logout />,
   },
   {
     path: '/services',
@@ -86,10 +75,6 @@ const routes = [
   {
     path: '/membership-payment',
     element: <MembershipPayment />,
-  },
-  {
-    path: '/profile',
-    element: <Profile />,
   },
   {
     path: '/dashboard',
