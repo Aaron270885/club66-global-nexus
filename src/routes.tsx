@@ -1,3 +1,4 @@
+
 import { lazy } from 'react';
 
 import Home from '@/pages/Index';
@@ -27,12 +28,16 @@ import AffiliateProgram from '@/pages/AffiliateProgram';
 import AffiliateMembers from '@/pages/affiliates/Members';
 import AffiliateMerchants from '@/pages/affiliates/Merchants';
 import AffiliateDistributors from '@/pages/affiliates/Distributors';
+import Team from '@/pages/Team';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
 import SchoolFees from '@/pages/services/secours/SchoolFees';
 import MotorbikesSupport from '@/pages/services/secours/MotorbikesSupport';
 import MobilePhones from '@/pages/services/secours/MobilePhones';
+import AutoServices from '@/pages/services/secours/AutoServices';
+import FirstAid from '@/pages/services/secours/FirstAid';
+import CataCatani from '@/pages/services/secours/CataCatani';
 import Cards from '@/pages/Cards';
 
 // Add the new route to the existing routes array
@@ -56,6 +61,10 @@ const routes = [
   {
     path: '/privacy',
     element: <Privacy />,
+  },
+  {
+    path: '/team',
+    element: <Team />,
   },
   {
     path: '/register',
@@ -168,6 +177,18 @@ const routes = [
   {
     path: '/services/secours/mobile-phones',
     element: <MobilePhones />,
+  },
+  {
+    path: '/services/secours/auto-services',
+    element: <AutoServices />,
+  },
+  {
+    path: '/services/secours/first-aid',
+    element: <FirstAid />,
+  },
+  {
+    path: '/services/secours/cata-catani',
+    element: <CataCatani />,
   },
 ];
 

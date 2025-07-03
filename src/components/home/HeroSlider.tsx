@@ -40,7 +40,7 @@ const HeroSlider = () => {
       title: 'Join Club66 Global',
       subtitle: 'Premium Membership Platform',
       description: 'Unlock exclusive benefits, discounts, and opportunities through our premium membership experience designed for the African elite.',
-      backgroundImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Start Your Journey', link: '/membership-payment' },
       secondaryButton: { text: 'Explore Benefits', link: '/discounts' }
     },
@@ -49,7 +49,7 @@ const HeroSlider = () => {
       title: 'ZENIKA Cards',
       subtitle: 'Premium Membership Cards',
       description: 'Choose from Essential, Premium, or Elite cards. Each tier offers unique benefits and exclusive access to our growing network across Africa.',
-      backgroundImage: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Get Your Card', link: '/cards' },
       secondaryButton: { text: 'View Plans', link: '/cards' }
     },
@@ -58,7 +58,7 @@ const HeroSlider = () => {
       title: 'Ô Secours',
       subtitle: 'Emergency Assistance',
       description: 'Get emergency help when you need it most with our token-based rescue system. Available 24/7 across African countries.',
-      backgroundImage: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Get Protected', link: '/services/o-secours' },
       secondaryButton: { text: 'Learn More', link: '/services/o-secours' }
     },
@@ -67,7 +67,7 @@ const HeroSlider = () => {
       title: 'Mobile App',
       subtitle: 'Everything In Your Pocket',
       description: 'Manage your membership, access benefits, and connect with our African community on the go with our premium mobile application.',
-      backgroundImage: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Download App', link: '/app' },
       secondaryButton: { text: 'Learn More', link: '/app' }
     },
@@ -76,7 +76,7 @@ const HeroSlider = () => {
       title: 'Job Center',
       subtitle: 'Career Opportunities',
       description: 'Find your dream job or hire top talent through our comprehensive job portal designed for African professionals.',
-      backgroundImage: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Browse Jobs', link: '/jobs' },
       secondaryButton: { text: 'Post Jobs', link: '/job-dashboard/employer' }
     }
@@ -90,7 +90,7 @@ const HeroSlider = () => {
         opts={{
           align: "start",
           loop: true,
-          duration: 35, // Smoother transition duration
+          duration: 35,
         }}
       >
         <CarouselContent className="transition-all duration-1000 ease-out">
@@ -175,8 +175,8 @@ const HeroSlider = () => {
                           <div className="flex items-center justify-center mb-2">
                             <Users className="h-6 w-6 text-blue-400" />
                           </div>
-                          <p className="text-3xl font-bold text-white">500+</p>
-                          <p className="text-sm text-gray-300">Partner Businesses</p>
+                          <p className="text-3xl font-bold text-white">2M+</p>
+                          <p className="text-sm text-gray-300">Members</p>
                         </div>
                       </div>
                     </div>
