@@ -1,4 +1,3 @@
-
 import { lazy } from 'react';
 
 import Home from '@/pages/Index';
@@ -31,6 +30,9 @@ import AffiliateDistributors from '@/pages/affiliates/Distributors';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
+import SchoolFees from '@/pages/services/secours/SchoolFees';
+import MotorbikesSupport from '@/pages/services/secours/MotorbikesSupport';
+import MobilePhones from '@/pages/services/secours/MobilePhones';
 import Cards from '@/pages/Cards';
 
 // Add the new route to the existing routes array
@@ -82,14 +84,6 @@ const routes = [
   {
     path: '/services/payday-loan',
     element: <PaydayLoan />,
-  },
-  {
-    path: '/services/o-secours',
-    element: <OSecours />,
-  },
-  {
-    path: '/services/payday-advance',
-    element: <PaydayAdvance />,
   },
   {
     path: '/membership-payment',
@@ -154,6 +148,26 @@ const routes = [
   {
     path: '/affiliates/distributors',
     element: <AffiliateDistributors />,
+  },
+  {
+    path: '/services/o-secours',
+    element: <OSecours />,
+  },
+  {
+    path: '/services/payday-advance',
+    element: <PaydayAdvance />,
+  },
+  {
+    path: '/services/secours/school-fees',
+    element: <SchoolFees />,
+  },
+  {
+    path: '/services/secours/motorbikes',
+    element: <MotorbikesSupport />,
+  },
+  {
+    path: '/services/secours/mobile-phones',
+    element: <MobilePhones />,
   },
 ];
 
