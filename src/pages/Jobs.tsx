@@ -11,16 +11,55 @@ import { MapPin, Clock, DollarSign, Search, Briefcase, Building } from 'lucide-r
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { jobListings } from '@/data/jobListings';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
-  const [filteredJobs, setFilteredJobs] = useState(jobListings);
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  // Sample job data
+  const jobListings = [
+    {
+      id: '1',
+      title: 'Software Engineer',
+      company: { name: 'TechCorp Mali' },
+      location: 'Bamako, Mali',
+      type: 'Full-time',
+      salary: 2500,
+      posted: '2 days ago',
+      description: 'We are looking for a skilled Software Engineer to join our growing team in Bamako.',
+      technologies: ['React', 'Node.js', 'TypeScript'],
+      featured: true
+    },
+    {
+      id: '2',
+      title: 'Marketing Manager',
+      company: { name: 'Digital Solutions' },
+      location: 'Dakar, Senegal',
+      type: 'Full-time',
+      salary: 1800,
+      posted: '1 week ago',
+      description: 'Lead our marketing initiatives across West Africa.',
+      technologies: ['Digital Marketing', 'SEO', 'Social Media'],
+      featured: false
+    },
+    {
+      id: '3',
+      title: 'Financial Analyst',
+      company: { name: 'Club66 Global' },
+      location: 'Abidjan, Ivory Coast',
+      type: 'Full-time',
+      salary: 2200,
+      posted: '3 days ago',
+      description: 'Analyze financial data and provide insights for business decisions.',
+      technologies: ['Excel', 'SQL', 'Financial Modeling'],
+      featured: true
+    }
+  ];
+
+  const [filteredJobs, setFilteredJobs] = useState(jobListings);
 
   useEffect(() => {
     let filtered = jobListings;
@@ -52,7 +91,7 @@ const Jobs = () => {
       navigate('/login');
       return;
     }
-    navigate(`/jobs/${job.id}`);
+    toast.info('Job details feature coming soon!');
   };
 
   const handleApplyClick = (e: React.MouseEvent, job: any) => {
@@ -62,7 +101,6 @@ const Jobs = () => {
       navigate('/login');
       return;
     }
-    // Check if user has membership
     toast.info('Please become a member to apply for jobs');
     navigate('/membership-payment');
   };
@@ -190,6 +228,33 @@ const Jobs = () => {
                 <p className="text-gray-500">Try adjusting your search criteria</p>
               </div>
             )}
+
+            {/* Job Centre Features */}
+            <div className="mt-16">
+              <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                <CardContent className="p-12 text-center">
+                  <h2 className="text-3xl font-bold mb-4">Find Your Dream Job Today!</h2>
+                  <p className="text-xl mb-6 opacity-90">Your Career, Our Priority!</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div className="text-center">
+                      <Briefcase className="h-12 w-12 mx-auto mb-4" />
+                      <h3 className="font-semibold mb-2">Where Talent Meets Opportunity!</h3>
+                      <p className="opacity-80">Discover career opportunities tailored to your skills</p>
+                    </div>
+                    <div className="text-center">
+                      <Building className="h-12 w-12 mx-auto mb-4" />
+                      <h3 className="font-semibold mb-2">Transform Your Career</h3>
+                      <p className="opacity-80">Connect with top employers across Africa</p>
+                    </div>
+                    <div className="text-center">
+                      <Search className="h-12 w-12 mx-auto mb-4" />
+                      <h3 className="font-semibold mb-2">Your Gateway to Employment</h3>
+                      <p className="opacity-80">Advanced search and matching technology</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

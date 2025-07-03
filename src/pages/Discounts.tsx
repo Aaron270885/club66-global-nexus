@@ -110,6 +110,26 @@ const Discounts = () => {
       location: 'Ouagadougou, Burkina Faso',
       rating: 4.4,
       image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 7,
+      merchant: 'Mobile Zone',
+      sector: 'Mobile Phones',
+      discount: '22%',
+      description: 'Latest smartphones and accessories',
+      location: 'Accra, Ghana',
+      rating: 4.3,
+      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      id: 8,
+      merchant: 'Bike Masters',
+      sector: 'Motorbikes',
+      discount: '18%',
+      description: 'Motorbike sales, repairs, and maintenance',
+      location: 'Lagos, Nigeria',
+      rating: 4.2,
+      image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'
     }
   ];
 
