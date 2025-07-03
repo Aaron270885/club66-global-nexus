@@ -109,12 +109,43 @@ const Header = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <Link 
-              to="/services" 
-              className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
-            >
-              Services
-            </Link>
+            {/* Services Dropdown */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
+                  Services
+                  <ChevronDown className="h-4 w-4 ml-1" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-56 bg-white border shadow-lg">
+                <DropdownMenuItem asChild>
+                  <Link to="/services" className="flex items-center">
+                    All Services
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/services/o-secours" className="flex items-center">
+                    Ô Secours
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/credit-system" className="flex items-center">
+                    Credit System
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/hire-purchase" className="flex items-center">
+                    Hire Purchase
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/services/payday-advance" className="flex items-center">
+                    Payday Advance
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
 
             {/* Jobs Dropdown */}
             <DropdownMenu>
@@ -315,6 +346,13 @@ const Header = () => {
                 onClick={toggleMenu}
               >
                 Services
+              </Link>
+              <Link 
+                to="/services/o-secours" 
+                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                onClick={toggleMenu}
+              >
+                Ô Secours
               </Link>
               <Link 
                 to="/jobs" 

@@ -29,14 +29,14 @@ const PremiumBanner = ({
   
   return (
     <section className={`relative ${heightClasses} bg-gradient-to-br from-purple-900 via-indigo-900 to-purple-900 overflow-hidden`}>
-      <div className="absolute inset-0 opacity-60">
+      <div className="absolute inset-0 opacity-40">
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: `url('${backgroundImage || defaultBgImage}')`
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/40 to-indigo-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-indigo-900/20" />
       </div>
       
       <div className="container mx-auto px-4 relative z-10">

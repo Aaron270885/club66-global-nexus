@@ -39,8 +39,8 @@ const HeroSlider = () => {
       id: 1,
       title: 'Join Club66 Global',
       subtitle: 'Premium Membership Platform',
-      description: 'Unlock exclusive benefits, discounts, and opportunities through our premium membership experience designed for the elite.',
-      backgroundImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      description: 'Unlock exclusive benefits, discounts, and opportunities through our premium membership experience designed for the African elite.',
+      backgroundImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Start Your Journey', link: '/membership-payment' },
       secondaryButton: { text: 'Explore Benefits', link: '/discounts' }
     },
@@ -48,26 +48,35 @@ const HeroSlider = () => {
       id: 2,
       title: 'ZENIKA Cards',
       subtitle: 'Premium Membership Cards',
-      description: 'Choose from Essential, Premium, or Elite cards. Each tier offers unique benefits and exclusive access to our growing network.',
-      backgroundImage: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      description: 'Choose from Essential, Premium, or Elite cards. Each tier offers unique benefits and exclusive access to our growing network across Africa.',
+      backgroundImage: 'https://images.unsplash.com/photo-1466721591366-2d5fba72006d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Get Your Card', link: '/cards' },
       secondaryButton: { text: 'View Plans', link: '/cards' }
     },
     {
       id: 3,
+      title: 'Ô Secours',
+      subtitle: 'Emergency Assistance',
+      description: 'Get emergency help when you need it most with our token-based rescue system. Available 24/7 across African countries.',
+      backgroundImage: 'https://images.unsplash.com/photo-1493962853295-0fd70327578a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      primaryButton: { text: 'Get Protected', link: '/services/o-secours' },
+      secondaryButton: { text: 'Learn More', link: '/services/o-secours' }
+    },
+    {
+      id: 4,
       title: 'Mobile App',
       subtitle: 'Everything In Your Pocket',
-      description: 'Manage your membership, access benefits, and connect with our community on the go with our premium mobile application.',
-      backgroundImage: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      description: 'Manage your membership, access benefits, and connect with our African community on the go with our premium mobile application.',
+      backgroundImage: 'https://images.unsplash.com/photo-1469041797191-50ace28483c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Download App', link: '/app' },
       secondaryButton: { text: 'Learn More', link: '/app' }
     },
     {
-      id: 4,
+      id: 5,
       title: 'Job Center',
       subtitle: 'Career Opportunities',
       description: 'Find your dream job or hire top talent through our comprehensive job portal designed for African professionals.',
-      backgroundImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
+      backgroundImage: 'https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
       primaryButton: { text: 'Browse Jobs', link: '/jobs' },
       secondaryButton: { text: 'Post Jobs', link: '/job-dashboard/employer' }
     }
@@ -108,7 +117,7 @@ const HeroSlider = () => {
                         <span className="text-sm font-medium">{slide.subtitle}</span>
                       </div>
                       
-                      <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+                       <h1 className="text-5xl md:text-7xl font-bold leading-tight">
                         {slide.title.includes('Club66') ? (
                           <>
                             Join Club<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300">66</span>
@@ -117,6 +126,10 @@ const HeroSlider = () => {
                         ) : slide.title.includes('ZENIKA') ? (
                           <>
                             ZENIKA<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Cards</span>
+                          </>
+                        ) : slide.title.includes('Ô Secours') ? (
+                          <>
+                            Ô<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Secours</span>
                           </>
                         ) : slide.title.includes('Mobile') ? (
                           <>
@@ -127,7 +140,7 @@ const HeroSlider = () => {
                             Job<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Center</span>
                           </>
                         )}
-                      </h1>
+                       </h1>
                       
                       <p className="text-xl md:text-2xl text-gray-300 max-w-lg leading-relaxed">
                         {slide.description}

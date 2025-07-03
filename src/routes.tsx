@@ -25,6 +25,9 @@ import Discounts from '@/pages/Discounts';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
 import AffiliateProgram from '@/pages/AffiliateProgram';
+import AffiliateMembers from '@/pages/affiliates/Members';
+import AffiliateMerchants from '@/pages/affiliates/Merchants';
+import AffiliateDistributors from '@/pages/affiliates/Distributors';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
@@ -139,6 +142,18 @@ const routes = [
   {
     path: '/affiliate-program',
     element: <AffiliateProgram />,
+  },
+  {
+    path: '/affiliates/members',
+    element: <AffiliateMembers />,
+  },
+  {
+    path: '/affiliates/merchants',
+    element: <AffiliateMerchants />,
+  },
+  {
+    path: '/affiliates/distributors',
+    element: <AffiliateDistributors />,
   },
 ];
 
