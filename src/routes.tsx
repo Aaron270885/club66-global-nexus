@@ -8,7 +8,7 @@ import Terms from '@/pages/about/Terms';
 import Privacy from '@/pages/about/Privacy';
 import Register from '@/pages/Register';
 import Login from '@/pages/Login';
-import Services from '@/pages/services';
+import Services from '@/pages/services/index';
 import CreditAccount from '@/pages/services/CreditAccount';
 import CreditSystem from '@/pages/services/CreditSystem';
 import HirePurchase from '@/pages/services/HirePurchase';
