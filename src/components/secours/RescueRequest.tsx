@@ -61,16 +61,16 @@ const RescueRequest = () => {
 
       if (subError) throw subError;
 
-      // Check eligibility
+      // Check eligibility - subscription must be at least 30 days old
       const subscriptionDate = new Date(subscription.subscription_date);
       const thirtyDaysAgo = new Date();
       thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
       if (subscriptionDate > thirtyDaysAgo) {
-        throw new Error('You can only make rescue requests 30 days after subscription');
+        throw new Error('Rescue requests can only be made 30 days after subscription. Please wait for your subscription to mature.');
       }
 
-      // Get minimum token requirements
+      // Get minimum token requirements using database function
       const { data: limits, error: limitsError } = await supabase
         .rpc('get_min_max_tokens', { sub_type: subscription.subscription_type });
 
@@ -78,27 +78,30 @@ const RescueRequest = () => {
 
       const minTokens = limits[0]?.min_tokens || 30;
       if (subscription.token_balance < minTokens) {
-        throw new Error(`Insufficient token balance. Minimum ${minTokens} tokens required.`);
+        throw new Error(`Insufficient token balance for rescue eligibility. Minimum ${minTokens} tokens (30 days value) required. Your current balance: ${subscription.token_balance} tokens.`);
       }
 
-      // Calculate rescue value
-      let rescueMultiplier = 1.5; // 150%
+      // Get token value using database function
+      const { data: tokenValue, error: tokenValueError } = await supabase
+        .rpc('get_token_value', { sub_type: subscription.subscription_type });
+
+      if (tokenValueError) throw tokenValueError;
+
+      // Calculate rescue value - 150% standard, 200% if no claims in past year
+      let rescueMultiplier = 1.5; // 150% default
       
-      // Check if no claims in the last year for 200% bonus
+      // Check if no rescue claims in the last year for 200% bonus
       if (subscription.last_rescue_claim_date) {
         const lastClaim = new Date(subscription.last_rescue_claim_date);
         const oneYearAgo = new Date();
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
         
         if (lastClaim <= oneYearAgo) {
-          rescueMultiplier = 2.0; // 200%
+          rescueMultiplier = 2.0; // 200% bonus for no claims in past year
         }
       } else {
-        rescueMultiplier = 2.0; // 200% for first-time users
+        rescueMultiplier = 2.0; // 200% for first-time users (no previous claims)
       }
-
-      const tokenValue = subscription.subscription_type === 'auto' ? 750 : 
-                        subscription.subscription_type === 'cata_catanis' || subscription.subscription_type === 'school_fees' ? 500 : 250;
       
       const rescueValue = Math.floor(subscription.token_balance * tokenValue * rescueMultiplier);
 

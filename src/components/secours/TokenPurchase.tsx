@@ -58,7 +58,7 @@ const TokenPurchase = () => {
       // Get subscription details to calculate token value
       const { data: subscription, error: subError } = await supabase
         .from('secours_subscriptions')
-        .select('subscription_type')
+        .select('subscription_type, token_balance')
         .eq('id', purchaseData.subscriptionId)
         .single();
 
@@ -73,7 +73,10 @@ const TokenPurchase = () => {
       const tokenValue = tokenValueData;
       const totalValue = purchaseData.tokenAmount * tokenValue;
 
-      // Create transaction record
+      // Simulate payment processing (in real implementation, integrate with actual payment gateway)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Create transaction record (this will automatically update token balance via trigger)
       const { data, error } = await supabase
         .from('token_transactions')
         .insert({
@@ -82,18 +85,25 @@ const TokenPurchase = () => {
           token_amount: purchaseData.tokenAmount,
           token_value_fcfa: totalValue,
           payment_method: purchaseData.paymentMethod,
-          transaction_reference: `TXN_${Date.now()}`
+          transaction_reference: `TXN_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         })
         .select()
         .single();
 
       if (error) throw error;
+
+      // Check if balance is getting low (less than 30 tokens)
+      const newBalance = subscription.token_balance + purchaseData.tokenAmount;
+      if (newBalance < 30) {
+        toast.warning(`Token balance is low (${newBalance} tokens). Consider purchasing more tokens for rescue eligibility.`);
+      }
+
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['secours-subscriptions'] });
       queryClient.invalidateQueries({ queryKey: ['token-transactions'] });
-      toast.success('Tokens purchased successfully!');
+      toast.success('Tokens purchased successfully! Your balance has been updated in real-time.');
       setTokenAmount('');
       setPaymentMethod('');
     },

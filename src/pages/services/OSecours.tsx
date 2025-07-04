@@ -7,6 +7,7 @@ import SecoursSubscriptions from '@/components/secours/SecoursSubscriptions';
 import TokenPurchase from '@/components/secours/TokenPurchase';
 import RescueRequest from '@/components/secours/RescueRequest';
 import SecoursStats from '@/components/secours/SecoursStats';
+import NotificationCenter from '@/components/secours/NotificationCenter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -319,7 +320,14 @@ const OSecours = () => {
               </TabsContent>
 
               <TabsContent value="stats">
-                <SecoursStats />
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="lg:col-span-2">
+                    <SecoursStats />
+                  </div>
+                  <div>
+                    <NotificationCenter />
+                  </div>
+                </div>
               </TabsContent>
             </Tabs>
           </div>
