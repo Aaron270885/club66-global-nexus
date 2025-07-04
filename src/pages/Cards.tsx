@@ -141,8 +141,12 @@ const Cards = () => {
                           </li>
                         ))}
                       </ul>
-                      <Button className="w-full" variant={index === 1 ? 'default' : 'outline'}>
-                        Choose {tier.name}
+                      <Button 
+                        className="w-full" 
+                        variant={index === 1 ? 'default' : 'outline'}
+                        asChild
+                      >
+                        <a href="/register">Choose {tier.name}</a>
                       </Button>
                     </CardContent>
                   </Card>
@@ -176,8 +180,8 @@ const Cards = () => {
                   <p className="text-xl mb-6 opacity-90">
                     Join the exclusive community of successful Africans who have discovered the power of the ZENIKA Card
                   </p>
-                  <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                    Get Your ZENIKA Card Today
+                  <Button size="lg" className="bg-white text-blue-600 hover:bg-gray-100" asChild>
+                    <a href="/register">Get Your ZENIKA Card Today</a>
                   </Button>
                 </div>
               </CardContent>
@@ -191,11 +195,11 @@ const Cards = () => {
                 savings, and experiences you never thought possible.
               </p>
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-                  Apply for Membership
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700" asChild>
+                  <a href="/register">Apply for Membership</a>
                 </Button>
-                <Button size="lg" variant="outline">
-                  Learn More
+                <Button size="lg" variant="outline" asChild>
+                  <a href="/about">Learn More</a>
                 </Button>
               </div>
             </div>

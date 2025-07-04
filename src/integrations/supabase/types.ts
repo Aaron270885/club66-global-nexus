@@ -51,6 +51,63 @@ export type Database = {
         }
         Relationships: []
       }
+      cms_pages: {
+        Row: {
+          author_id: string | null
+          content: string
+          created_at: string | null
+          featured_image_url: string | null
+          id: string
+          is_featured: boolean | null
+          last_modified_by: string | null
+          meta_description: string | null
+          meta_keywords: string | null
+          page_type: string
+          publish_date: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string | null
+          view_count: number | null
+        }
+        Insert: {
+          author_id?: string | null
+          content: string
+          created_at?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          last_modified_by?: string | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          page_type?: string
+          publish_date?: string | null
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Update: {
+          author_id?: string | null
+          content?: string
+          created_at?: string | null
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean | null
+          last_modified_by?: string | null
+          meta_description?: string | null
+          meta_keywords?: string | null
+          page_type?: string
+          publish_date?: string | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+          view_count?: number | null
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           created_at: string | null
@@ -252,6 +309,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      distributors: {
+        Row: {
+          address: string | null
+          business_name: string | null
+          business_registration_number: string | null
+          city: string | null
+          commission_pending: number | null
+          commission_rate: number | null
+          commission_withdrawn: number | null
+          contact_person: string | null
+          country: string | null
+          created_at: string | null
+          distributor_type: string
+          email: string | null
+          id: string
+          is_active: boolean | null
+          phone: string | null
+          products_distributed: string[] | null
+          territory_coverage: string | null
+          total_commission_earned: number | null
+          total_sales: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          business_name?: string | null
+          business_registration_number?: string | null
+          city?: string | null
+          commission_pending?: number | null
+          commission_rate?: number | null
+          commission_withdrawn?: number | null
+          contact_person?: string | null
+          country?: string | null
+          created_at?: string | null
+          distributor_type?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone?: string | null
+          products_distributed?: string[] | null
+          territory_coverage?: string | null
+          total_commission_earned?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          business_name?: string | null
+          business_registration_number?: string | null
+          city?: string | null
+          commission_pending?: number | null
+          commission_rate?: number | null
+          commission_withdrawn?: number | null
+          contact_person?: string | null
+          country?: string | null
+          created_at?: string | null
+          distributor_type?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean | null
+          phone?: string | null
+          products_distributed?: string[] | null
+          territory_coverage?: string | null
+          total_commission_earned?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       job_applications: {
         Row: {
@@ -614,6 +743,72 @@ export type Database = {
           name?: string
           sector?: string
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      payday_advances: {
+        Row: {
+          approval_date: string | null
+          approved_by: string | null
+          collateral_description: string | null
+          collateral_type: string | null
+          created_at: string | null
+          disbursement_method: string | null
+          due_date: string
+          id: string
+          interest_rate: number
+          loan_amount: number
+          loan_date: string | null
+          loan_term_days: number
+          notes: string | null
+          repayment_amount: number
+          repayment_date: string | null
+          repayment_method: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          approval_date?: string | null
+          approved_by?: string | null
+          collateral_description?: string | null
+          collateral_type?: string | null
+          created_at?: string | null
+          disbursement_method?: string | null
+          due_date: string
+          id?: string
+          interest_rate?: number
+          loan_amount: number
+          loan_date?: string | null
+          loan_term_days?: number
+          notes?: string | null
+          repayment_amount: number
+          repayment_date?: string | null
+          repayment_method?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          approval_date?: string | null
+          approved_by?: string | null
+          collateral_description?: string | null
+          collateral_type?: string | null
+          created_at?: string | null
+          disbursement_method?: string | null
+          due_date?: string
+          id?: string
+          interest_rate?: number
+          loan_amount?: number
+          loan_date?: string | null
+          loan_term_days?: number
+          notes?: string | null
+          repayment_amount?: number
+          repayment_date?: string | null
+          repayment_method?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }

@@ -25,13 +25,13 @@ const MemberDigitalCard = ({
   const getCardStyle = () => {
     switch (membershipTier) {
       case 'Essential':
-        return 'bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 border border-slate-300';
+        return 'bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400';
       case 'Premium':
-        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
+        return 'bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700';
       case 'Elite':
-        return 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-gray-900';
+        return 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600';
       default:
-        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
+        return 'bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700';
     }
   };
 
@@ -48,32 +48,34 @@ const MemberDigitalCard = ({
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto p-4">
+    <div className="w-full max-w-sm mx-auto">
       <div className="text-center mb-4">
-        <h3 className="font-bold text-xl">Your Digital Membership Card</h3>
+        <h3 className="font-bold text-lg text-gray-900">Your Digital Membership Card</h3>
         <p className="text-sm text-gray-500">Present this at participating merchants for discounts</p>
       </div>
       
-      <div className="mx-auto flip-card">
+      <div className="mx-auto">
         <div className={`flip-card-inner ${showQR ? 'is-flipped' : ''}`}>
           {/* Front of card */}
-          <div className={`flip-card-front rounded-xl overflow-hidden shadow-lg ${getCardStyle()}`}>
-            <div className="p-6">
-              <div className="flex justify-between items-center">
+          <div className={`relative rounded-2xl overflow-hidden shadow-lg min-h-[280px] ${getCardStyle()}`}>
+            <div className="p-6 h-full flex flex-col justify-between">
+              {/* Header */}
+              <div className="flex justify-between items-start">
                 <div>
-                  <p className={`text-xs font-medium ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
+                  <p className={`text-xs font-medium ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-800' : 'text-white/80'}`}>
                     {membershipTier} Member
                   </p>
-                  <p className="text-lg font-bold">Club66 Global</p>
+                  <p className={`text-lg font-bold ${membershipTier === 'Essential' ? 'text-gray-900' : membershipTier === 'Elite' ? 'text-gray-900' : 'text-white'}`}>Club66 Global</p>
                 </div>
-                <div className={`h-14 w-14 rounded-full ${membershipTier === 'Essential' ? 'bg-slate-300' : membershipTier === 'Elite' ? 'bg-yellow-200' : 'bg-blue-300'} flex items-center justify-center`}>
-                  <span className={`font-bold text-xl ${membershipTier === 'Elite' ? 'text-gray-900' : 'text-gray-700'}`}>66</span>
+                <div className={`h-12 w-12 rounded-full ${membershipTier === 'Essential' ? 'bg-white/20' : membershipTier === 'Elite' ? 'bg-white/30' : 'bg-white/20'} flex items-center justify-center`}>
+                  <span className={`font-bold text-lg ${membershipTier === 'Essential' ? 'text-gray-800' : membershipTier === 'Elite' ? 'text-gray-800' : 'text-white'}`}>66</span>
                 </div>
               </div>
               
-              <div className="mt-6 flex items-center">
+              {/* Member Info */}
+              <div className="flex items-center space-x-3">
                 {profileImage ? (
-                  <div className="w-16 h-16 rounded-full overflow-hidden mr-4 border-2 border-white">
+                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20">
                     <img 
                       src={profileImage} 
                       alt={memberName} 
@@ -81,62 +83,52 @@ const MemberDigitalCard = ({
                     />
                   </div>
                 ) : (
-                  <div className="w-16 h-16 rounded-full bg-gray-200 mr-4 flex items-center justify-center">
-                    <span className="text-gray-500 font-bold text-xl">
-                      {memberName.charAt(0)}
+                  <div className={`w-12 h-12 rounded-full ${membershipTier === 'Essential' ? 'bg-white/20' : membershipTier === 'Elite' ? 'bg-white/30' : 'bg-white/20'} flex items-center justify-center`}>
+                    <span className={`font-bold text-lg ${membershipTier === 'Essential' ? 'text-gray-800' : membershipTier === 'Elite' ? 'text-gray-800' : 'text-white'}`}>
+                      {memberName.charAt(0).toUpperCase()}
                     </span>
                   </div>
                 )}
                 
-                <div>
-                 <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
+                <div className="flex-1">
+                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Member Name
                   </div>
-                  <div className="font-medium">{memberName}</div>
+                  <div className={`font-semibold ${membershipTier === 'Essential' ? 'text-gray-900' : membershipTier === 'Elite' ? 'text-gray-900' : 'text-white'}`}>{memberName}</div>
                 </div>
               </div>
               
-              <div className="mt-6 flex justify-between items-end">
+              {/* Bottom Info */}
+              <div className="flex justify-between items-end">
                 <div>
                   <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Member ID
                   </div>
-                  <div className="text-sm font-medium">{memberID}</div>
+                  <div className={`text-sm font-medium ${membershipTier === 'Essential' ? 'text-gray-900' : membershipTier === 'Elite' ? 'text-gray-900' : 'text-white'}`}>{memberID}</div>
                 </div>
-                <div>
+                <div className="text-right">
                   <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Expires
                   </div>
-                  <div className="text-sm font-medium">{expiryDate}</div>
+                  <div className={`text-sm font-medium ${membershipTier === 'Essential' ? 'text-gray-900' : membershipTier === 'Elite' ? 'text-gray-900' : 'text-white'}`}>{expiryDate}</div>
                 </div>
-              </div>
-              
-              <div className="mt-6 text-center">
-                <Button
-                  onClick={() => setShowQR(true)}
-                  variant={membershipTier === 'Essential' ? 'default' : 'secondary'}
-                  className="w-full"
-                >
-                  <QrCode className="h-4 w-4 mr-2" />
-                  Show QR Code
-                </Button>
               </div>
             </div>
           </div>
           
           {/* Back of card (QR Code) */}
-          <div className="flip-card-back bg-white rounded-xl overflow-hidden shadow-lg">
+          <div className="flip-card-back bg-white rounded-2xl overflow-hidden shadow-lg min-h-[280px]">
             <div className="p-6 h-full flex flex-col">
-              <h3 className={`text-center font-bold ${membershipTier === 'Essential' ? 'text-gray-900' : 'text-purple-600'} mb-4`}>
+              <h3 className="text-center font-bold text-gray-900 mb-4">
                 {membershipTier} Membership
               </h3>
               
               <div className="flex-grow flex flex-col items-center justify-center">
-                <div className="bg-gray-100 w-48 h-48 flex items-center justify-center">
+                <div className="bg-gray-100 w-32 h-32 flex items-center justify-center rounded-lg">
                   {/* Placeholder for QR code */}
-                  <div className="w-36 h-36 border-2 border-gray-400 grid grid-cols-4 grid-rows-4">
+                  <div className="w-24 h-24 border-2 border-gray-400 grid grid-cols-4 grid-rows-4 gap-px">
                     {[...Array(16)].map((_, i) => (
-                      <div key={i} className="border border-gray-400"></div>
+                      <div key={i} className={`${Math.random() > 0.5 ? 'bg-gray-800' : 'bg-white'}`}></div>
                     ))}
                   </div>
                 </div>
@@ -159,10 +151,21 @@ const MemberDigitalCard = ({
         </div>
       </div>
       
-      <div className="flex space-x-2 mt-4">
+      {/* Action Button */}
+      <div className="mt-4 text-center">
+        <Button
+          onClick={() => setShowQR(!showQR)}
+          className={`w-full ${membershipTier === 'Essential' ? 'bg-gray-600 hover:bg-gray-700' : membershipTier === 'Premium' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-yellow-600 hover:bg-yellow-700'} text-white`}
+        >
+          <QrCode className="h-4 w-4 mr-2" />
+          {showQR ? 'Show Card' : 'Show QR Code'}
+        </Button>
+      </div>
+      
+      <div className="flex space-x-2 mt-3">
         <Button 
           variant="outline" 
-          className="flex-1"
+          className="flex-1 text-sm"
           onClick={handleDownload}
         >
           <Download className="h-4 w-4 mr-2" />
@@ -170,14 +173,14 @@ const MemberDigitalCard = ({
         </Button>
         <Button 
           variant="outline" 
-          className="flex-1"
+          className="flex-1 text-sm"
           onClick={handleShare}
         >
           <Share2 className="h-4 w-4 mr-2" />
           Share
         </Button>
       </div>
-    </Card>
+    </div>
   );
 };
 
