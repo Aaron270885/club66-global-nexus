@@ -126,33 +126,39 @@ const MemberDigitalCard = ({
                 {memberName}
               </h3>
               <p className={`text-sm font-medium ${colors.statusColor} mb-2`}>
-                Statut: {membershipTier}
+                Status: {membershipTier}
               </p>
-              {address && (
-                <p className={`text-xs ${colors.statusColor} opacity-80 mb-2`}>
-                  {address}
-                </p>
-              )}
-              <div className="space-y-1">
-                <p className={`text-xs ${colors.statusColor} opacity-80`}>
-                  ID {memberID}
-                </p>
-                <p className={`text-xs ${colors.statusColor} opacity-80`}>
-                  Valide jusqu'au: {expiryDate}
-                </p>
-              </div>
-            </div>
-
-            {/* QR Code */}
-            <div className="flex-shrink-0">
-              <div className="w-16 h-16 bg-white p-1 rounded">
-                <QRCodeGenerator
-                  data={qrData}
-                  size={56}
-                  className="border-0 shadow-none"
-                  showDownload={false}
-                  showShare={false}
-                />
+              
+              {/* Address and QR Code Section */}
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  {address && (
+                    <p className={`text-xs ${colors.statusColor} opacity-80 mb-2`}>
+                      {address}
+                    </p>
+                  )}
+                  <div className="space-y-1">
+                    <p className={`text-xs ${colors.statusColor} opacity-80`}>
+                      ID {memberID}
+                    </p>
+                    <p className={`text-xs ${colors.statusColor} opacity-80`}>
+                      Valide jusqu'au: {expiryDate}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* QR Code */}
+                <div className="flex-shrink-0 ml-4">
+                  <div className="w-20 h-20 bg-white p-2 rounded border-2 border-gray-300">
+                    <QRCodeGenerator
+                      data={qrData}
+                      size={64}
+                      className="border-0 shadow-none"
+                      showDownload={false}
+                      showShare={false}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -160,7 +166,7 @@ const MemberDigitalCard = ({
 
         {/* Changing Lives Footer */}
         <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-3 px-4">
-          <h4 className="text-center font-italic text-lg">
+          <h4 className="text-left italic text-lg">
             Changing Lives
           </h4>
         </div>
