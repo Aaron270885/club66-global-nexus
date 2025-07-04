@@ -12,6 +12,7 @@ interface QRCodeGeneratorProps {
   size?: number;
   showDownload?: boolean;
   showShare?: boolean;
+  showData?: boolean;
   className?: string;
 }
 
@@ -22,6 +23,7 @@ const QRCodeGenerator = ({
   size = 200, 
   showDownload = true, 
   showShare = true,
+  showData = true,
   className = ""
 }: QRCodeGeneratorProps) => {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
@@ -114,9 +116,11 @@ const QRCodeGenerator = ({
           )}
         </div>
 
-        <div className="text-xs text-gray-500 break-all bg-gray-50 p-2 rounded">
-          {data}
-        </div>
+        {showData && (
+          <div className="text-xs text-gray-500 break-all bg-gray-50 p-2 rounded">
+            {data}
+          </div>
+        )}
 
         <div className="flex justify-center gap-2 flex-wrap">
           <Button

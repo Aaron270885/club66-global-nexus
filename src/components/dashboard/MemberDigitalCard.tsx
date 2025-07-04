@@ -156,6 +156,7 @@ const MemberDigitalCard = ({
                       className="border-0 shadow-none"
                       showDownload={false}
                       showShare={false}
+                      showData={false}
                     />
                   </div>
                 </div>

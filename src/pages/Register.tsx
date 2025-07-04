@@ -7,6 +7,7 @@ import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
 import UserTypeSelector from '@/components/auth/UserTypeSelector';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -216,37 +217,33 @@ const Register = () => {
       />
 
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Registration Form */}
-              <div className="lg:col-span-2">
-                <Card className="mb-6">
-                  <CardHeader>
-                    <CardTitle>Account Type</CardTitle>
-                    <CardDescription>Select your account type to get started</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <UserTypeSelector 
-                      selectedType={formData.user_type}
-                      onSelect={(type) => setFormData(prev => ({ ...prev, user_type: type }))}
-                    />
-                  </CardContent>
-                </Card>
+        <div className="container mx-auto px-4 max-w-full">
+          <div className="max-w-7xl mx-auto">
+            <Tabs value={formData.user_type} onValueChange={(value) => setFormData(prev => ({ ...prev, user_type: value }))}>
+              <TabsList className="grid w-full grid-cols-4 mb-8">
+                <TabsTrigger value="member">Regular Member</TabsTrigger>
+                <TabsTrigger value="employee">Job Seeker / Employee</TabsTrigger>
+                <TabsTrigger value="employer">Employer / Company</TabsTrigger>
+                <TabsTrigger value="partner">Business Partner</TabsTrigger>
+              </TabsList>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Create Your Account</CardTitle>
-                    <CardDescription>
-                      Fill in your details to join Club66 Global
-                      {referralCode && (
-                        <Badge className="ml-2 bg-green-100 text-green-800">
-                          Referral Code: {referralCode}
-                        </Badge>
-                      )}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
+              <TabsContent value={formData.user_type} className="mt-6">
+                <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Registration Form */}
+                  <div className="lg:col-span-2">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Create Your Account</CardTitle>
+                        <CardDescription>
+                          Fill in your details to join Club66 Global
+                          {referralCode && (
+                            <Badge className="ml-2 bg-green-100 text-green-800">
+                              Referral Code: {referralCode}
+                            </Badge>
+                          )}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
@@ -367,19 +364,19 @@ const Register = () => {
                         </Link>
                       </span>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                      </CardContent>
+                    </Card>
+                  </div>
 
-              {/* Membership Selection - Only show for regular members */}
-              {showMembershipOptions && (
-                <div className="lg:col-span-1">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Choose Your Membership</CardTitle>
-                      <CardDescription>Select the tier that works best for you</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
+                  {/* Membership Selection - Only show for regular members */}
+                  {showMembershipOptions && (
+                    <div className="lg:col-span-1">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle>Choose Your Membership</CardTitle>
+                          <CardDescription>Select the tier that works best for you</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
                       {Object.entries(membershipTiers).map(([key, tier]) => (
                         <div
                           key={key}
@@ -421,14 +418,16 @@ const Register = () => {
                           Registration fee + First month
                         </p>
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              )}
-            </form>
-          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  )}
+              </form>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
+    </div>
     </Layout>
   );
 };
