@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -15,7 +16,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 interface Agent {
   id: string;
-  agent_type: 'individual' | 'business' | 'organization';
+  agent_type: 'individual' | 'merchant' | 'distributor';
   referral_code: string;
   qr_code: string;
   total_commissions: number;
@@ -27,7 +28,7 @@ interface Agent {
 const Agents = () => {
   const { user } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
-  const [agentType, setAgentType] = useState<'individual' | 'business' | 'organization'>('individual');
+  const [agentType, setAgentType] = useState<'individual' | 'merchant' | 'distributor'>('individual');
   const queryClient = useQueryClient();
 
   const { data: agent, isLoading } = useQuery({
@@ -68,9 +69,10 @@ const Agents = () => {
   });
 
   const registerAgentMutation = useMutation({
-    mutationFn: async (type: 'individual' | 'business' | 'organization') => {
+    mutationFn: async (type: 'individual' | 'merchant' | 'distributor') => {
       if (!user) throw new Error('Please login to register as an agent');
 
+      // Provide a placeholder referral_code that the trigger will override
       const { error } = await supabase
         .from('agents')
         .insert({
@@ -190,12 +192,12 @@ const Agents = () => {
                         </div>
                         <div className="p-4 border rounded-lg">
                           <TrendingUp className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                          <h3 className="font-medium">Business Agent</h3>
+                          <h3 className="font-medium">Merchant Agent</h3>
                           <p className="text-sm text-gray-600">For business owners</p>
                         </div>
                         <div className="p-4 border rounded-lg">
                           <DollarSign className="h-8 w-8 mx-auto mb-2 text-purple-600" />
-                          <h3 className="font-medium">Organization Agent</h3>
+                          <h3 className="font-medium">Distributor Agent</h3>
                           <p className="text-sm text-gray-600">For large scale operations</p>
                         </div>
                       </div>
@@ -227,8 +229,8 @@ const Agents = () => {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="individual">Individual Agent</SelectItem>
-                            <SelectItem value="business">Business Agent</SelectItem>
-                            <SelectItem value="organization">Organization Agent</SelectItem>
+                            <SelectItem value="merchant">Merchant Agent</SelectItem>
+                            <SelectItem value="distributor">Distributor Agent</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>

@@ -9,6 +9,333 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_form_submissions: {
+        Row: {
+          created_at: string | null
+          data: Json
+          form_id: string | null
+          id: string
+          status: string
+        }
+        Insert: {
+          created_at?: string | null
+          data: Json
+          form_id?: string | null
+          id?: string
+          status?: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json
+          form_id?: string | null
+          id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_form_submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "admin_forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_forms: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          fields: Json
+          id: string
+          name: string
+          notification_email: string | null
+          redirect_url: string | null
+          store_submissions: boolean
+          submit_button_text: string
+          success_message: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          fields: Json
+          id?: string
+          name: string
+          notification_email?: string | null
+          redirect_url?: string | null
+          store_submissions?: boolean
+          submit_button_text: string
+          success_message: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          fields?: Json
+          id?: string
+          name?: string
+          notification_email?: string | null
+          redirect_url?: string | null
+          store_submissions?: boolean
+          submit_button_text?: string
+          success_message?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_forms_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_media: {
+        Row: {
+          created_at: string | null
+          created_by: string | null
+          dimensions: Json | null
+          id: string
+          name: string
+          size: number
+          tags: string[] | null
+          thumbnail_url: string | null
+          type: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          created_by?: string | null
+          dimensions?: Json | null
+          id?: string
+          name: string
+          size: number
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          type: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          created_by?: string | null
+          dimensions?: Json | null
+          id?: string
+          name?: string
+          size?: number
+          tags?: string[] | null
+          thumbnail_url?: string | null
+          type?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_media_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_menu_items: {
+        Row: {
+          created_at: string | null
+          icon: string | null
+          id: string
+          label: string
+          order_index: number
+          parent_id: string | null
+          target: string | null
+          updated_at: string | null
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          label: string
+          order_index: number
+          parent_id?: string | null
+          target?: string | null
+          updated_at?: string | null
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          label?: string
+          order_index?: number
+          parent_id?: string | null
+          target?: string | null
+          updated_at?: string | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_menu_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "admin_menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_pages: {
+        Row: {
+          content: Json | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          seo: Json | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          seo?: Json | null
+          slug: string
+          status: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          seo?: Json | null
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_pages_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_sections: {
+        Row: {
+          content: Json
+          created_at: string | null
+          id: string
+          name: string
+          order_index: number
+          page_id: string | null
+          settings: Json | null
+          type: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: Json
+          created_at?: string | null
+          id?: string
+          name: string
+          order_index: number
+          page_id?: string | null
+          settings?: Json | null
+          type: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: Json
+          created_at?: string | null
+          id?: string
+          name?: string
+          order_index?: number
+          page_id?: string | null
+          settings?: Json | null
+          type?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "admin_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_settings: {
+        Row: {
+          id: string
+          key: string
+          updated_at: string | null
+          value: Json | null
+        }
+        Insert: {
+          id?: string
+          key: string
+          updated_at?: string | null
+          value?: Json | null
+        }
+        Update: {
+          id?: string
+          key?: string
+          updated_at?: string | null
+          value?: Json | null
+        }
+        Relationships: []
+      }
+      admin_users: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          first_name: string | null
+          id: string
+          last_name: string | null
+          membership: string | null
+          role: string
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          membership?: string | null
+          role: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_name?: string | null
+          membership?: string | null
+          role?: string
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       agents: {
         Row: {
           agent_type: Database["public"]["Enums"]["agent_type"]
@@ -442,63 +769,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      joinies: {
-        Row: {
-          address: string | null
-          city: string | null
-          country: string | null
-          created_at: string | null
-          email: string
-          full_name: string
-          id: string
-          ip_address: string | null
-          membership_tier: string | null
-          phone: string | null
-          referral_code: string | null
-          registration_source: string | null
-          updated_at: string | null
-          user_agent: string | null
-          user_id: string
-          user_type: string | null
-        }
-        Insert: {
-          address?: string | null
-          city?: string | null
-          country?: string | null
-          created_at?: string | null
-          email: string
-          full_name: string
-          id?: string
-          ip_address?: string | null
-          membership_tier?: string | null
-          phone?: string | null
-          referral_code?: string | null
-          registration_source?: string | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id: string
-          user_type?: string | null
-        }
-        Update: {
-          address?: string | null
-          city?: string | null
-          country?: string | null
-          created_at?: string | null
-          email?: string
-          full_name?: string
-          id?: string
-          ip_address?: string | null
-          membership_tier?: string | null
-          phone?: string | null
-          referral_code?: string | null
-          registration_source?: string | null
-          updated_at?: string | null
-          user_agent?: string | null
-          user_id?: string
-          user_type?: string | null
-        }
-        Relationships: []
       }
       memberships: {
         Row: {
@@ -1086,9 +1356,9 @@ export type Database = {
       }
     }
     Enums: {
-      agent_type: "individual" | "business" | "organization"
+      agent_type: "individual" | "merchant" | "distributor"
       competition_status: "upcoming" | "active" | "completed" | "cancelled"
-      membership_tier: "essential" | "premium" | "vip"
+      membership_tier: "essential" | "premium" | "elite"
       payment_status: "pending" | "completed" | "failed" | "refunded"
       rescue_status: "pending" | "approved" | "rejected" | "completed"
       secours_type:
@@ -1213,9 +1483,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      agent_type: ["individual", "business", "organization"],
+      agent_type: ["individual", "merchant", "distributor"],
       competition_status: ["upcoming", "active", "completed", "cancelled"],
-      membership_tier: ["essential", "premium", "vip"],
+      membership_tier: ["essential", "premium", "elite"],
       payment_status: ["pending", "completed", "failed", "refunded"],
       rescue_status: ["pending", "approved", "rejected", "completed"],
       secours_type: [
