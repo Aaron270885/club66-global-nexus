@@ -14,7 +14,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/hooks/useAuth';
+import { useJobs } from '@/hooks/useJobs';
 import { toast } from 'sonner';
 
 const jobSchema = z.object({
@@ -30,6 +32,9 @@ const jobSchema = z.object({
   benefits: z.string().optional(),
   application_deadline: z.string().optional(),
   remote_allowed: z.boolean().default(false),
+}).refine((data) => data.salary_max >= data.salary_min, {
+  message: "Maximum salary must be greater than or equal to minimum salary",
+  path: ["salary_max"],
 });
 
 type JobFormData = z.infer<typeof jobSchema>;
@@ -37,6 +42,7 @@ type JobFormData = z.infer<typeof jobSchema>;
 const PostJob = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { postJob } = useJobs();
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -80,20 +86,15 @@ const PostJob = () => {
     setIsSubmitting(true);
     
     try {
-      // Simulate job posting (in real app, this would be an API call)
-      const jobData = {
+      const { error } = await postJob({
         ...data,
         skills,
-        posted_by: user.id,
-        created_at: new Date().toISOString(),
-        application_count: 0,
-        is_active: true,
-      };
+      });
 
-      console.log('Job posted:', jobData);
-      
-      toast.success('Job posted successfully!');
-      navigate('/job-dashboard/employer');
+      if (!error) {
+        toast.success('Job posted successfully!');
+        navigate('/job-dashboard/employer');
+      }
     } catch (error) {
       toast.error('Failed to post job. Please try again.');
     } finally {
@@ -241,6 +242,27 @@ const PostJob = () => {
                       )}
                     />
                   </div>
+
+                  <FormField
+                    control={form.control}
+                    name="remote_allowed"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                        <div className="space-y-0.5">
+                          <FormLabel className="text-base">Remote Work Allowed</FormLabel>
+                          <div className="text-sm text-muted-foreground">
+                            Allow candidates to work remotely for this position
+                          </div>
+                        </div>
+                        <FormControl>
+                          <Switch
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
                 </CardContent>
               </Card>
 

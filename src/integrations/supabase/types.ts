@@ -259,39 +259,57 @@ export type Database = {
           applied_at: string | null
           available_from: string | null
           cover_letter: string | null
+          education: string | null
+          email: string | null
           expected_salary: number | null
           experience_years: number | null
+          full_name: string | null
           id: string
           job_id: string
+          phone: string | null
           portfolio_url: string | null
           resume_url: string | null
+          skills: string[] | null
           status: string | null
+          work_experience: string | null
         }
         Insert: {
           applicant_id: string
           applied_at?: string | null
           available_from?: string | null
           cover_letter?: string | null
+          education?: string | null
+          email?: string | null
           expected_salary?: number | null
           experience_years?: number | null
+          full_name?: string | null
           id?: string
           job_id: string
+          phone?: string | null
           portfolio_url?: string | null
           resume_url?: string | null
+          skills?: string[] | null
           status?: string | null
+          work_experience?: string | null
         }
         Update: {
           applicant_id?: string
           applied_at?: string | null
           available_from?: string | null
           cover_letter?: string | null
+          education?: string | null
+          email?: string | null
           expected_salary?: number | null
           experience_years?: number | null
+          full_name?: string | null
           id?: string
           job_id?: string
+          phone?: string | null
           portfolio_url?: string | null
           resume_url?: string | null
+          skills?: string[] | null
           status?: string | null
+          work_experience?: string | null
         }
         Relationships: [
           {
@@ -366,6 +384,7 @@ export type Database = {
           description: string
           employment_type: string
           experience_level: string | null
+          featured: boolean | null
           id: string
           is_active: boolean | null
           location: string
@@ -377,6 +396,8 @@ export type Database = {
           skills: string[] | null
           title: string
           updated_at: string | null
+          urgent: boolean | null
+          views: number | null
         }
         Insert: {
           application_count?: number | null
@@ -390,6 +411,7 @@ export type Database = {
           description: string
           employment_type: string
           experience_level?: string | null
+          featured?: boolean | null
           id?: string
           is_active?: boolean | null
           location: string
@@ -401,6 +423,8 @@ export type Database = {
           skills?: string[] | null
           title: string
           updated_at?: string | null
+          urgent?: boolean | null
+          views?: number | null
         }
         Update: {
           application_count?: number | null
@@ -414,6 +438,7 @@ export type Database = {
           description?: string
           employment_type?: string
           experience_level?: string | null
+          featured?: boolean | null
           id?: string
           is_active?: boolean | null
           location?: string
@@ -425,6 +450,8 @@ export type Database = {
           skills?: string[] | null
           title?: string
           updated_at?: string | null
+          urgent?: boolean | null
+          views?: number | null
         }
         Relationships: [
           {
@@ -1078,6 +1105,10 @@ export type Database = {
       }
       increment_competition_entries: {
         Args: { competition_id: string }
+        Returns: undefined
+      }
+      increment_job_views: {
+        Args: { job_id: string }
         Returns: undefined
       }
       increment_vote_count: {

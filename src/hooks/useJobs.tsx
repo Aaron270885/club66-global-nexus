@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 export interface Job {
   id: string;
@@ -27,6 +28,7 @@ export interface Job {
   company_id?: string;
   featured?: boolean;
   urgent?: boolean;
+  views?: number;
 }
 
 export const useJobs = () => {
@@ -74,8 +76,6 @@ export const useJobs = () => {
         type: job.employment_type,
         experience_required: job.experience_level === 'entry' ? 0 : 
                            job.experience_level === 'mid' ? 3 : 5,
-        featured: Math.random() > 0.8, // Random featured status for demo
-        urgent: Math.random() > 0.9, // Random urgent status for demo
       }));
       
       setJobs(transformedJobs);
@@ -103,27 +103,77 @@ export const useJobs = () => {
     });
   };
 
-  const bookmarkJob = async (jobId: string) => {
-    // Implementation for bookmarking
-    console.log('Bookmarking job:', jobId);
+  const postJob = async (jobData: {
+    title: string;
+    company: string;
+    location: string;
+    employment_type: string;
+    experience_level: string;
+    salary_min: number;
+    salary_max: number;
+    description: string;
+    requirements?: string;
+    benefits?: string;
+    skills?: string[];
+    application_deadline?: string;
+    remote_allowed?: boolean;
+  }) => {
+    try {
+      const { data, error } = await supabase
+        .from('jobs')
+        .insert({
+          ...jobData,
+          currency: 'CFA',
+          is_active: true,
+          application_count: 0,
+          views: 0,
+          featured: false,
+          urgent: false
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      toast.success('Job posted successfully!');
+      await fetchJobs(); // Refresh jobs list
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error posting job:', error);
+      toast.error('Failed to post job');
+      return { data: null, error };
+    }
   };
 
-  const applyToJob = async (jobId: string) => {
-    // Implementation for applying to job
-    console.log('Applying to job:', jobId);
+  const incrementJobViews = async (jobId: string) => {
+    try {
+      const { error } = await supabase.rpc('increment_job_views', { job_id: jobId });
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error incrementing job views:', error);
+    }
   };
 
   useEffect(() => {
     fetchJobs();
   }, []);
 
-  return { jobs, loading, error, fetchJobs, searchJobs, bookmarkJob, applyToJob };
+  return { 
+    jobs, 
+    loading, 
+    error, 
+    fetchJobs, 
+    searchJobs, 
+    postJob,
+    incrementJobViews
+  };
 };
 
 export const useJobDetails = (jobId: string) => {
   const [job, setJob] = useState<Job | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { incrementJobViews } = useJobs();
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -143,11 +193,12 @@ export const useJobDetails = (jobId: string) => {
           type: data.employment_type,
           experience_required: data.experience_level === 'entry' ? 0 : 
                              data.experience_level === 'mid' ? 3 : 5,
-          featured: Math.random() > 0.8,
-          urgent: Math.random() > 0.9,
         };
         
         setJob(transformedJob);
+        
+        // Increment view count
+        await incrementJobViews(jobId);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch job details');
         console.error('Error fetching job:', err);
@@ -159,7 +210,7 @@ export const useJobDetails = (jobId: string) => {
     if (jobId) {
       fetchJob();
     }
-  }, [jobId]);
+  }, [jobId, incrementJobViews]);
 
   return { job, loading, error };
 };
@@ -185,7 +236,10 @@ export const useJobBookmarks = () => {
   };
 
   const toggleBookmark = async (jobId: string) => {
-    if (!user) return;
+    if (!user) {
+      toast.error('Please login to bookmark jobs');
+      return;
+    }
 
     try {
       const isBookmarked = bookmarks.includes(jobId);
@@ -199,6 +253,7 @@ export const useJobBookmarks = () => {
 
         if (error) throw error;
         setBookmarks(prev => prev.filter(id => id !== jobId));
+        toast.success('Job removed from bookmarks');
       } else {
         const { error } = await supabase
           .from('job_bookmarks')
@@ -206,9 +261,11 @@ export const useJobBookmarks = () => {
 
         if (error) throw error;
         setBookmarks(prev => [...prev, jobId]);
+        toast.success('Job bookmarked successfully');
       }
     } catch (err) {
       console.error('Error toggling bookmark:', err);
+      toast.error('Failed to update bookmark');
     }
   };
 
@@ -223,32 +280,35 @@ export const useJobApplications = () => {
   const { user } = useAuth();
 
   const applyToJob = async (jobId: string, applicationData: {
-    coverLetter?: string;
-    expectedSalary?: number;
-    availableFrom?: string;
-    experienceYears?: number;
-    portfolioUrl?: string;
+    full_name: string;
+    email: string;
+    phone: string;
+    cover_letter?: string;
+    work_experience?: string;
+    education?: string;
+    skills?: string[];
+    expected_salary?: number;
+    available_from?: string;
+    experience_years?: number;
+    portfolio_url?: string;
   }) => {
-    if (!user) throw new Error('User must be authenticated');
-
     try {
       const { error } = await supabase
         .from('job_applications')
         .insert({
           job_id: jobId,
-          applicant_id: user.id,
-          cover_letter: applicationData.coverLetter,
-          expected_salary: applicationData.expectedSalary,
-          available_from: applicationData.availableFrom,
-          experience_years: applicationData.experienceYears,
-          portfolio_url: applicationData.portfolioUrl,
+          applicant_id: user?.id || null,
+          ...applicationData,
           status: 'pending'
         });
 
       if (error) throw error;
+      
+      toast.success('Application submitted successfully!');
       return { success: true };
     } catch (err) {
       console.error('Error applying to job:', err);
+      toast.error('Failed to submit application');
       throw err;
     }
   };
@@ -279,5 +339,23 @@ export const useJobApplications = () => {
     }
   };
 
-  return { applyToJob, getUserApplications };
+  const getJobApplications = async (jobId: string) => {
+    if (!user) return [];
+
+    try {
+      const { data, error } = await supabase
+        .from('job_applications')
+        .select('*')
+        .eq('job_id', jobId)
+        .order('applied_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (err) {
+      console.error('Error fetching job applications:', err);
+      return [];
+    }
+  };
+
+  return { applyToJob, getUserApplications, getJobApplications };
 };
