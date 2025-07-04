@@ -29,14 +29,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log('Auth event:', event, 'User:', session?.user?.email);
         setUser(session?.user ?? null);
         setLoading(false);
 
-        // Only redirect on actual sign-in events, not initial load
+        // Don't redirect on initial load or sign out
         if (event === 'SIGNED_IN' && session?.user && !initialLoadRef.current) {
+          console.log('User signed in, redirecting to dashboard...');
           // Use a small delay to ensure state is properly updated
           setTimeout(() => {
-            window.location.href = '/dashboard';
+            if (window.location.pathname === '/login') {
+              window.location.href = '/dashboard';
+            }
           }, 100);
         }
       }
@@ -58,10 +62,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    console.log('Attempting to sign in user:', email);
+    
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password
     });
+
+    console.log('Sign in result:', { success: !error, error: error?.message });
 
     // If login successful, ensure user has a profile
     if (data.user && !error) {
@@ -75,6 +84,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         // If no profile exists, create one
         if (profileError && profileError.code === 'PGRST116') {
+          console.log('Creating profile for user:', data.user.id);
           await supabase
             .from('profiles')
             .insert({
@@ -88,6 +98,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Don't fail the login if profile creation fails
       }
     }
+
+    if (error) {
+      setLoading(false);
+    }
+    // Note: Don't set loading to false here if successful, let the auth state change handle it
 
     return { data, error };
   };

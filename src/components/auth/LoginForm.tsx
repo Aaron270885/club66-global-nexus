@@ -37,15 +37,16 @@ const LoginForm = () => {
           variant: "destructive"
         });
         setLoading(false);
-      } else {
+      } else if (data.user) {
         toast({
           title: "Login successful!",
           description: "Redirecting to your dashboard..."
         });
-        // Keep loading state true until redirect happens
-        // Navigation handled by auth context
+        // Don't set loading to false, let the redirect happen
+        // The auth context will handle the redirect
       }
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: "Login failed",
         description: "An unexpected error occurred.",
@@ -137,6 +138,7 @@ const LoginForm = () => {
                   value={emailOrPhone}
                   onChange={(e) => setEmailOrPhone(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
               <div className="space-y-2">
@@ -153,6 +155,7 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  disabled={loading}
                 />
               </div>
               <Button 
