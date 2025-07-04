@@ -87,7 +87,18 @@ const PostJob = () => {
     
     try {
       const { error } = await postJob({
-        ...data,
+        title: data.title,
+        company: data.company,
+        location: data.location,
+        employment_type: data.employment_type,
+        experience_level: data.experience_level,
+        salary_min: data.salary_min,
+        salary_max: data.salary_max,
+        description: data.description,
+        requirements: data.requirements,
+        benefits: data.benefits,
+        application_deadline: data.application_deadline,
+        remote_allowed: data.remote_allowed,
         skills,
       });
 

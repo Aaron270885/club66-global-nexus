@@ -89,14 +89,26 @@ const JobApplicationForm = ({ jobId, jobTitle, onClose, onSuccess }: JobApplicat
       return;
     }
 
+    // Ensure required fields are present
+    if (!data.full_name || !data.email || !data.phone) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
       await applyToJob(jobId, {
-        ...data,
+        full_name: data.full_name,
+        email: data.email,
+        phone: data.phone,
+        cover_letter: data.cover_letter,
+        work_experience: data.work_experience,
+        education: data.education,
         skills,
-        expected_salary: data.expected_salary || undefined,
-        experience_years: data.experience_years || undefined,
+        expected_salary: data.expected_salary,
+        experience_years: data.experience_years,
+        portfolio_url: data.portfolio_url || undefined,
       });
       
       setShowSuccessDialog(true);
