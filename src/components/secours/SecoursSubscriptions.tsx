@@ -92,10 +92,10 @@ const SecoursSubscriptions = () => {
       const { data, error } = await supabase
         .from('memberships')
         .select('*')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user?.id)
+        .maybeSingle();
       
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       return data;
     },
     enabled: !!user

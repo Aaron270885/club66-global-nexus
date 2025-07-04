@@ -86,7 +86,7 @@ const Header = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/about/association-members" className="flex items-center">
+                  <Link to="/team" className="flex items-center">
                     Team Members
                   </Link>
                 </DropdownMenuItem>

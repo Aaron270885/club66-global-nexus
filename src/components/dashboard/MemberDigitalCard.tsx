@@ -21,17 +21,17 @@ const MemberDigitalCard = ({
 }: MemberDigitalCardProps) => {
   const [showQR, setShowQR] = useState(false);
   
-  // Determine card styling based on membership tier
+  // Get card styling based on membership tier
   const getCardStyle = () => {
     switch (membershipTier) {
       case 'Essential':
-        return 'bg-gray-100 text-gray-900';
+        return 'bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 border border-slate-300';
       case 'Premium':
-        return 'gold-gradient text-gray-900';
+        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
       case 'Elite':
-        return 'card-gradient text-white';
+        return 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-gray-900';
       default:
-        return 'card-gradient text-white';
+        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
     }
   };
 
@@ -61,13 +61,13 @@ const MemberDigitalCard = ({
             <div className="p-6">
               <div className="flex justify-between items-center">
                 <div>
-                  <p className={`text-xs font-medium ${membershipTier === 'Essential' ? 'text-gray-600' : ''}`}>
+                  <p className={`text-xs font-medium ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     {membershipTier} Member
                   </p>
                   <p className="text-lg font-bold">Club66 Global</p>
                 </div>
-                <div className={`h-14 w-14 rounded-full ${membershipTier === 'Essential' ? 'bg-gray-300' : 'bg-white/20'} flex items-center justify-center`}>
-                  <span className="font-bold text-xl">66</span>
+                <div className={`h-14 w-14 rounded-full ${membershipTier === 'Essential' ? 'bg-slate-300' : membershipTier === 'Elite' ? 'bg-yellow-200' : 'bg-blue-300'} flex items-center justify-center`}>
+                  <span className={`font-bold text-xl ${membershipTier === 'Elite' ? 'text-gray-900' : 'text-gray-700'}`}>66</span>
                 </div>
               </div>
               
@@ -89,7 +89,7 @@ const MemberDigitalCard = ({
                 )}
                 
                 <div>
-                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : 'text-white/80'}`}>
+                 <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Member Name
                   </div>
                   <div className="font-medium">{memberName}</div>
@@ -98,13 +98,13 @@ const MemberDigitalCard = ({
               
               <div className="mt-6 flex justify-between items-end">
                 <div>
-                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : 'text-white/80'}`}>
+                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Member ID
                   </div>
                   <div className="text-sm font-medium">{memberID}</div>
                 </div>
                 <div>
-                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : 'text-white/80'}`}>
+                  <div className={`text-xs ${membershipTier === 'Essential' ? 'text-gray-600' : membershipTier === 'Elite' ? 'text-gray-700' : 'text-white/80'}`}>
                     Expires
                   </div>
                   <div className="text-sm font-medium">{expiryDate}</div>
@@ -127,7 +127,7 @@ const MemberDigitalCard = ({
           {/* Back of card (QR Code) */}
           <div className="flip-card-back bg-white rounded-xl overflow-hidden shadow-lg">
             <div className="p-6 h-full flex flex-col">
-              <h3 className={`text-center font-bold ${membershipTier === 'Essential' ? 'text-gray-900' : 'text-club66-purple'} mb-4`}>
+              <h3 className={`text-center font-bold ${membershipTier === 'Essential' ? 'text-gray-900' : 'text-purple-600'} mb-4`}>
                 {membershipTier} Membership
               </h3>
               
