@@ -42,23 +42,23 @@ const PremiumMemberCard = ({
     switch (membershipTier) {
       case 'Essential':
         return {
-          background: 'bg-gradient-to-br from-slate-600 via-slate-700 to-slate-900',
+          background: 'bg-gradient-to-br from-slate-100 to-slate-200 border border-slate-300',
           accent: 'bg-slate-400',
-          textPrimary: 'text-white',
-          textSecondary: 'text-slate-200',
+          textPrimary: 'text-slate-900',
+          textSecondary: 'text-slate-600',
           chipColor: 'bg-slate-300'
         };
       case 'Premium':
         return {
-          background: 'bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-900',
-          accent: 'bg-purple-400',
+          background: 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800',
+          accent: 'bg-blue-400',
           textPrimary: 'text-white',
-          textSecondary: 'text-purple-100',
-          chipColor: 'bg-purple-300'
+          textSecondary: 'text-blue-100',
+          chipColor: 'bg-blue-300'
         };
       case 'Elite':
         return {
-          background: 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-amber-600',
+          background: 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600',
           accent: 'bg-yellow-300',
           textPrimary: 'text-gray-900',
           textSecondary: 'text-gray-700',
@@ -66,11 +66,11 @@ const PremiumMemberCard = ({
         };
       default:
         return {
-          background: 'bg-gradient-to-br from-purple-600 via-purple-700 to-indigo-900',
-          accent: 'bg-purple-400',
+          background: 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800',
+          accent: 'bg-blue-400',
           textPrimary: 'text-white',
-          textSecondary: 'text-purple-100',
-          chipColor: 'bg-purple-300'
+          textSecondary: 'text-blue-100',
+          chipColor: 'bg-blue-300'
         };
     }
   };

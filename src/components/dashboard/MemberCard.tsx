@@ -12,17 +12,17 @@ interface MemberCardProps {
 const MemberCard = ({ memberName, memberID, expiryDate, membershipTier }: MemberCardProps) => {
   const [showQR, setShowQR] = useState(false);
 
-  // Determine card styling based on membership tier
+  // Get card styling based on membership tier
   const getCardStyle = () => {
     switch (membershipTier) {
       case 'Essential':
-        return 'bg-gray-100 text-gray-900';
+        return 'bg-gradient-to-br from-slate-100 to-slate-200 text-slate-900 border border-slate-300';
       case 'Premium':
-        return 'gold-gradient text-gray-900';
+        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
       case 'Elite':
-        return 'card-gradient text-white';
+        return 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 text-gray-900';
       default:
-        return 'card-gradient text-white';
+        return 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white';
     }
   };
 
