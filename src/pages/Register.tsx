@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
@@ -31,7 +32,7 @@ const Register = () => {
     country: 'Mali',
     password: '',
     confirmPassword: '',
-    tier: (planFromUrl || 'essential') as 'essential' | 'premium' | 'elite',
+    tier: (planFromUrl || 'essential') as 'essential' | 'premium' | 'vip',
     physical_card_requested: false,
     referral_code: referralCode || '',
     user_type: 'member'
@@ -52,8 +53,8 @@ const Register = () => {
       discount: 10,
       description: 'Great for regular users'
     },
-    elite: {
-      name: 'Elite (VIP)',
+    vip: {
+      name: 'VIP',
       registration: 10000,
       monthly: 5000,
       discount: 20,
