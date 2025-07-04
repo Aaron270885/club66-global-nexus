@@ -273,6 +273,7 @@ const Dashboard = () => {
                   expiryDate={membership?.expiry_date ? new Date(membership.expiry_date).toLocaleDateString() : 'N/A'}
                   membershipTier={membership?.tier || 'Essential'}
                   profileImage={profile?.profile_image_url}
+                  address={profile?.address || `${profile?.city || ''}, ${profile?.country || ''}`.replace(', ,', '').trim() || 'Address not provided'}
                 />
 
                 {/* Job Center Quick Access */}
