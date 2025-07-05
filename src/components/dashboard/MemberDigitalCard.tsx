@@ -104,10 +104,10 @@ const MemberDigitalCard = ({
       
       <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
         {/* Card Header */}
-        <div className="bg-white px-6 py-4 border-b border-gray-100">
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-blue-900">Zenika</h2>
-            <div className="flex items-center space-x-1 bg-blue-900 text-white px-3 py-1 rounded-full text-sm font-bold">
+            <h2 className="text-2xl font-bold text-white">Zenika</h2>
+            <div className="flex items-center space-x-1 bg-white bg-opacity-20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-bold">
               <span>CLUB</span>
               <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mx-1">
                 <span className="text-xs font-bold text-white">6</span>

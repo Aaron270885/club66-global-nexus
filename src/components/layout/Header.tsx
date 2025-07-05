@@ -254,10 +254,16 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" className="flex items-center space-x-2">
                     <User className="h-4 w-4" />
-                    <span className="hidden sm:block">{user.email}</span>
+                    <span>My Account</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-white border shadow-lg">
+                  <DropdownMenuItem asChild>
+                    <Link to="/my-account" className="flex items-center">
+                      <User className="h-4 w-4 mr-2" />
+                      My Account
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard" className="flex items-center">
                       <Settings className="h-4 w-4 mr-2" />

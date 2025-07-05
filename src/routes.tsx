@@ -29,6 +29,7 @@ import AffiliateMembers from '@/pages/affiliates/Members';
 import AffiliateMerchants from '@/pages/affiliates/Merchants';
 import AffiliateDistributors from '@/pages/affiliates/Distributors';
 import Team from '@/pages/Team';
+import MyAccount from '@/pages/MyAccount';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
@@ -65,6 +66,10 @@ const routes = [
   {
     path: '/team',
     element: <Team />,
+  },
+  {
+    path: '/my-account',
+    element: <MyAccount />,
   },
   {
     path: '/register',
