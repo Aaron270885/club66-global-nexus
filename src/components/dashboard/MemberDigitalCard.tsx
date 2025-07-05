@@ -137,37 +137,40 @@ const MemberDigitalCard = ({
               </div>
             </div>
 
-            {/* Member Details and QR Code */}
-            <div className="flex-1 flex justify-between">
-              <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {memberName}
-                </h3>
-                <p className="text-base font-medium text-gray-800 mb-3">
-                  Statut : {membershipTier}
-                </p>
-                
-                {address && (
-                  <p className="text-sm text-gray-700 mb-3">
-                    {address}
-                  </p>
-                )}
-                
-                <p className="text-sm text-gray-600 mb-2">
-                  Valide jusqu'au : {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('fr-FR')}
-                </p>
-              </div>
+            {/* Member Details */}
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                {memberName}
+              </h3>
+              <p className="text-base font-medium text-gray-800 mb-3">
+                Statut : {membershipTier}
+              </p>
               
-              {/* QR Code */}
-              <div className="flex-shrink-0 ml-6">
-                <div className="w-20 h-20 bg-white border border-gray-300 rounded p-1">
-                  <QRCodeGenerator
-                    data={qrData}
-                    size={76}
-                    showDownload={false}
-                    showShare={false}
-                    showData={false}
-                  />
+              {/* Address and Valid Date with QR Code */}
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  {address && (
+                    <p className="text-sm text-gray-700 mb-3">
+                      {address}
+                    </p>
+                  )}
+                  
+                  <p className="text-sm text-gray-600 mb-2">
+                    Valide jusqu'au : {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('fr-FR')}
+                  </p>
+                </div>
+                
+                {/* QR Code */}
+                <div className="flex-shrink-0 ml-4">
+                  <div className="w-20 h-20 bg-white border border-gray-300 rounded p-1">
+                    <QRCodeGenerator
+                      data={qrData}
+                      size={76}
+                      showDownload={false}
+                      showShare={false}
+                      showData={false}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
