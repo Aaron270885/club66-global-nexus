@@ -64,9 +64,30 @@ const MemberDigitalCard = ({
 
   const colors = getTierColors();
 
-  // Mock function to download card as image
-  const handleDownload = () => {
-    alert('Card download functionality would be implemented here.');
+  // Function to download card as image
+  const handleDownload = async () => {
+    try {
+      const cardElement = document.getElementById('member-card');
+      if (!cardElement) return;
+
+      // Use html2canvas to capture the card
+      const html2canvas = (await import('html2canvas')).default;
+      const canvas = await html2canvas(cardElement, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+      });
+
+      // Create download link
+      const link = document.createElement('a');
+      link.download = `${memberName.replace(' ', '_')}_membership_card.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    } catch (error) {
+      console.error('Error downloading card:', error);
+      // Fallback: show alert
+      alert('Download feature requires html2canvas library. Please contact support.');
+    }
   };
 
   // Mock function to share card
@@ -81,30 +102,28 @@ const MemberDigitalCard = ({
         <p className="text-sm text-gray-500">Present this at participating merchants for discounts</p>
       </div>
       
-      <Card className={`relative rounded-2xl overflow-hidden shadow-2xl ${colors.border} border-2`}>
-        {/* Card Header with Zenika and Club66 Logo */}
-        <div className={`${colors.background} p-4`}>
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center space-x-3">
-              <h2 className={`text-2xl font-bold ${membershipTier === 'Essential' ? 'text-gray-900' : membershipTier === 'Elite' ? 'text-gray-900' : 'text-white'}`}>
-                Zenika
-              </h2>
-              <div className="bg-club66-purple text-white px-2 py-1 rounded text-xs font-bold flex items-center space-x-1">
-                <span>CLUB</span>
-                <div className="w-4 h-4 bg-green-500 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-white">6</span>
-                </div>
-                <span>GLOBAL</span>
+      <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
+        {/* Card Header */}
+        <div className="bg-white px-6 py-4 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold text-blue-900">Zenika</h2>
+            <div className="flex items-center space-x-1 bg-blue-900 text-white px-3 py-1 rounded-full text-sm font-bold">
+              <span>CLUB</span>
+              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mx-1">
+                <span className="text-xs font-bold text-white">6</span>
               </div>
+              <span>GLOBAL</span>
             </div>
           </div>
+        </div>
 
-          {/* Member Info Section */}
-          <div className="flex items-start space-x-4">
+        {/* Main Card Content */}
+        <div className="bg-white p-6">
+          <div className="flex items-start space-x-6">
             {/* Profile Image */}
             <div className="flex-shrink-0">
               {profileImage ? (
-                <div className="w-20 h-20 rounded-lg overflow-hidden border-2 border-white/30">
+                <div className="w-24 h-32 rounded-lg overflow-hidden border border-gray-200">
                   <img 
                     src={profileImage} 
                     alt={memberName} 
@@ -112,53 +131,45 @@ const MemberDigitalCard = ({
                   />
                 </div>
               ) : (
-                <div className="w-20 h-20 rounded-lg bg-gray-200 flex items-center justify-center border-2 border-white/30">
-                  <span className="text-2xl font-bold text-gray-600">
+                <div className="w-24 h-32 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center border border-gray-200">
+                  <span className="text-3xl font-bold text-gray-600">
                     {memberName.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
             </div>
 
-            {/* Member Details */}
-            <div className="flex-1 min-w-0">
-              <h3 className={`text-xl font-bold ${colors.statusColor} mb-1`}>
-                {memberName}
-              </h3>
-              <p className={`text-sm font-medium ${colors.statusColor} mb-2`}>
-                Status: {membershipTier}
-              </p>
-              
-              {/* Address and QR Code Section */}
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  {address && (
-                    <p className={`text-xs ${colors.statusColor} opacity-80 mb-2`}>
-                      {address}
-                    </p>
-                  )}
-                  <div className="space-y-1">
-                    <p className={`text-xs ${colors.statusColor} opacity-80`}>
-                      ID {memberID}
-                    </p>
-                    <p className={`text-xs ${colors.statusColor} opacity-80`}>
-                      Valide jusqu'au: {expiryDate}
-                    </p>
-                  </div>
-                </div>
+            {/* Member Details and QR Code */}
+            <div className="flex-1 flex justify-between">
+              <div className="flex-1">
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                  {memberName}
+                </h3>
+                <p className="text-base font-medium text-gray-800 mb-3">
+                  Statut : {membershipTier}
+                </p>
                 
-                {/* QR Code */}
-                <div className="flex-shrink-0 ml-4">
-                  <div className="w-20 h-20 bg-white p-2 rounded border-2 border-gray-300">
-                    <QRCodeGenerator
-                      data={qrData}
-                      size={64}
-                      className="border-0 shadow-none"
-                      showDownload={false}
-                      showShare={false}
-                      showData={false}
-                    />
-                  </div>
+                {address && (
+                  <p className="text-sm text-gray-700 mb-6">
+                    {address}
+                  </p>
+                )}
+                
+                <p className="text-sm text-gray-600">
+                  Valide jusqu'au : {expiryDate}
+                </p>
+              </div>
+              
+              {/* QR Code */}
+              <div className="flex-shrink-0 ml-6">
+                <div className="w-20 h-20 bg-white border border-gray-300 rounded p-1">
+                  <QRCodeGenerator
+                    data={qrData}
+                    size={76}
+                    showDownload={false}
+                    showShare={false}
+                    showData={false}
+                  />
                 </div>
               </div>
             </div>
@@ -166,8 +177,8 @@ const MemberDigitalCard = ({
         </div>
 
         {/* Changing Lives Footer */}
-        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-3 px-4">
-          <h4 className="text-left italic text-lg">
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-3 px-6">
+          <h4 className="text-left italic text-lg font-medium">
             Changing Lives
           </h4>
         </div>

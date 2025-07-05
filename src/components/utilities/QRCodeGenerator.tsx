@@ -87,6 +87,29 @@ const QRCodeGenerator = ({
     }
   };
 
+  // If no title and buttons are hidden, return just the QR code image
+  if (!title && !showDownload && !showShare && !showData) {
+    return (
+      <div className={className}>
+        {qrCodeUrl ? (
+          <img 
+            src={qrCodeUrl} 
+            alt="QR Code" 
+            className="w-full h-full object-contain"
+            style={{ width: size, height: size }}
+          />
+        ) : (
+          <div 
+            className="bg-gray-100 flex items-center justify-center rounded"
+            style={{ width: size, height: size }}
+          >
+            <span className="text-gray-400 text-xs">Loading...</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <Card className={className}>
       {title && (
@@ -123,16 +146,6 @@ const QRCodeGenerator = ({
         )}
 
         <div className="flex justify-center gap-2 flex-wrap">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={copyData}
-            className="flex items-center gap-1"
-          >
-            <Copy className="h-4 w-4" />
-            Copy Data
-          </Button>
-          
           {showDownload && (
             <Button
               variant="outline"
