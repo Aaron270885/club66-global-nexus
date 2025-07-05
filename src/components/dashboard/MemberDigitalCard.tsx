@@ -104,9 +104,9 @@ const MemberDigitalCard = ({
       
       <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
         {/* Card Header */}
-        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-4 relative">
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-6 relative">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white ml-8">Zenika</h2>
+            <h2 className="text-4xl font-bold text-white ml-16">Zenika</h2>
             <div className="flex items-center space-x-2">
               <img src="/lovable-uploads/597692e2-44e4-4646-b159-4d2e85310158.png" alt="Club66 Logo" className="h-12 w-auto" />
             </div>
@@ -117,7 +117,7 @@ const MemberDigitalCard = ({
         <div className="bg-white p-6 relative">
           <div className="flex items-start space-x-6">
             {/* Profile Image - positioned to overlap with header */}
-            <div className="flex-shrink-0 relative -mt-12">
+            <div className="flex-shrink-0 relative -mt-20">
               {profileImage ? (
                 <div className="w-24 h-32 rounded-lg overflow-hidden border-2 border-white shadow-lg">
                   <img 
@@ -156,7 +156,7 @@ const MemberDigitalCard = ({
                 )}
                 
                 <p className="text-sm text-gray-600 mb-2">
-                  Valide jusqu'au : {expiryDate}
+                  Valide jusqu'au : N/A
                 </p>
                 <p className="text-sm text-gray-600">
                   Date d'émission : {new Date().toLocaleDateString('fr-FR')}
@@ -181,7 +181,7 @@ const MemberDigitalCard = ({
 
         {/* Changing Lives Footer */}
         <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white py-3 px-6">
-          <h4 className="text-left italic text-lg font-medium">
+          <h4 className="text-left italic text-lg" style={{ fontFamily: 'Times New Roman, serif' }}>
             Changing Lives
           </h4>
         </div>
