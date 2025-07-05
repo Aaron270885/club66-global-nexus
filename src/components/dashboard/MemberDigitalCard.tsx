@@ -104,26 +104,22 @@ const MemberDigitalCard = ({
       
       <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
         {/* Card Header */}
-        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-4">
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-4 relative">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Zenika</h2>
-            <div className="flex items-center space-x-1 bg-white bg-opacity-20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-bold">
-              <span>CLUB</span>
-              <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center mx-1">
-                <span className="text-xs font-bold text-white">6</span>
-              </div>
-              <span>GLOBAL</span>
+            <h2 className="text-2xl font-bold text-white ml-8">Zenika</h2>
+            <div className="flex items-center space-x-2">
+              <img src="/lovable-uploads/597692e2-44e4-4646-b159-4d2e85310158.png" alt="Club66 Logo" className="h-12 w-auto" />
             </div>
           </div>
         </div>
 
         {/* Main Card Content */}
-        <div className="bg-white p-6">
+        <div className="bg-white p-6 relative">
           <div className="flex items-start space-x-6">
-            {/* Profile Image */}
-            <div className="flex-shrink-0">
+            {/* Profile Image - positioned to overlap with header */}
+            <div className="flex-shrink-0 relative -mt-12">
               {profileImage ? (
-                <div className="w-24 h-32 rounded-lg overflow-hidden border border-gray-200">
+                <div className="w-24 h-32 rounded-lg overflow-hidden border-2 border-white shadow-lg">
                   <img 
                     src={profileImage} 
                     alt={memberName} 
@@ -131,12 +127,16 @@ const MemberDigitalCard = ({
                   />
                 </div>
               ) : (
-                <div className="w-24 h-32 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center border border-gray-200">
+                <div className="w-24 h-32 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center border-2 border-white shadow-lg">
                   <span className="text-3xl font-bold text-gray-600">
                     {memberName.charAt(0).toUpperCase()}
                   </span>
                 </div>
               )}
+              {/* ID Number under photo */}
+              <div className="text-center mt-2">
+                <p className="text-xs font-bold text-gray-900">{memberID}</p>
+              </div>
             </div>
 
             {/* Member Details and QR Code */}
@@ -150,13 +150,16 @@ const MemberDigitalCard = ({
                 </p>
                 
                 {address && (
-                  <p className="text-sm text-gray-700 mb-6">
+                  <p className="text-sm text-gray-700 mb-3">
                     {address}
                   </p>
                 )}
                 
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-600 mb-2">
                   Valide jusqu'au : {expiryDate}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Date d'émission : {new Date().toLocaleDateString('fr-FR')}
                 </p>
               </div>
               
