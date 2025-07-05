@@ -96,7 +96,7 @@ const MemberDigitalCard = ({
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto">
+    <div className="w-full max-w-md mx-auto">
       <div className="text-center mb-4">
         <h3 className="font-bold text-lg text-gray-900">Your Digital Membership Card</h3>
         <p className="text-sm text-gray-500">Present this at participating merchants for discounts</p>
@@ -104,12 +104,10 @@ const MemberDigitalCard = ({
       
       <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
         {/* Card Header */}
-        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-6 relative">
-          <div className="flex items-center justify-between">
-            <h2 className="text-4xl font-bold text-white ml-16">Zenika</h2>
-            <div className="flex items-center space-x-2">
-              <img src="/lovable-uploads/597692e2-44e4-4646-b159-4d2e85310158.png" alt="Club66 Logo" className="h-12 w-auto" />
-            </div>
+        <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-3 relative">
+          <div className="flex items-center justify-end space-x-4">
+            <h2 className="text-5xl font-bold text-white">Zenika</h2>
+            <img src="/lovable-uploads/597692e2-44e4-4646-b159-4d2e85310158.png" alt="Club66 Logo" className="h-12 w-auto" />
           </div>
         </div>
 
@@ -117,7 +115,7 @@ const MemberDigitalCard = ({
         <div className="bg-white p-6 relative">
           <div className="flex items-start space-x-6">
             {/* Profile Image - positioned to overlap with header */}
-            <div className="flex-shrink-0 relative -mt-20">
+            <div className="flex-shrink-0 relative -mt-16">
               {profileImage ? (
                 <div className="w-24 h-32 rounded-lg overflow-hidden border-2 border-white shadow-lg">
                   <img 
@@ -156,10 +154,7 @@ const MemberDigitalCard = ({
                 )}
                 
                 <p className="text-sm text-gray-600 mb-2">
-                  Valide jusqu'au : N/A
-                </p>
-                <p className="text-sm text-gray-600">
-                  Date d'émission : {new Date().toLocaleDateString('fr-FR')}
+                  Valide jusqu'au : {new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toLocaleDateString('fr-FR')}
                 </p>
               </div>
               
