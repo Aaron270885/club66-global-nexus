@@ -33,9 +33,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-3 py-1 rounded-md font-bold text-xl">
-              C66
-            </div>
+            <img 
+              src="/lovable-uploads/club66-logo.png" 
+              alt="Club66 Global" 
+              className="h-10 w-auto"
+            />
             <span className="font-semibold text-gray-800 hidden sm:block">Club66 Global</span>
           </Link>
 

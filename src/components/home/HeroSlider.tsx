@@ -88,15 +88,15 @@ const HeroSlider = () => {
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
               <div className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-                {/* Background image with transparency overlay */}
-                <div className="absolute inset-0 opacity-20">
+                {/* Background image with reduced transparency overlay */}
+                <div className="absolute inset-0 opacity-60">
                   <div 
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105 transition-transform duration-[12000ms] ease-out hover:scale-110"
                     style={{
                       backgroundImage: `url('${slide.backgroundImage}')`
                     }}
                   ></div>
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-900/70 via-slate-900/60 to-purple-800/70"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-900/40 via-slate-900/30 to-purple-800/40"></div>
                 </div>
                 
                 <div className="container mx-auto px-4 relative z-10">
