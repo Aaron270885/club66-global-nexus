@@ -37,48 +37,39 @@ const HeroSlider = () => {
   const slides = [
     {
       id: 1,
-      title: 'Join Club66 Global',
-      subtitle: 'Premium Membership Platform',
-      description: 'Unlock exclusive benefits, discounts, and opportunities through our premium membership experience designed for the African elite.',
-      backgroundImage: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      primaryButton: { text: 'Start Your Journey', link: '/membership-payment' },
-      secondaryButton: { text: 'Explore Benefits', link: '/discounts' }
+      title: 'ZENIKA Cards',
+      subtitle: 'Votre Carte Membre Digitale',
+      description: 'Profitez de votre carte membre numérique avec QR code pour un accès rapide aux services et réductions exclusives dans notre réseau.',
+      backgroundImage: '/lovable-uploads/c94bd4e1-3730-468c-8b9b-8b350b608a41.png',
+      primaryButton: { text: 'Obtenir Ma Carte', link: '/register' },
+      secondaryButton: { text: 'Voir Avantages', link: '/cards' }
     },
     {
       id: 2,
-      title: 'ZENIKA Cards',
-      subtitle: 'Premium Membership Cards',
-      description: 'Choose from Essential, Premium, or Elite cards. Each tier offers unique benefits and exclusive access to our growing network across Africa.',
-      backgroundImage: 'https://images.unsplash.com/photo-1531983412531-1f49a365ffed?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      primaryButton: { text: 'Get Your Card', link: '/cards' },
-      secondaryButton: { text: 'View Plans', link: '/cards' }
+      title: 'Solutions Professionnelles',
+      subtitle: 'Services Business & Partenariats',
+      description: 'Solutions financières innovantes, conseils stratégiques et opportunités de partenariat pour développer votre activité professionnelle.',
+      backgroundImage: '/lovable-uploads/a271f525-8c4f-49b3-9a86-3a96666d8730.png',
+      primaryButton: { text: 'Services Pro', link: '/services' },
+      secondaryButton: { text: 'Devenir Partenaire', link: '/affiliates' }
     },
     {
       id: 3,
-      title: 'Ô Secours',
-      subtitle: 'Emergency Assistance',
-      description: 'Get emergency help when you need it most with our token-based rescue system. Available 24/7 across African countries.',
-      backgroundImage: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      primaryButton: { text: 'Get Protected', link: '/services/o-secours' },
-      secondaryButton: { text: 'Learn More', link: '/services/o-secours' }
+      title: 'Carrière & Emploi',
+      subtitle: 'Opportunités Professionnelles',
+      description: 'Trouvez l\'emploi de vos rêves ou recrutez les meilleurs talents grâce à notre plateforme dédiée aux professionnels africains.',
+      backgroundImage: '/lovable-uploads/611d8d2c-d919-40e6-8768-c63118ad2867.png',
+      primaryButton: { text: 'Trouver un Emploi', link: '/jobs' },
+      secondaryButton: { text: 'Recruter', link: '/post-job' }
     },
     {
       id: 4,
-      title: 'Mobile App',
-      subtitle: 'Everything In Your Pocket',
-      description: 'Manage your membership, access benefits, and connect with our African community on the go with our premium mobile application.',
-      backgroundImage: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      primaryButton: { text: 'Download App', link: '/app' },
-      secondaryButton: { text: 'Learn More', link: '/app' }
-    },
-    {
-      id: 5,
-      title: 'Job Center',
-      subtitle: 'Career Opportunities',
-      description: 'Find your dream job or hire top talent through our comprehensive job portal designed for African professionals.',
-      backgroundImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80',
-      primaryButton: { text: 'Browse Jobs', link: '/jobs' },
-      secondaryButton: { text: 'Post Jobs', link: '/job-dashboard/employer' }
+      title: 'Éducation & Bourses',
+      subtitle: 'Projets Communautaires',
+      description: 'Accédez à des bourses d\'études, projets éducatifs et programmes de développement personnel pour la jeunesse africaine.',
+      backgroundImage: '/lovable-uploads/4c42bd0e-c389-4a41-881c-ca7ea44a1451.png',
+      primaryButton: { text: 'Voir Projets', link: '/about/projects' },
+      secondaryButton: { text: 'Demander Bourse', link: '/about/projects' }
     }
   ];
 
@@ -97,15 +88,15 @@ const HeroSlider = () => {
           {slides.map((slide) => (
             <CarouselItem key={slide.id}>
               <div className="relative py-20 md:py-32 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-                {/* Background image with better overlay */}
-                <div className="absolute inset-0 opacity-30">
+                {/* Background image with transparency overlay */}
+                <div className="absolute inset-0 opacity-20">
                   <div 
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105 transition-transform duration-[8000ms] ease-out"
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat transform scale-105 transition-transform duration-[12000ms] ease-out hover:scale-110"
                     style={{
                       backgroundImage: `url('${slide.backgroundImage}')`
                     }}
                   ></div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-900/90 to-slate-900/80"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-900/70 via-slate-900/60 to-purple-800/70"></div>
                 </div>
                 
                 <div className="container mx-auto px-4 relative z-10">
@@ -118,26 +109,25 @@ const HeroSlider = () => {
                       </div>
                       
                        <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-                        {slide.title.includes('Club66') ? (
-                          <>
-                            Join Club<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300">66</span>
-                            <br />Global
-                          </>
-                        ) : slide.title.includes('ZENIKA') ? (
+                        {slide.title.includes('ZENIKA') ? (
                           <>
                             ZENIKA<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Cards</span>
                           </>
-                        ) : slide.title.includes('Ô Secours') ? (
+                        ) : slide.title.includes('Solutions') ? (
                           <>
-                            Ô<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Secours</span>
+                            Solutions<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Professionnelles</span>
                           </>
-                        ) : slide.title.includes('Mobile') ? (
+                        ) : slide.title.includes('Carrière') ? (
                           <>
-                            Mobile<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> App</span>
+                            Carrière &<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Emploi</span>
+                          </>
+                        ) : slide.title.includes('Éducation') ? (
+                          <>
+                            Éducation &<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Bourses</span>
                           </>
                         ) : (
                           <>
-                            Job<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Center</span>
+                            Club<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300">66</span> Global
                           </>
                         )}
                        </h1>
