@@ -9,10 +9,10 @@ import RescueRequest from '@/components/secours/RescueRequest';
 import SecoursStats from '@/components/secours/SecoursStats';
 import NotificationCenter from '@/components/secours/NotificationCenter';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Shield, Coins, AlertTriangle, BarChart3, School, Bike, Phone, Car, Plus, ArrowRight, Star } from 'lucide-react';
+import { Shield, Coins, AlertTriangle, BarChart3, School, Bike, Phone, Car, Plus, ArrowRight, Star, User } from 'lucide-react';
 
 const OSecours = () => {
   const [activeTab, setActiveTab] = useState('services');
@@ -125,7 +125,7 @@ const OSecours = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-5 mb-8">
+              <TabsList className="grid w-full grid-cols-6 mb-8">
                 <TabsTrigger value="services" className="flex items-center gap-2">
                   <Shield className="h-4 w-4" />
                   Services
@@ -145,6 +145,10 @@ const OSecours = () => {
                 <TabsTrigger value="stats" className="flex items-center gap-2">
                   <BarChart3 className="h-4 w-4" />
                   My Stats
+                </TabsTrigger>
+                <TabsTrigger value="account" className="flex items-center gap-2">
+                  <User className="h-4 w-4" />
+                  My Account
                 </TabsTrigger>
               </TabsList>
 
@@ -326,6 +330,67 @@ const OSecours = () => {
                   </div>
                   <div>
                     <NotificationCenter />
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="account">
+                <div className="text-center space-y-6">
+                  <h2 className="text-2xl font-bold">Account Management</h2>
+                  <p className="text-gray-600 max-w-2xl mx-auto">
+                    Access your complete Ô Secours account dashboard to manage subscriptions, view transaction history, and track your emergency assistance activity.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <Card className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <User className="h-5 w-5 text-blue-600" />
+                          My Account Dashboard
+                        </CardTitle>
+                        <CardDescription>
+                          Complete overview of your Ô Secours activities
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <Button 
+                          onClick={() => navigate('/secours/my-account')}
+                          className="w-full"
+                        >
+                          View My Account
+                        </Button>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Shield className="h-5 w-5 text-green-600" />
+                          Quick Actions
+                        </CardTitle>
+                        <CardDescription>
+                          Fast access to common tasks
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="space-y-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full"
+                          onClick={() => setActiveTab('tokens')}
+                        >
+                          Buy Tokens
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm" 
+                          className="w-full"
+                          onClick={() => setActiveTab('rescue')}
+                        >
+                          Request Rescue
+                        </Button>
+                      </CardContent>
+                    </Card>
                   </div>
                 </div>
               </TabsContent>

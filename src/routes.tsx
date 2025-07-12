@@ -24,6 +24,8 @@ import JobCenter from '@/pages/JobCenter';
 import JobDetail from '@/pages/JobDetail';
 import Discounts from '@/pages/Discounts';
 import DiscountManagement from '@/pages/admin/DiscountManagement';
+import SecoursAdmin from '@/pages/admin/SecoursAdmin';
+import SecoursMyAccount from '@/pages/SecoursMyAccount';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
 import AffiliateProgram from '@/pages/AffiliateProgram';
@@ -204,6 +206,14 @@ const routes = [
   {
     path: '/admin/discount-management',
     element: <DiscountManagement />,
+  },
+  {
+    path: '/admin/secours',
+    element: <SecoursAdmin />,
+  },
+  {
+    path: '/secours/my-account',
+    element: <SecoursMyAccount />,
   },
 ];
 
