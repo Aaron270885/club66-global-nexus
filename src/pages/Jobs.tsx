@@ -24,6 +24,10 @@ const Jobs = () => {
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
   useEffect(() => {
+    console.log('Jobs data:', jobs);
+    console.log('Loading:', loading);
+    console.log('Error:', error);
+    
     let filtered = jobs || [];
 
     if (searchTerm) {
@@ -44,8 +48,9 @@ const Jobs = () => {
       filtered = filtered.filter(job => job.employment_type === typeFilter);
     }
 
+    console.log('Filtered jobs:', filtered);
     setFilteredJobs(filtered);
-  }, [searchTerm, locationFilter, typeFilter, jobs]);
+  }, [searchTerm, locationFilter, typeFilter, jobs, loading, error]);
 
   const handleJobClick = (job: any) => {
     navigate(`/jobs/${job.id}`);
