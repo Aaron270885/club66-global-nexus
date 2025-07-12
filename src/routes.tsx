@@ -21,6 +21,7 @@ import AffiliateDashboard from '@/pages/AffiliateDashboard';
 import Debug from '@/pages/Debug';
 import Jobs from '@/pages/Jobs';
 import JobCenter from '@/pages/JobCenter';
+import JobDetail from '@/pages/JobDetail';
 import Discounts from '@/pages/Discounts';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
@@ -130,6 +131,10 @@ const routes = [
   {
     path: '/jobs',
     element: <Jobs />,
+  },
+  {
+    path: '/jobs/:id',
+    element: <JobDetail />,
   },
   {
     path: '/job-center',

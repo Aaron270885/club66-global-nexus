@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { MapPin, Clock, DollarSign, Search, Briefcase, Building } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import { useJobs } from '@/hooks/useJobs';
 import { toast } from 'sonner';
 
 const Jobs = () => {
@@ -18,56 +19,17 @@ const Jobs = () => {
   const [typeFilter, setTypeFilter] = useState('');
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { jobs, loading, error, fetchJobs } = useJobs();
 
-  // Sample job data
-  const jobListings = [
-    {
-      id: '1',
-      title: 'Software Engineer',
-      company: { name: 'TechCorp Mali' },
-      location: 'Bamako, Mali',
-      type: 'Full-time',
-      salary: 2500,
-      posted: '2 days ago',
-      description: 'We are looking for a skilled Software Engineer to join our growing team in Bamako.',
-      technologies: ['React', 'Node.js', 'TypeScript'],
-      featured: true
-    },
-    {
-      id: '2',
-      title: 'Marketing Manager',
-      company: { name: 'Digital Solutions' },
-      location: 'Dakar, Senegal',
-      type: 'Full-time',
-      salary: 1800,
-      posted: '1 week ago',
-      description: 'Lead our marketing initiatives across West Africa.',
-      technologies: ['Digital Marketing', 'SEO', 'Social Media'],
-      featured: false
-    },
-    {
-      id: '3',
-      title: 'Financial Analyst',
-      company: { name: 'Club66 Global' },
-      location: 'Abidjan, Ivory Coast',
-      type: 'Full-time',
-      salary: 2200,
-      posted: '3 days ago',
-      description: 'Analyze financial data and provide insights for business decisions.',
-      technologies: ['Excel', 'SQL', 'Financial Modeling'],
-      featured: true
-    }
-  ];
-
-  const [filteredJobs, setFilteredJobs] = useState(jobListings);
+  const [filteredJobs, setFilteredJobs] = useState(jobs);
 
   useEffect(() => {
-    let filtered = jobListings;
+    let filtered = jobs;
 
     if (searchTerm) {
       filtered = filtered.filter(job =>
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.company?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.description.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -79,19 +41,14 @@ const Jobs = () => {
     }
 
     if (typeFilter) {
-      filtered = filtered.filter(job => job.type === typeFilter);
+      filtered = filtered.filter(job => job.employment_type === typeFilter);
     }
 
     setFilteredJobs(filtered);
-  }, [searchTerm, locationFilter, typeFilter]);
+  }, [searchTerm, locationFilter, typeFilter, jobs]);
 
   const handleJobClick = (job: any) => {
-    if (!user) {
-      toast.error('Please log in to view job details');
-      navigate('/login');
-      return;
-    }
-    toast.info('Job details feature coming soon!');
+    navigate(`/jobs/${job.id}`);
   };
 
   const handleApplyClick = (e: React.MouseEvent, job: any) => {
@@ -104,6 +61,46 @@ const Jobs = () => {
     toast.info('Please become a member to apply for jobs');
     navigate('/membership-payment');
   };
+
+  if (loading) {
+    return (
+      <Layout>
+        <PremiumBanner
+          title="Find Your Dream Job"
+          description="Discover exclusive job opportunities with Club66 Global's premium job portal"
+          backgroundImage="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        />
+        <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
+          <div className="container mx-auto px-4">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading jobs...</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <PremiumBanner
+          title="Find Your Dream Job"
+          description="Discover exclusive job opportunities with Club66 Global's premium job portal"
+          backgroundImage="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        />
+        <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
+          <div className="container mx-auto px-4">
+            <div className="text-center">
+              <p className="text-red-600 mb-4">Error loading jobs: {error}</p>
+              <Button onClick={() => fetchJobs()}>Retry</Button>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -174,18 +171,21 @@ const Jobs = () => {
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <Badge variant={job.type === 'Full-time' ? 'default' : 'secondary'}>
-                            {job.type}
+                          <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
+                            {job.employment_type}
                           </Badge>
                           {job.featured && (
                             <Badge className="bg-orange-500">Featured</Badge>
+                          )}
+                          {job.urgent && (
+                            <Badge className="bg-red-500">Urgent</Badge>
                           )}
                         </div>
                         <CardTitle className="text-xl mb-2">{job.title}</CardTitle>
                         <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
                           <div className="flex items-center">
                             <Building className="h-4 w-4 mr-1" />
-                            {user ? job.company?.name || 'Club66 Global' : 'Login to view company'}
+                            {user ? job.company || 'Club66 Global' : 'Login to view company'}
                           </div>
                           <div className="flex items-center">
                             <MapPin className="h-4 w-4 mr-1" />
@@ -193,11 +193,14 @@ const Jobs = () => {
                           </div>
                           <div className="flex items-center">
                             <DollarSign className="h-4 w-4 mr-1" />
-                            ${job.salary}/month
+                            {job.salary_min && job.salary_max 
+                              ? `${job.salary_min}-${job.salary_max} ${job.currency || 'CFA'}`
+                              : `${job.salary_min || job.salary_max || 'Negotiable'}`
+                            }
                           </div>
                           <div className="flex items-center">
                             <Clock className="h-4 w-4 mr-1" />
-                            Posted {job.posted}
+                            Posted {new Date(job.created_at).toLocaleDateString()}
                           </div>
                         </div>
                       </div>
@@ -207,8 +210,8 @@ const Jobs = () => {
                     <p className="text-gray-700 mb-4 line-clamp-2">{job.description}</p>
                     <div className="flex justify-between items-center">
                       <div className="flex flex-wrap gap-2">
-                        {job.technologies?.slice(0, 3).map((tech, index) => (
-                          <Badge key={index} variant="outline">{tech}</Badge>
+                        {job.skills?.slice(0, 3).map((skill, index) => (
+                          <Badge key={index} variant="outline">{skill}</Badge>
                         ))}
                       </div>
                       <Button onClick={(e) => handleApplyClick(e, job)}>
