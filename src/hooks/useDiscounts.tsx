@@ -32,6 +32,7 @@ export interface DiscountUsage {
 
 export const useDiscounts = () => {
   const [merchants, setMerchants] = useState<Merchant[]>([]);
+  const [sectors, setSectors] = useState<{id: string, name: string}[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -82,9 +83,23 @@ export const useDiscounts = () => {
     await fetchMerchants({ featured: true });
   };
 
+  const fetchSectors = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sectors')
+        .select('id, name')
+        .eq('is_active', true)
+        .order('name');
+
+      if (error) throw error;
+      setSectors(data || []);
+    } catch (err) {
+      console.error('Error fetching sectors:', err);
+    }
+  };
+
   const getSectors = () => {
-    const uniqueSectors = [...new Set(merchants.map(m => m.sector))];
-    return uniqueSectors.sort();
+    return sectors;
   };
 
   const getLocations = () => {
@@ -94,13 +109,16 @@ export const useDiscounts = () => {
 
   useEffect(() => {
     fetchMerchants();
+    fetchSectors();
   }, []);
 
   return { 
-    merchants, 
+    merchants,
+    sectors,
     loading, 
     error, 
     fetchMerchants,
+    fetchSectors,
     getFeaturedMerchants,
     getSectors,
     getLocations

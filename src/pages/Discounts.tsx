@@ -19,25 +19,12 @@ const Discounts = () => {
   
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { merchants, loading, error, fetchMerchants, getSectors, getLocations } = useDiscounts();
+  const { merchants, sectors, loading, error, fetchMerchants, getSectors, getLocations } = useDiscounts();
   const { recordDiscountUsage } = useDiscountUsage();
 
-  const sectors = [
-    "Real Estate Services",
-    "Financial Services", 
-    "Travel Agencies",
-    "Hotels and Accommodation",
-    "Textiles",
-    "Clothing",
-    "Cosmetics and Beauty Spots",
-    "Cars",
-    "Footwears",
-    "Motorbikes",
-    "Mobile Phones",
-    "Electronic Equipment",
-    "Furniture",
-    "Other Services"
-  ];
+  const handleSectorClick = (sectorName: string) => {
+    setSectorFilter(sectorName);
+  };
 
   const handleSearch = () => {
     fetchMerchants({
@@ -119,8 +106,8 @@ const Discounts = () => {
                     <SelectContent>
                       <SelectItem value="all">All Sectors</SelectItem>
                       {sectors.map((sector) => (
-                        <SelectItem key={sector} value={sector}>
-                          {sector}
+                        <SelectItem key={sector.id} value={sector.name}>
+                          {sector.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -170,12 +157,16 @@ const Discounts = () => {
             <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center">Discount Sectors</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
-                {sectors.map((sector, index) => (
-                  <Card key={index} className="p-4 text-center hover:shadow-lg transition-shadow cursor-pointer">
+                {sectors.map((sector) => (
+                  <Card 
+                    key={sector.id} 
+                    className="p-4 text-center hover:shadow-lg transition-shadow cursor-pointer hover:bg-purple-50"
+                    onClick={() => handleSectorClick(sector.name)}
+                  >
                     <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                       <Store className="h-6 w-6 text-purple-600" />
                     </div>
-                    <p className="text-sm font-medium text-gray-700 leading-tight">{sector}</p>
+                    <p className="text-sm font-medium text-gray-700 leading-tight">{sector.name}</p>
                   </Card>
                 ))}
               </div>
