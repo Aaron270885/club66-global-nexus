@@ -10,24 +10,62 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { MapPin, Clock, DollarSign, Search, Briefcase, Building } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useJobs, type Job } from '@/hooks/useJobs';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+
+interface Job {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  employment_type: string;
+  salary_min?: number;
+  salary_max?: number;
+  currency?: string;
+  description: string;
+  skills?: string[];
+  created_at: string;
+  featured?: boolean;
+  urgent?: boolean;
+}
 
 const Jobs = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [locationFilter, setLocationFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { jobs, loading, error, fetchJobs } = useJobs();
 
   const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setJobs(data || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch jobs');
+      console.error('Error fetching jobs:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    console.log('Jobs data:', jobs);
-    console.log('Loading:', loading);
-    console.log('Error:', error);
-    
+    fetchJobs();
+  }, []);
+
+  useEffect(() => {
     let filtered = jobs || [];
 
     if (searchTerm) {
@@ -48,15 +86,14 @@ const Jobs = () => {
       filtered = filtered.filter(job => job.employment_type === typeFilter);
     }
 
-    console.log('Filtered jobs:', filtered);
     setFilteredJobs(filtered);
-  }, [searchTerm, locationFilter, typeFilter, jobs, loading, error]);
+  }, [searchTerm, locationFilter, typeFilter, jobs]);
 
-  const handleJobClick = (job: any) => {
+  const handleJobClick = (job: Job) => {
     navigate(`/jobs/${job.id}`);
   };
 
-  const handleApplyClick = (e: React.MouseEvent, job: any) => {
+  const handleApplyClick = (e: React.MouseEvent, job: Job) => {
     e.stopPropagation();
     if (!user) {
       toast.error('Please log in to apply for jobs');

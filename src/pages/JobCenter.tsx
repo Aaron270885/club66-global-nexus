@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -5,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, Users, Building, TrendingUp, Search, MapPin, Award, Clock, DollarSign } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { jobListings } from '@/data/jobListings';
+import { supabase } from '@/integrations/supabase/client';
 
 const JobCenter = () => {
   const navigate = useNavigate();
-  const featuredJobs = jobListings.slice(0, 6);
+  const [featuredJobs, setFeaturedJobs] = useState([]);
   const topCompanies = [
     { name: 'Club66 Global', jobs: 12, logo: '/placeholder.svg' },
     { name: 'TechCorp Africa', jobs: 8, logo: '/placeholder.svg' },
@@ -23,6 +24,35 @@ const JobCenter = () => {
     { label: 'Job Seekers', value: '5K+', icon: Users, color: 'purple' },
     { label: 'Placements', value: '500+', icon: Award, color: 'orange' }
   ];
+
+  useEffect(() => {
+    const fetchFeaturedJobs = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('is_active', true)
+          .eq('featured', true)
+          .order('created_at', { ascending: false })
+          .limit(6);
+
+        if (error) throw error;
+        setFeaturedJobs(data || []);
+      } catch (err) {
+        console.error('Error fetching featured jobs:', err);
+        // Fallback to regular jobs if no featured jobs
+        const { data } = await supabase
+          .from('jobs')
+          .select('*')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false })
+          .limit(6);
+        setFeaturedJobs(data || []);
+      }
+    };
+
+    fetchFeaturedJobs();
+  }, []);
 
   return (
     <Layout>
@@ -164,8 +194,8 @@ const JobCenter = () => {
                   <Card key={job.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/jobs/${job.id}`)}>
                     <CardHeader>
                       <div className="flex justify-between items-start">
-                        <Badge variant={job.type === 'Full-time' ? 'default' : 'secondary'}>
-                          {job.type}
+                        <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
+                          {job.employment_type}
                         </Badge>
                         {job.featured && (
                           <Badge className="bg-orange-500">Featured</Badge>
@@ -173,7 +203,7 @@ const JobCenter = () => {
                       </div>
                       <CardTitle className="text-lg">{job.title}</CardTitle>
                       <div className="text-sm text-gray-600">
-                        {job.company?.name || 'Club66 Global'}
+                        {job.company}
                       </div>
                     </CardHeader>
                     <CardContent>
@@ -184,11 +214,14 @@ const JobCenter = () => {
                         </div>
                         <div className="flex items-center">
                           <DollarSign className="h-4 w-4 mr-2" />
-                          ${job.salary}/month
+                          {job.salary_min && job.salary_max 
+                            ? `${job.salary_min}-${job.salary_max} ${job.currency || 'CFA'}`
+                            : 'Salary Negotiable'
+                          }
                         </div>
                         <div className="flex items-center">
                           <Clock className="h-4 w-4 mr-2" />
-                          Posted {job.posted}
+                          Posted {new Date(job.created_at).toLocaleDateString()}
                         </div>
                       </div>
                       <p className="text-gray-700 text-sm mb-4 line-clamp-2">{job.description}</p>
