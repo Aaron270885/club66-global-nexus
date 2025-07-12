@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { MapPin, Clock, DollarSign, Search, Briefcase, Building } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
-import { useJobs } from '@/hooks/useJobs';
+import { useJobs, type Job } from '@/hooks/useJobs';
 import { toast } from 'sonner';
 
 const Jobs = () => {
@@ -21,22 +21,22 @@ const Jobs = () => {
   const { user } = useAuth();
   const { jobs, loading, error, fetchJobs } = useJobs();
 
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
+  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
 
   useEffect(() => {
-    let filtered = jobs;
+    let filtered = jobs || [];
 
     if (searchTerm) {
       filtered = filtered.filter(job =>
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.description.toLowerCase().includes(searchTerm.toLowerCase())
+        job.description?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (locationFilter) {
       filtered = filtered.filter(job =>
-        job.location.toLowerCase().includes(locationFilter.toLowerCase())
+        job.location?.toLowerCase().includes(locationFilter.toLowerCase())
       );
     }
 

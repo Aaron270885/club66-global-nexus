@@ -711,43 +711,64 @@ export type Database = {
       }
       merchants: {
         Row: {
+          business_hours: Json | null
           contact_email: string | null
           contact_phone: string | null
           created_at: string | null
+          description: string | null
           discount_percentage: number
+          featured: boolean | null
           id: string
+          image_url: string | null
           is_active: boolean | null
           location: string | null
           logo_url: string | null
           name: string
+          rating: number | null
           sector: string
+          social_media: Json | null
           updated_at: string | null
+          website: string | null
         }
         Insert: {
+          business_hours?: Json | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string | null
+          description?: string | null
           discount_percentage: number
+          featured?: boolean | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           location?: string | null
           logo_url?: string | null
           name: string
+          rating?: number | null
           sector: string
+          social_media?: Json | null
           updated_at?: string | null
+          website?: string | null
         }
         Update: {
+          business_hours?: Json | null
           contact_email?: string | null
           contact_phone?: string | null
           created_at?: string | null
+          description?: string | null
           discount_percentage?: number
+          featured?: boolean | null
           id?: string
+          image_url?: string | null
           is_active?: boolean | null
           location?: string | null
           logo_url?: string | null
           name?: string
+          rating?: number | null
           sector?: string
+          social_media?: Json | null
           updated_at?: string | null
+          website?: string | null
         }
         Relationships: []
       }

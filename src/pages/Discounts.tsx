@@ -1,4 +1,5 @@
 
+import { useState, useEffect } from 'react';
 import Layout from '@/components/layout/Layout';
 import PremiumBanner from '@/components/layout/PremiumBanner';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,9 +7,21 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Search, MapPin, Store, Percent, Star } from 'lucide-react';
+import { Search, MapPin, Store, Percent, Star, Loader2 } from 'lucide-react';
+import { useDiscounts, useDiscountUsage } from '@/hooks/useDiscounts';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Discounts = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sectorFilter, setSectorFilter] = useState('all');
+  const [locationFilter, setLocationFilter] = useState('all');
+  
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const { merchants, loading, error, fetchMerchants, getSectors, getLocations } = useDiscounts();
+  const { recordDiscountUsage } = useDiscountUsage();
+
   const sectors = [
     "Real Estate Services",
     "Financial Services", 
@@ -26,62 +39,54 @@ const Discounts = () => {
     "Other Services"
   ];
 
-  const featuredDiscounts = [
-    {
-      merchant: "African Fashion House",
-      sector: "Clothing",
-      discount: "20%",
-      location: "Dakar, Senegal",
-      description: "Premium African fashion and traditional wear",
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.8
-    },
-    {
-      merchant: "TechHub Electronics",
-      sector: "Electronic Equipment",
-      discount: "15%",
-      location: "Lagos, Nigeria",
-      description: "Latest electronics and gadgets",
-      image: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.6
-    },
-    {
-      merchant: "Sahara Beauty Spa",
-      sector: "Cosmetics and Beauty Spots",
-      discount: "25%",
-      location: "Accra, Ghana",
-      description: "Premium beauty treatments and cosmetics",
-      image: "https://images.unsplash.com/photo-1552693673-1bf958298935?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.9
-    },
-    {
-      merchant: "Luxury Hotels Africa",
-      sector: "Hotels and Accommodation",
-      discount: "30%",
-      location: "Nairobi, Kenya",
-      description: "Premium accommodation across Africa",
-      image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.7
-    },
-    {
-      merchant: "African Motors",
-      sector: "Cars",
-      discount: "12%",
-      location: "Abidjan, Ivory Coast",
-      description: "Quality vehicles and automotive services",
-      image: "https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.5
-    },
-    {
-      merchant: "Continental Furniture",
-      sector: "Furniture",
-      discount: "18%",
-      location: "Bamako, Mali",
-      description: "Modern and traditional African furniture",
-      image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
-      rating: 4.4
+  const handleSearch = () => {
+    fetchMerchants({
+      search: searchTerm,
+      sector: sectorFilter,
+      location: locationFilter
+    });
+  };
+
+  const handleClaimDiscount = async (merchant: any) => {
+    if (!user) {
+      navigate('/login');
+      return;
     }
-  ];
+    
+    await recordDiscountUsage(merchant.id, merchant.discount_percentage);
+  };
+
+  useEffect(() => {
+    handleSearch();
+  }, [sectorFilter, locationFilter]);
+
+  if (loading && merchants.length === 0) {
+    return (
+      <Layout>
+        <PremiumBanner
+          title="Member Discounts"
+          description="Unlock exclusive savings across Africa with Club66 Global membership benefits"
+          backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
+        />
+        <div className="py-16 bg-gradient-to-br from-purple-50 to-blue-50">
+          <div className="container mx-auto px-4">
+            <div className="text-center">
+              <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4 text-purple-600" />
+              <p className="text-gray-600">Loading discounts...</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  const featuredMerchants = merchants.filter(m => m.featured);
+  const merchantStats = {
+    totalMerchants: merchants.length,
+    countries: [...new Set(merchants.map(m => m.location.split(',').pop()?.trim()))].length,
+    avgDiscount: Math.round(merchants.reduce((sum, m) => sum + m.discount_percentage, 0) / merchants.length) || 0,
+    members: '2M+'
+  };
 
   return (
     <Layout>
@@ -97,38 +102,46 @@ const Discounts = () => {
             {/* Search and Filter Section */}
             <Card className="mb-12">
               <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                    <Input placeholder="Search merchants..." className="pl-10" />
+                    <Input 
+                      placeholder="Search merchants..." 
+                      className="pl-10"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                   </div>
-                  <Select>
+                  <Select value={sectorFilter} onValueChange={setSectorFilter}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select sector" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Sectors</SelectItem>
                       {sectors.map((sector) => (
-                        <SelectItem key={sector} value={sector.toLowerCase().replace(/\s+/g, '-')}>
+                        <SelectItem key={sector} value={sector}>
                           {sector}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  <Select>
+                  <Select value={locationFilter} onValueChange={setLocationFilter}>
                     <SelectTrigger>
                       <SelectValue placeholder="Select location" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Locations</SelectItem>
-                      <SelectItem value="senegal">Senegal</SelectItem>
-                      <SelectItem value="nigeria">Nigeria</SelectItem>
-                      <SelectItem value="ghana">Ghana</SelectItem>
-                      <SelectItem value="kenya">Kenya</SelectItem>
-                      <SelectItem value="ivory-coast">Ivory Coast</SelectItem>
-                      <SelectItem value="mali">Mali</SelectItem>
+                      {getLocations().map((location) => (
+                        <SelectItem key={location} value={location}>
+                          {location}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
+                  <Button onClick={handleSearch} className="w-full">
+                    <Search className="h-4 w-4 mr-2" />
+                    Search
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -136,19 +149,19 @@ const Discounts = () => {
             {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <Card className="text-center p-6">
-                <div className="text-3xl font-bold text-purple-600 mb-2">500+</div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.totalMerchants}+</div>
                 <div className="text-gray-600">Partner Merchants</div>
               </Card>
               <Card className="text-center p-6">
-                <div className="text-3xl font-bold text-purple-600 mb-2">15</div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.countries}</div>
                 <div className="text-gray-600">African Countries</div>
               </Card>
               <Card className="text-center p-6">
-                <div className="text-3xl font-bold text-purple-600 mb-2">5-30%</div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.avgDiscount}%</div>
                 <div className="text-gray-600">Average Savings</div>
               </Card>
               <Card className="text-center p-6">
-                <div className="text-3xl font-bold text-purple-600 mb-2">2M+</div>
+                <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.members}</div>
                 <div className="text-gray-600">Happy Members</div>
               </Card>
             </div>
@@ -171,43 +184,101 @@ const Discounts = () => {
             {/* Featured Discounts */}
             <div className="mb-12">
               <h2 className="text-2xl font-bold mb-6 text-center">Featured Discounts</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featuredDiscounts.map((discount, index) => (
-                  <Card key={index} className="overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className="relative">
-                      <img 
-                        src={discount.image} 
-                        alt={discount.merchant}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="absolute top-4 right-4">
-                        <Badge className="bg-green-500 text-white text-lg px-3 py-1">
-                          {discount.discount} OFF
-                        </Badge>
-                      </div>
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="font-bold text-lg">{discount.merchant}</h3>
-                        <div className="flex items-center gap-1">
-                          <Star className="h-4 w-4 text-yellow-400 fill-current" />
-                          <span className="text-sm text-gray-600">{discount.rating}</span>
+              {featuredMerchants.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {featuredMerchants.map((merchant) => (
+                    <Card key={merchant.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                      <div className="relative">
+                        <img 
+                          src={merchant.image_url || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} 
+                          alt={merchant.name}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="absolute top-4 right-4">
+                          <Badge className="bg-green-500 text-white text-lg px-3 py-1">
+                            {merchant.discount_percentage}% OFF
+                          </Badge>
                         </div>
                       </div>
-                      <Badge variant="outline" className="mb-3">{discount.sector}</Badge>
-                      <p className="text-gray-600 mb-4">{discount.description}</p>
-                      <div className="flex items-center text-sm text-gray-500 mb-4">
-                        <MapPin className="h-4 w-4 mr-1" />
-                        {discount.location}
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="font-bold text-lg">{merchant.name}</h3>
+                          <div className="flex items-center gap-1">
+                            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                            <span className="text-sm text-gray-600">{merchant.rating || 4.5}</span>
+                          </div>
+                        </div>
+                        <Badge variant="outline" className="mb-3">{merchant.sector}</Badge>
+                        <p className="text-gray-600 mb-4">{merchant.description || 'Great deals and services'}</p>
+                        <div className="flex items-center text-sm text-gray-500 mb-4">
+                          <MapPin className="h-4 w-4 mr-1" />
+                          {merchant.location}
+                        </div>
+                        <Button 
+                          className="w-full bg-purple-600 hover:bg-purple-700"
+                          onClick={() => handleClaimDiscount(merchant)}
+                        >
+                          <Percent className="h-4 w-4 mr-2" />
+                          Claim Discount
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Store className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">No featured discounts found</h3>
+                  <p className="text-gray-500">Check back later for new offers</p>
+                </div>
+              )}
+            </div>
+
+            {/* All Merchants */}
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold mb-6 text-center">All Discounts</h2>
+              {merchants.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {merchants.map((merchant) => (
+                    <Card key={merchant.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="relative">
+                        <img 
+                          src={merchant.image_url || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80'} 
+                          alt={merchant.name}
+                          className="w-full h-32 object-cover"
+                        />
+                        <div className="absolute top-2 right-2">
+                          <Badge className="bg-green-500 text-white px-2 py-1">
+                            {merchant.discount_percentage}%
+                          </Badge>
+                        </div>
                       </div>
-                      <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                        <Percent className="h-4 w-4 mr-2" />
-                        Claim Discount
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                      <CardContent className="p-4">
+                        <h3 className="font-semibold text-md mb-1">{merchant.name}</h3>
+                        <Badge variant="outline" className="text-xs mb-2">{merchant.sector}</Badge>
+                        <p className="text-xs text-gray-600 mb-2 line-clamp-2">{merchant.description || 'Great deals available'}</p>
+                        <div className="flex items-center text-xs text-gray-500 mb-3">
+                          <MapPin className="h-3 w-3 mr-1" />
+                          {merchant.location}
+                        </div>
+                        <Button 
+                          size="sm" 
+                          className="w-full bg-purple-600 hover:bg-purple-700"
+                          onClick={() => handleClaimDiscount(merchant)}
+                        >
+                          Claim
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Store className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold text-gray-600 mb-2">No merchants found</h3>
+                  <p className="text-gray-500">Try adjusting your search criteria</p>
+                </div>
+              )}
             </div>
 
             {/* CTA Section */}
