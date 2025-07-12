@@ -82,7 +82,7 @@ const Jobs = () => {
       );
     }
 
-    if (typeFilter) {
+    if (typeFilter && typeFilter !== 'all') {
       filtered = filtered.filter(job => job.employment_type === typeFilter);
     }
 
@@ -184,7 +184,7 @@ const Jobs = () => {
                       <SelectValue placeholder="Job Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All Types</SelectItem>
+                      <SelectItem value="all">All Types</SelectItem>
                       <SelectItem value="Full-time">Full-time</SelectItem>
                       <SelectItem value="Part-time">Part-time</SelectItem>
                       <SelectItem value="Contract">Contract</SelectItem>
