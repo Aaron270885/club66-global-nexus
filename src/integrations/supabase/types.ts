@@ -726,6 +726,7 @@ export type Database = {
           name: string
           rating: number | null
           sector: string
+          sector_id: string | null
           social_media: Json | null
           updated_at: string | null
           website: string | null
@@ -746,6 +747,7 @@ export type Database = {
           name: string
           rating?: number | null
           sector: string
+          sector_id?: string | null
           social_media?: Json | null
           updated_at?: string | null
           website?: string | null
@@ -766,11 +768,20 @@ export type Database = {
           name?: string
           rating?: number | null
           sector?: string
+          sector_id?: string | null
           social_media?: Json | null
           updated_at?: string | null
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "merchants_sector_id_fkey"
+            columns: ["sector_id"]
+            isOneToOne: false
+            referencedRelation: "sectors"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       payday_advances: {
         Row: {
@@ -1155,6 +1166,33 @@ export type Database = {
           token_balance?: number
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      sectors: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }

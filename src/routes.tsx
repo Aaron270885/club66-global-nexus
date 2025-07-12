@@ -23,6 +23,7 @@ import Jobs from '@/pages/Jobs';
 import JobCenter from '@/pages/JobCenter';
 import JobDetail from '@/pages/JobDetail';
 import Discounts from '@/pages/Discounts';
+import DiscountManagement from '@/pages/admin/DiscountManagement';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
 import AffiliateProgram from '@/pages/AffiliateProgram';
@@ -199,6 +200,10 @@ const routes = [
   {
     path: '/services/secours/cata-catani',
     element: <CataCatani />,
+  },
+  {
+    path: '/admin/discount-management',
+    element: <DiscountManagement />,
   },
 ];
 
