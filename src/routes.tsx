@@ -39,6 +39,12 @@ import AffiliateDistributors from '@/pages/affiliates/Distributors';
 import Team from '@/pages/Team';
 import MyAccount from '@/pages/MyAccount';
 
+// About pages
+import Partners from '@/pages/about/Partners';
+import News from '@/pages/about/News'; 
+import ChangingLives from '@/pages/about/ChangingLives';
+import Projects from '@/pages/about/Projects';
+
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
 import SchoolFees from '@/pages/services/secours/SchoolFees';
@@ -70,6 +76,22 @@ const routes = [
   {
     path: '/privacy',
     element: <Privacy />,
+  },
+  {
+    path: '/about/partners',
+    element: <Partners />,
+  },
+  {
+    path: '/about/news',
+    element: <News />,
+  },
+  {
+    path: '/about/changing-lives',
+    element: <ChangingLives />,
+  },
+  {
+    path: '/about/projects',
+    element: <Projects />,
   },
   {
     path: '/team',
