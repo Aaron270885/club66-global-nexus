@@ -77,6 +77,20 @@ const AdminDashboard = () => {
       color: "bg-yellow-50 hover:bg-yellow-100 border-yellow-200"
     },
     {
+      title: "Partners Management",
+      description: "Manage business partners and collaborations",
+      icon: Users,
+      route: "/admin/partners-management",
+      color: "bg-pink-50 hover:bg-pink-100 border-pink-200"
+    },
+    {
+      title: "Projects Management",
+      description: "Manage funding projects and initiatives",
+      icon: TrendingUp,
+      route: "/admin/projects-management",
+      color: "bg-indigo-50 hover:bg-indigo-100 border-indigo-200"
+    },
+    {
       title: "Payment Management",
       description: "View and manage payment transactions",
       icon: Settings,

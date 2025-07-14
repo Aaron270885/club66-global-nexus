@@ -783,6 +783,51 @@ export type Database = {
           },
         ]
       }
+      partners: {
+        Row: {
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string | null
+          description: string | null
+          featured: boolean | null
+          id: string
+          is_active: boolean | null
+          logo_url: string | null
+          name: string
+          partnership_type: string | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          logo_url?: string | null
+          name: string
+          partnership_type?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string | null
+          description?: string | null
+          featured?: boolean | null
+          id?: string
+          is_active?: boolean | null
+          logo_url?: string | null
+          name?: string
+          partnership_type?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
+      }
       payday_advances: {
         Row: {
           approval_date: string | null

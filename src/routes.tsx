@@ -29,6 +29,8 @@ import AdminDashboard from '@/pages/admin/Dashboard';
 import AgentPanel from '@/pages/admin/AgentPanel';
 import CmsManagement from '@/pages/admin/CmsManagement';
 import JobManagement from '@/pages/admin/JobManagement';
+import PartnersManagement from '@/pages/admin/PartnersManagement';
+import ProjectsManagement from '@/pages/admin/ProjectsManagement';
 import SecoursMyAccount from '@/pages/SecoursMyAccount';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
@@ -257,6 +259,14 @@ const routes = [
   {
     path: '/admin/jobs',
     element: <JobManagement />,
+  },
+  {
+    path: '/admin/partners-management',
+    element: <PartnersManagement />,
+  },
+  {
+    path: '/admin/projects-management',
+    element: <ProjectsManagement />,
   },
   {
     path: '/secours/my-account',

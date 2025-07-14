@@ -18,7 +18,7 @@ const Team = () => {
       name: "Modou Jobe",
       position: "Deputy CEO, Club 66 Global",
       role: "Board of Directors Member",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      image: "/lovable-uploads/b304db8d-403d-412c-aefd-66daa0aa85ac.png",
       description: "Modou Jobe serves as the Deputy CEO of Club 66 Global and a member of the Board of Directors. His education in Accounting and extensive work in banking and finance on international levels have enabled him to cultivate vast expertise. Modou is an expert in Business Structuring and Product Design, structured finance and commodity trade. He is an entrepreneur with passionate focus on Social Assurance Services. As a trained Accountant and Seasoned Banker, He explored his diverse experience and nurtured a brilliant career profile in Business Consulting, Trade Brokerage, Structured Finance, Asset & Liquidity Management and High Level Business Protocols within Africa. He is also one of the pioneers of the Club 66 Global crowd pulling model and the IPASE close client network Platform intended for inauguration in Senegal in 2024. For him, 'giving back to the community is as paramount as paying back his shareholders'.",
       expertise: ["Banking & Finance", "Business Structuring", "Structured Finance", "Social Assurance"]
     }
