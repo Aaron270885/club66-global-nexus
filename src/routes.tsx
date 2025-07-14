@@ -25,6 +25,8 @@ import JobDetail from '@/pages/JobDetail';
 import Discounts from '@/pages/Discounts';
 import DiscountManagement from '@/pages/admin/DiscountManagement';
 import SecoursAdmin from '@/pages/admin/SecoursAdmin';
+import AdminDashboard from '@/pages/admin/Dashboard';
+import AgentPanel from '@/pages/admin/AgentPanel';
 import SecoursMyAccount from '@/pages/SecoursMyAccount';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
@@ -204,12 +206,20 @@ const routes = [
     element: <CataCatani />,
   },
   {
+    path: '/admin/dashboard',
+    element: <AdminDashboard />,
+  },
+  {
     path: '/admin/discount-management',
     element: <DiscountManagement />,
   },
   {
     path: '/admin/secours',
     element: <SecoursAdmin />,
+  },
+  {
+    path: '/admin/agent-panel',
+    element: <AgentPanel />,
   },
   {
     path: '/secours/my-account',
