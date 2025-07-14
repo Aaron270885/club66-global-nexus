@@ -8,6 +8,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Badge } from "@/components/ui/badge";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface PageEditorProps {
   isOpen: boolean;
@@ -238,14 +240,32 @@ const PageEditor = ({ isOpen, onClose, page, onSaved }: PageEditorProps) => {
 
         <div className="mt-6">
           <Label htmlFor="content">Content *</Label>
-          <Textarea
-            id="content"
-            value={formData.content}
-            onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-            placeholder="Page content..."
-            rows={10}
-            className="mt-2"
-          />
+          <div className="mt-2">
+            <ReactQuill
+              theme="snow"
+              value={formData.content}
+              onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
+              placeholder="Write your page content here..."
+              modules={{
+                toolbar: [
+                  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                  ['bold', 'italic', 'underline', 'strike'],
+                  [{ 'color': [] }, { 'background': [] }],
+                  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                  [{ 'indent': '-1'}, { 'indent': '+1' }],
+                  [{ 'align': [] }],
+                  ['link', 'image', 'video'],
+                  ['clean']
+                ],
+              }}
+              formats={[
+                'header', 'bold', 'italic', 'underline', 'strike',
+                'color', 'background', 'list', 'bullet', 'indent',
+                'align', 'link', 'image', 'video'
+              ]}
+              style={{ height: '300px', marginBottom: '50px' }}
+            />
+          </div>
         </div>
 
         <div className="flex justify-end space-x-2 mt-6">
