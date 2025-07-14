@@ -5,9 +5,55 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, User, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 const News = () => {
-  const newsArticles = [
+  const navigate = useNavigate();
+  const [newsArticles, setNewsArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchNews();
+  }, []);
+
+  const fetchNews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cms_pages')
+        .select('*')
+        .eq('page_type', 'news')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      const cmsNews = data?.map(page => ({
+        id: page.id,
+        title: page.title,
+        excerpt: page.meta_description || page.content.substring(0, 200) + '...',
+        date: page.created_at.split('T')[0],
+        author: 'Admin Team',
+        category: 'News',
+        image: page.featured_image_url || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80"
+      })) || [];
+
+      // If no CMS news, show static news
+      if (cmsNews.length === 0) {
+        setNewsArticles(getStaticNews());
+      } else {
+        setNewsArticles(cmsNews);
+      }
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      setNewsArticles(getStaticNews());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getStaticNews = () => [
     {
       id: 1,
       title: "Club66 Global Expands to Three New Countries",
@@ -37,6 +83,10 @@ const News = () => {
     }
   ];
 
+  const handleReadMore = (articleId: string | number) => {
+    navigate(`/news/${articleId}`);
+  };
+
   return (
     <Layout>
       <PremiumBanner
@@ -50,8 +100,11 @@ const News = () => {
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {newsArticles.map((article) => (
+            {loading ? (
+              <div className="text-center py-8">Loading news articles...</div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {newsArticles.map((article) => (
                 <Card key={article.id} className="hover:shadow-lg transition-shadow">
                   <div className="aspect-video overflow-hidden">
                     <img 
@@ -79,15 +132,20 @@ const News = () => {
                         <User className="h-4 w-4 mr-1" />
                         {article.author}
                       </div>
-                      <Button variant="outline" size="sm">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleReadMore(article.id)}
+                      >
                         Read More
                         <ArrowRight className="h-4 w-4 ml-1" />
                       </Button>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

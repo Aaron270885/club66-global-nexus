@@ -38,6 +38,7 @@ import AffiliateMerchants from '@/pages/affiliates/Merchants';
 import AffiliateDistributors from '@/pages/affiliates/Distributors';
 import Team from '@/pages/Team';
 import MyAccount from '@/pages/MyAccount';
+import NewsDetail from '@/pages/NewsDetail';
 
 // About pages
 import Partners from '@/pages/about/Partners';
@@ -92,6 +93,10 @@ const routes = [
   {
     path: '/about/projects',
     element: <Projects />,
+  },
+  {
+    path: '/news/:id',
+    element: <NewsDetail />,
   },
   {
     path: '/team',

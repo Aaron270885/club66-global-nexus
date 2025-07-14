@@ -63,10 +63,10 @@ const AdminDashboard = () => {
       color: "bg-green-50 hover:bg-green-100 border-green-200"
     },
     {
-      title: "Payment Management",
-      description: "View and manage all payment transactions",
+      title: "Job Management",
+      description: "Manage job postings and applications",
       icon: CreditCard,
-      route: "/admin/payments",
+      route: "/admin/jobs",
       color: "bg-purple-50 hover:bg-purple-100 border-purple-200"
     },
     {
@@ -77,10 +77,10 @@ const AdminDashboard = () => {
       color: "bg-yellow-50 hover:bg-yellow-100 border-yellow-200"
     },
     {
-      title: "System Settings",
-      description: "Configure system settings and preferences",
+      title: "Payment Management",
+      description: "View and manage payment transactions",
       icon: Settings,
-      route: "/admin/settings",
+      route: "/admin/payments",
       color: "bg-gray-50 hover:bg-gray-100 border-gray-200"
     }
   ];
@@ -159,19 +159,19 @@ const AdminDashboard = () => {
             </Button>
             <Button 
               variant="outline"
-              onClick={() => navigate('/admin/discount-management')}
+              onClick={() => navigate('/admin/cms')}
               className="p-6 h-auto flex-col space-y-2"
             >
-              <ShoppingBag className="h-6 w-6" />
-              <span>Add New Merchant</span>
+              <FileText className="h-6 w-6" />
+              <span>Manage Content</span>
             </Button>
             <Button 
               variant="outline"
-              onClick={() => navigate('/admin/agent-panel')}
+              onClick={() => navigate('/admin/jobs')}
               className="p-6 h-auto flex-col space-y-2"
             >
               <Users className="h-6 w-6" />
-              <span>Review Agent Applications</span>
+              <span>Manage Jobs</span>
             </Button>
           </div>
         </div>

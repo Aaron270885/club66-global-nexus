@@ -10,7 +10,7 @@ const Team = () => {
       name: "Abou Diarrassouba",
       position: "CEO, Club 66 Global",
       role: "Chairman of the Board",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80",
+      image: "/lovable-uploads/ba0c4ad9-7117-4438-8970-8feb00891ba0.png",
       description: "Abou Diarrassouba is the CEO of Club 66 Global and Chairman of the Board. He brings over a decade of international professional experience, including executive leadership. He is also one of the pioneers of the IPASE close client network Platform intended for inauguration in Senegal in 2024, a crowd pulling model designed to serve almost like Club 66 Global. His recognition as a 'good citizen' is based on his obsessive dedication to helping the local communities where his businesses reside. Mr. Diarrassouba's passion for entrepreneurship is complemented by an MBA from William Carey University in Hattiesburg, MS (USA).",
       expertise: ["Executive Leadership", "International Business", "Community Development", "Entrepreneurship"]
     },
