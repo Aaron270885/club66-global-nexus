@@ -27,6 +27,8 @@ import DiscountManagement from '@/pages/admin/DiscountManagement';
 import SecoursAdmin from '@/pages/admin/SecoursAdmin';
 import AdminDashboard from '@/pages/admin/Dashboard';
 import AgentPanel from '@/pages/admin/AgentPanel';
+import CmsManagement from '@/pages/admin/CmsManagement';
+import JobManagement from '@/pages/admin/JobManagement';
 import SecoursMyAccount from '@/pages/SecoursMyAccount';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
@@ -220,6 +222,14 @@ const routes = [
   {
     path: '/admin/agent-panel',
     element: <AgentPanel />,
+  },
+  {
+    path: '/admin/cms',
+    element: <CmsManagement />,
+  },
+  {
+    path: '/admin/jobs',
+    element: <JobManagement />,
   },
   {
     path: '/secours/my-account',
