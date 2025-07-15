@@ -6,7 +6,7 @@ const Benefits = () => {
     {
       icon: <Percent className="h-10 w-10 text-club66-purple" />,
       title: 'Exclusive Discounts',
-      description: 'Enjoy 5-20% discounts at all Club66 Global owned businesses and partner merchants.'
+      description: 'Enjoy 5-20% discounts at thousands of partner businesses across West Africa.'
     },
     {
       icon: <CreditCard className="h-10 w-10 text-club66-purple" />,
@@ -15,8 +15,8 @@ const Benefits = () => {
     },
     {
       icon: <Users className="h-10 w-10 text-club66-purple" />,
-      title: 'Affiliate Program',
-      description: 'Earn 10% commission on membership fees paid by members you refer to Club66 Global.'
+      title: 'Professional Network',
+      description: 'Connect with millions of members and expand your professional network across West Africa.'
     },
     {
       icon: <Gift className="h-10 w-10 text-club66-purple" />,
@@ -41,8 +41,8 @@ const Benefits = () => {
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h2 className="text-3xl font-bold mb-4">Membership Benefits</h2>
           <p className="text-gray-600">
-            Discover the advantages of being a Club66 Global member and how our services
-            can enhance your lifestyle and financial wellbeing.
+            Discover the advantages of being a Club66 member and how our services
+            can enhance your lifestyle, career, and financial wellbeing across West Africa.
           </p>
         </div>
 

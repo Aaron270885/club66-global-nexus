@@ -20,6 +20,38 @@ const Merchants = () => {
       location: 'Dakar, Senegal',
       discount: '30%',
       rating: 4.6
+    },
+    {
+      id: 3,
+      name: 'Mali Auto Parts',
+      sector: 'Automotive',
+      location: 'Bamako, Mali',
+      discount: '15%',
+      rating: 4.5
+    },
+    {
+      id: 4,
+      name: 'Fresh Foods Market',
+      sector: 'Groceries',
+      location: 'Sikasso, Mali',
+      discount: '20%',
+      rating: 4.7
+    },
+    {
+      id: 5,
+      name: 'Health Plus Pharmacy',
+      sector: 'Healthcare',
+      location: 'Mopti, Mali',
+      discount: '12%',
+      rating: 4.9
+    },
+    {
+      id: 6,
+      name: 'Home & Garden Center',
+      sector: 'Home & Garden',
+      location: 'Ségou, Mali',
+      discount: '18%',
+      rating: 4.4
     }
   ];
 
