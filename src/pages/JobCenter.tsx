@@ -7,10 +7,14 @@ import { Badge } from '@/components/ui/badge';
 import { Briefcase, Users, Building, TrendingUp, Search, MapPin, Award, Clock, DollarSign } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 const JobCenter = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [featuredJobs, setFeaturedJobs] = useState([]);
+  const [userMembership, setUserMembership] = useState(null);
   const topCompanies = [
     { name: 'Club66 Global', jobs: 12, logo: '/placeholder.svg' },
     { name: 'TechCorp Africa', jobs: 8, logo: '/placeholder.svg' },
@@ -24,6 +28,31 @@ const JobCenter = () => {
     { label: 'Job Seekers', value: '5K+', icon: Users, color: 'purple' },
     { label: 'Placements', value: '500+', icon: Award, color: 'orange' }
   ];
+
+  // Check user membership status
+  useEffect(() => {
+    const checkUserMembership = async () => {
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from('memberships')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('is_active', true)
+            .single();
+
+          if (error && error.code !== 'PGRST116') {
+            console.error('Error checking membership:', error);
+          }
+          setUserMembership(data);
+        } catch (err) {
+          console.error('Error checking membership:', err);
+        }
+      }
+    };
+
+    checkUserMembership();
+  }, [user]);
 
   useEffect(() => {
     const fetchFeaturedJobs = async () => {
@@ -54,6 +83,40 @@ const JobCenter = () => {
     fetchFeaturedJobs();
   }, []);
 
+  // Handle protected navigation
+  const handleProtectedNavigation = (path: string) => {
+    if (!user) {
+      toast.error('Please log in to access this feature');
+      navigate('/login');
+      return;
+    }
+
+    if (!userMembership) {
+      toast.error('Please become a member to access this feature');
+      navigate('/membership-payment');
+      return;
+    }
+
+    navigate(path);
+  };
+
+  // Handle job detail view
+  const handleJobDetailView = (jobId: string) => {
+    if (!user) {
+      toast.error('Please log in to view job details');
+      navigate('/login');
+      return;
+    }
+
+    if (!userMembership) {
+      toast.error('Please become a member to view full job details');
+      navigate('/membership-payment');
+      return;
+    }
+
+    navigate(`/jobs/${jobId}`);
+  };
+
   return (
     <Layout>
       <PremiumBanner
@@ -73,7 +136,7 @@ const JobCenter = () => {
             size="lg" 
             variant="outline" 
             className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-            onClick={() => navigate('/job-dashboard/employee')}
+            onClick={() => handleProtectedNavigation('/job-dashboard/employee')}
           >
             <Users className="h-4 w-4 mr-2" />
             Job Seeker Portal
@@ -82,7 +145,7 @@ const JobCenter = () => {
             size="lg" 
             variant="outline" 
             className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-            onClick={() => navigate('/job-dashboard/employer')}
+            onClick={() => handleProtectedNavigation('/job-dashboard/employer')}
           >
             <Building className="h-4 w-4 mr-2" />
             Employer Portal
@@ -137,14 +200,14 @@ const JobCenter = () => {
                       <Search className="h-4 w-4 mr-2" />
                       Search Jobs
                     </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start"
-                      onClick={() => navigate('/job-dashboard/employee')}
-                    >
-                      <Briefcase className="h-4 w-4 mr-2" />
-                      My Dashboard
-                    </Button>
+                     <Button 
+                       variant="outline" 
+                       className="w-full justify-start"
+                       onClick={() => handleProtectedNavigation('/job-dashboard/employee')}
+                     >
+                       <Briefcase className="h-4 w-4 mr-2" />
+                       My Dashboard
+                     </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -161,21 +224,21 @@ const JobCenter = () => {
                     Post jobs and find talented candidates from our premium network of professionals across Africa.
                   </p>
                   <div className="space-y-3">
-                    <Button 
-                      className="w-full justify-start bg-green-600 hover:bg-green-700"
-                      onClick={() => navigate('/job-dashboard/employer')}
-                    >
-                      <Building className="h-4 w-4 mr-2" />
-                      Employer Dashboard
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      className="w-full justify-start"
-                      onClick={() => navigate('/job-dashboard/employer')}
-                    >
-                      <Award className="h-4 w-4 mr-2" />
-                      Post a Job
-                    </Button>
+                     <Button 
+                       className="w-full justify-start bg-green-600 hover:bg-green-700"
+                       onClick={() => handleProtectedNavigation('/job-dashboard/employer')}
+                     >
+                       <Building className="h-4 w-4 mr-2" />
+                       Employer Dashboard
+                     </Button>
+                     <Button 
+                       variant="outline" 
+                       className="w-full justify-start"
+                       onClick={() => handleProtectedNavigation('/job-dashboard/employer')}
+                     >
+                       <Award className="h-4 w-4 mr-2" />
+                       Post a Job
+                     </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -190,50 +253,50 @@ const JobCenter = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {featuredJobs.map((job) => (
-                  <Card key={job.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate(`/jobs/${job.id}`)}>
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
-                          {job.employment_type}
-                        </Badge>
-                        {job.featured && (
-                          <Badge className="bg-orange-500">Featured</Badge>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg">{job.title}</CardTitle>
-                      <div className="text-sm text-gray-600">
-                        {job.company}
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2 text-sm text-gray-600 mb-4">
-                        <div className="flex items-center">
-                          <MapPin className="h-4 w-4 mr-2" />
-                          {job.location}
-                        </div>
-                        <div className="flex items-center">
-                          <DollarSign className="h-4 w-4 mr-2" />
-                          {job.salary_min && job.salary_max 
-                            ? `${job.salary_min}-${job.salary_max} ${job.currency || 'CFA'}`
-                            : 'Salary Negotiable'
-                          }
-                        </div>
-                        <div className="flex items-center">
-                          <Clock className="h-4 w-4 mr-2" />
-                          Posted {new Date(job.created_at).toLocaleDateString()}
-                        </div>
-                      </div>
-                      <p className="text-gray-700 text-sm mb-4 line-clamp-2">{job.description}</p>
-                      <Button className="w-full" onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/jobs/${job.id}`);
-                      }}>
-                        View Details
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+                 {featuredJobs.map((job) => (
+                   <Card key={job.id} className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleJobDetailView(job.id)}>
+                     <CardHeader>
+                       <div className="flex justify-between items-start">
+                         <Badge variant={job.employment_type === 'Full-time' ? 'default' : 'secondary'}>
+                           {job.employment_type}
+                         </Badge>
+                         {job.featured && (
+                           <Badge className="bg-orange-500">Featured</Badge>
+                         )}
+                       </div>
+                       <CardTitle className="text-lg">{job.title}</CardTitle>
+                       <div className="text-sm text-gray-600">
+                         {user && userMembership ? job.company : 'Login to view company'}
+                       </div>
+                     </CardHeader>
+                     <CardContent>
+                       <div className="space-y-2 text-sm text-gray-600 mb-4">
+                         <div className="flex items-center">
+                           <MapPin className="h-4 w-4 mr-2" />
+                           {job.location}
+                         </div>
+                         <div className="flex items-center">
+                           <DollarSign className="h-4 w-4 mr-2" />
+                           {job.salary_min && job.salary_max 
+                             ? `${job.salary_min}-${job.salary_max} ${job.currency || 'CFA'}`
+                             : 'Salary Negotiable'
+                           }
+                         </div>
+                         <div className="flex items-center">
+                           <Clock className="h-4 w-4 mr-2" />
+                           Posted {new Date(job.created_at).toLocaleDateString()}
+                         </div>
+                       </div>
+                       <p className="text-gray-700 text-sm mb-4 line-clamp-2">{job.description}</p>
+                       <Button className="w-full" onClick={(e) => {
+                         e.stopPropagation();
+                         handleJobDetailView(job.id);
+                       }}>
+                         View Details
+                       </Button>
+                     </CardContent>
+                   </Card>
+                 ))}
               </div>
             </div>
 

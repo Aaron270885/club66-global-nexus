@@ -26,13 +26,6 @@ const Services = () => {
 
   const services = [
     {
-      title: 'Credit Account',
-      description: 'Comprehensive credit management and tracking system',
-      icon: DollarSign,
-      path: '/services/credit-account',
-      color: 'bg-green-500'
-    },
-    {
       title: 'Ô Secours',
       description: 'Emergency assistance through token-based subscriptions',
       icon: AlertTriangle,
