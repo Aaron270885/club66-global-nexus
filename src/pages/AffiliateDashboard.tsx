@@ -29,7 +29,7 @@ const AffiliateDashboard = () => {
   };
 
   const handleCopyReferralLink = () => {
-    navigator.clipboard.writeText(`https://club66global.com/register?ref=${userReferralData.referralCode}`);
+    navigator.clipboard.writeText(`https://club66.net/register?ref=${userReferralData.referralCode}`);
     setCopied(true);
     toast({
       title: "Copied!",
@@ -146,7 +146,7 @@ const AffiliateDashboard = () => {
                 <div className="flex">
                   <Input
                     readOnly
-                    value={`https://club66global.com/register?ref=${userReferralData.referralCode}`}
+                    value={`https://club66.net/register?ref=${userReferralData.referralCode}`}
                     className="rounded-r-none"
                   />
                   <Button

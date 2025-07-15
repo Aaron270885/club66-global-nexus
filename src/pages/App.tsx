@@ -20,7 +20,7 @@ const AppPage = () => {
   return (
     <Layout>
       <PremiumBanner
-        title="Club66 Global Mobile App"
+        title="Club66 Mobile App"
         description="Manage your membership, access your benefits, and connect with our community on the go."
         backgroundImage="https://images.unsplash.com/photo-1649972904349-6e44c42644a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
@@ -31,7 +31,7 @@ const AppPage = () => {
             <div className="order-2 lg:order-1">
               <h2 className="text-3xl font-bold mb-6">Everything You Need In Your Pocket</h2>
               <p className="text-gray-600 mb-6">
-                The Club66 Global app gives you instant access to your membership benefits, digital card, and exclusive offers. 
+                The Club66 app gives you instant access to your membership benefits, digital card, and exclusive offers. 
                 Track your savings, manage your account, and refer friends - all from your smartphone.
               </p>
               
@@ -103,12 +103,12 @@ const AppPage = () => {
           </div>
           
           <div className="mt-16 text-center">
-            <h2 className="text-2xl font-bold mb-4">Ready to Experience Club66 Global?</h2>
+            <h2 className="text-2xl font-bold mb-4">Ready to Experience Club66?</h2>
             <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
-              Download our app today and enjoy all the benefits of your Club66 Global membership on the go.
+              Download our app today and enjoy all the benefits of your Club66 membership on the go.
             </p>
             <Button className="bg-purple-600 hover:bg-purple-700" size="lg" asChild>
-              <Link to="/register">Join Club66 Global Today</Link>
+              <Link to="/register">Join Club66 Today</Link>
             </Button>
           </div>
         </div>

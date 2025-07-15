@@ -192,7 +192,7 @@ const QRCodeValidator = ({ onValidationComplete }: QRCodeValidatorProps) => {
               <X className="h-5 w-5 text-red-600" />
               <AlertTitle className="text-red-800">Invalid Membership</AlertTitle>
               <AlertDescription className="text-red-700">
-                This QR code is not recognized as a valid Club66 Global membership card.
+                This QR code is not recognized as a valid Club66 membership card.
               </AlertDescription>
             </Alert>
             

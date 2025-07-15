@@ -6,6 +6,8 @@ import About from '@/pages/About';
 import Contact from '@/pages/about/Contact';
 import Terms from '@/pages/about/Terms';
 import Privacy from '@/pages/about/Privacy';
+import ForgotPassword from '@/pages/ForgotPassword';
+import ResetPassword from '@/pages/ResetPassword';
 import Register from '@/pages/Register';
 import Login from '@/pages/Login';
 import Services from '@/pages/services/index';
@@ -302,6 +304,14 @@ const routes = [
   {
     path: '/faq',
     element: <FAQ />,
+  },
+  {
+    path: '/forgot-password',
+    element: <ForgotPassword />,
+  },
+  {
+    path: '/reset-password',
+    element: <ResetPassword />,
   },
   {
     path: '/admin/payments',

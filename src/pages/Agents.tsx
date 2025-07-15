@@ -137,7 +137,7 @@ const Agents = () => {
       <Layout>
         <PremiumBanner
           title="Agent Program"
-          description="Join our referral program and earn commissions by promoting Club66 Global memberships."
+          description="Join our referral program and earn commissions by promoting Club66 memberships."
           backgroundImage="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
         />
         <div className="py-16 text-center">
