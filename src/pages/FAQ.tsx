@@ -22,7 +22,7 @@ const FAQ = () => {
         },
         {
           question: "What are the different membership tiers?",
-          answer: "We offer three membership tiers: Basic (free), Premium ($10/month), and VIP ($25/month). Each tier offers different benefits including discounts, cashback rates, and exclusive access to services."
+          answer: "We offer three membership tiers: Essential (basic benefits), Premium (enhanced features), and VIP (premium benefits). Each tier offers different benefits including discounts, access to services, and networking opportunities."
         },
         {
           question: "Can I upgrade or downgrade my membership?",
@@ -221,7 +221,7 @@ const FAQ = () => {
                     <p className="text-gray-600 text-sm mb-4">
                       Call us Monday to Friday, 8AM - 6PM
                     </p>
-                    <Button variant="outline" size="sm">+223 XX XX XX XX</Button>
+                    <Button variant="outline" size="sm">+221 77 123 4567</Button>
                   </div>
 
                   <div className="text-center">

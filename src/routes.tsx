@@ -32,6 +32,8 @@ import CmsManagement from '@/pages/admin/CmsManagement';
 import JobManagement from '@/pages/admin/JobManagement';
 import PartnersManagement from '@/pages/admin/PartnersManagement';
 import ProjectsManagement from '@/pages/admin/ProjectsManagement';
+import PaymentManagement from '@/pages/admin/PaymentManagement';
+import FAQ from '@/pages/FAQ';
 import SecoursMyAccount from '@/pages/SecoursMyAccount';
 import Competitions from '@/pages/Competitions';
 import Affiliates from '@/pages/Affiliates';
@@ -296,6 +298,14 @@ const routes = [
   {
     path: '/project-requests',
     element: <ProjectRequests />,
+  },
+  {
+    path: '/faq',
+    element: <FAQ />,
+  },
+  {
+    path: '/admin/payments',
+    element: <PaymentManagement />,
   },
 ];
 
