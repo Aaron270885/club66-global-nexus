@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { DollarSign, CreditCard, Smartphone } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 
 interface WithdrawalRequestProps {
-  agentId: string;
-  availableBalance: number;
+  open: boolean;
+  onClose: () => void;
   onSuccess?: () => void;
+  availableAmount: number;
 }
 
-const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalRequestProps) => {
+const WithdrawalRequest = ({ open, onClose, onSuccess, availableAmount }: WithdrawalRequestProps) => {
   const [amount, setAmount] = useState('');
   const [method, setMethod] = useState('');
   const [accountDetails, setAccountDetails] = useState({
@@ -27,7 +27,28 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
     operatorName: ''
   });
   const [loading, setLoading] = useState(false);
+  const [agentId, setAgentId] = useState<string | null>(null);
   const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchAgent = async () => {
+      if (!user) return;
+      
+      const { data: agentData } = await supabase
+        .from('agents')
+        .select('id')
+        .eq('user_id', user.id)
+        .single();
+      
+      if (agentData) {
+        setAgentId(agentData.id);
+      }
+    };
+
+    if (open) {
+      fetchAgent();
+    }
+  }, [user, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,8 +57,13 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
       return;
     }
 
+    if (!agentId) {
+      toast.error('Agent profile not found');
+      return;
+    }
+
     const withdrawalAmount = parseInt(amount);
-    if (withdrawalAmount <= 0 || withdrawalAmount > availableBalance) {
+    if (withdrawalAmount <= 0 || withdrawalAmount > availableAmount) {
       toast.error('Invalid withdrawal amount');
       return;
     }
@@ -102,6 +128,7 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
       });
 
       onSuccess?.();
+      onClose();
     } catch (error) {
       console.error('Error submitting withdrawal request:', error);
       toast.error('Failed to submit withdrawal request');
@@ -201,17 +228,17 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center">
-          <DollarSign className="h-5 w-5 mr-2" />
-          Request Withdrawal
-        </CardTitle>
-        <p className="text-sm text-gray-600">
-          Available balance: <span className="font-semibold">{availableBalance.toLocaleString()} FCFA</span>
-        </p>
-      </CardHeader>
-      <CardContent>
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center">
+            <DollarSign className="h-5 w-5 mr-2" />
+            Request Withdrawal
+          </DialogTitle>
+          <p className="text-sm text-gray-600">
+            Available balance: <span className="font-semibold">{availableAmount.toLocaleString()} FCFA</span>
+          </p>
+        </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <Label htmlFor="amount">Withdrawal Amount (FCFA)</Label>
@@ -222,7 +249,7 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
               onChange={(e) => setAmount(e.target.value)}
               placeholder="Minimum 5,000 FCFA"
               min="5000"
-              max={availableBalance}
+              max={availableAmount}
               required
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -270,7 +297,7 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
           <Button 
             type="submit" 
             className="w-full" 
-            disabled={loading || !method || parseInt(amount) < 5000 || parseInt(amount) > availableBalance}
+            disabled={loading || !method || parseInt(amount) < 5000 || parseInt(amount) > availableAmount}
           >
             {loading ? 'Submitting...' : 'Submit Withdrawal Request'}
           </Button>
@@ -281,8 +308,8 @@ const WithdrawalRequest = ({ agentId, availableBalance, onSuccess }: WithdrawalR
             <p>• Ensure your account details are correct to avoid delays</p>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 };
 

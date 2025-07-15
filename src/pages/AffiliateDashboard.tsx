@@ -5,31 +5,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
-import { CreditCard, Users, Copy, ExternalLink, Gift, Percent, DollarSign, ArrowRight } from 'lucide-react';
+import { CreditCard, Users, Copy, ExternalLink, Gift, Percent, DollarSign, ArrowRight, Loader2 } from 'lucide-react';
 import { Check } from '@/components/ui/check';
 import { toast } from '@/hooks/use-toast';
+import { useAffiliateData } from '@/hooks/useAffiliateData';
+import WithdrawalRequest from '@/components/affiliates/WithdrawalRequest';
 
 const AffiliateDashboard = () => {
   const [copied, setCopied] = useState(false);
-  
-  const userReferralData = {
-    referralCode: "AHMED21058",
-    totalReferrals: 3,
-    pendingReferrals: 1,
-    referralTarget: 5,
-    totalEarnings: 7500,
-    pendingEarnings: 2500,
-    referralHistory: [
-      { name: "Fatima Diallo", date: "Nov 5, 2023", status: "Active", earnings: 2500 },
-      { name: "Moussa Toure", date: "Oct 20, 2023", status: "Active", earnings: 2500 },
-      { name: "Ibrahim Keita", date: "Sep 15, 2023", status: "Active", earnings: 2500 },
-      { name: "Awa Coulibaly", date: "Aug 28, 2023", status: "Pending", earnings: 2500 },
-    ],
-    progress: (3 / 5) * 100, // Current referrals / target referrals
-  };
+  const [showWithdrawalModal, setShowWithdrawalModal] = useState(false);
+  const { affiliateData, loading, error, refreshData } = useAffiliateData();
 
   const handleCopyReferralLink = () => {
-    navigator.clipboard.writeText(`https://club66.net/register?ref=${userReferralData.referralCode}`);
+    if (!affiliateData) return;
+    
+    navigator.clipboard.writeText(`https://club66.net/register?ref=${affiliateData.referralCode}`);
     setCopied(true);
     toast({
       title: "Copied!",
@@ -38,6 +28,46 @@ const AffiliateDashboard = () => {
     
     setTimeout(() => setCopied(false), 3000);
   };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="py-12 bg-gray-50 min-h-[calc(100vh-64px)] flex items-center justify-center">
+          <div className="flex items-center space-x-2">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span>Loading affiliate data...</span>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="py-12 bg-gray-50 min-h-[calc(100vh-64px)] flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Data</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <Button onClick={refreshData}>Try Again</Button>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!affiliateData) {
+    return (
+      <Layout>
+        <div className="py-12 bg-gray-50 min-h-[calc(100vh-64px)] flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">No Affiliate Data</h2>
+            <p className="text-gray-600">Unable to load affiliate information.</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -52,7 +82,11 @@ const AffiliateDashboard = () => {
               <Button variant="outline">
                 View Withdrawals
               </Button>
-              <Button className="bg-club66-purple hover:bg-club66-darkpurple">
+              <Button 
+                className="bg-club66-purple hover:bg-club66-darkpurple"
+                onClick={() => setShowWithdrawalModal(true)}
+                disabled={affiliateData.pendingEarnings === 0}
+              >
                 Request Withdrawal
               </Button>
             </div>
@@ -67,8 +101,8 @@ const AffiliateDashboard = () => {
               <CardContent>
                 <div className="flex justify-between items-end">
                   <div className="flex items-baseline">
-                    <span className="text-3xl font-bold">{userReferralData.totalReferrals}</span>
-                    <span className="text-sm ml-2 text-gray-500">/ {userReferralData.referralTarget} target</span>
+                    <span className="text-3xl font-bold">{affiliateData.totalReferrals}</span>
+                    <span className="text-sm ml-2 text-gray-500">/ {affiliateData.referralTarget} target</span>
                   </div>
                   <Users className="h-6 w-6 text-club66-purple" />
                 </div>
@@ -78,11 +112,11 @@ const AffiliateDashboard = () => {
                   <div className="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
                     <div 
                       className="h-full bg-club66-purple" 
-                      style={{ width: `${userReferralData.progress}%` }}
+                      style={{ width: `${affiliateData.progress}%` }}
                     ></div>
                   </div>
                   <p className="text-xs text-gray-500 mt-2">
-                    {userReferralData.referralTarget - userReferralData.totalReferrals} more referrals to waive your registration fee
+                    {Math.max(0, affiliateData.referralTarget - affiliateData.totalReferrals)} more referrals to waive your registration fee
                   </p>
                 </div>
               </CardContent>
@@ -95,14 +129,14 @@ const AffiliateDashboard = () => {
               <CardContent>
                 <div className="flex justify-between items-end">
                   <div>
-                    <span className="text-3xl font-bold">CFA {userReferralData.totalEarnings}</span>
+                    <span className="text-3xl font-bold">CFA {affiliateData.totalEarnings.toLocaleString()}</span>
                   </div>
                   <DollarSign className="h-6 w-6 text-green-500" />
                 </div>
                 
                 <div className="mt-4 flex items-center text-sm">
                   <span className="text-gray-500">Pending: </span>
-                  <span className="font-medium ml-1">CFA {userReferralData.pendingEarnings}</span>
+                  <span className="font-medium ml-1">CFA {affiliateData.pendingEarnings.toLocaleString()}</span>
                 </div>
               </CardContent>
             </Card>
@@ -116,9 +150,9 @@ const AffiliateDashboard = () => {
                   <CreditCard className="h-5 w-5 text-club66-purple mr-3" />
                   <div className="text-sm">
                     <p>
-                      {userReferralData.totalReferrals >= userReferralData.referralTarget 
+                      {affiliateData.totalReferrals >= affiliateData.referralTarget 
                         ? "✓ Registration fee waived" 
-                        : `${userReferralData.referralTarget - userReferralData.totalReferrals} more referrals to waive fee`}
+                        : `${Math.max(0, affiliateData.referralTarget - affiliateData.totalReferrals)} more referrals to waive fee`}
                     </p>
                   </div>
                 </div>
@@ -149,7 +183,7 @@ const AffiliateDashboard = () => {
                 <div className="flex">
                   <Input
                     readOnly
-                    value={`https://club66.net/register?ref=${userReferralData.referralCode}`}
+                    value={`https://club66.net/register?ref=${affiliateData.referralCode}`}
                     className="rounded-r-none"
                   />
                   <Button
@@ -164,7 +198,7 @@ const AffiliateDashboard = () => {
                   <p className="text-sm font-medium">Referral Code:</p>
                   <div className="flex items-center mt-1">
                     <span className="bg-club66-purple/10 text-club66-purple px-3 py-1 rounded font-mono text-sm">
-                      {userReferralData.referralCode}
+                      {affiliateData.referralCode}
                     </span>
                   </div>
                 </div>
@@ -215,24 +249,32 @@ const AffiliateDashboard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {userReferralData.referralHistory.map((referral, index) => (
-                              <tr key={index} className="border-b">
-                                <td className="p-4 align-middle">{referral.name}</td>
-                                <td className="p-4 align-middle text-gray-600">{referral.date}</td>
-                                <td className="p-4 align-middle">
-                                  <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
-                                    referral.status === 'Active' 
-                                      ? 'bg-green-100 text-green-800' 
-                                      : 'bg-yellow-100 text-yellow-800'
-                                  }`}>
-                                    {referral.status}
-                                  </span>
-                                </td>
-                                <td className="p-4 align-middle text-right font-medium">
-                                  CFA {referral.earnings}
+                            {affiliateData.referralHistory.length === 0 ? (
+                              <tr>
+                                <td colSpan={4} className="p-8 text-center text-gray-500">
+                                  No referrals yet. Start sharing your referral link to earn commissions!
                                 </td>
                               </tr>
-                            ))}
+                            ) : (
+                              affiliateData.referralHistory.map((referral) => (
+                                <tr key={referral.id} className="border-b">
+                                  <td className="p-4 align-middle">{referral.name}</td>
+                                  <td className="p-4 align-middle text-gray-600">{referral.date}</td>
+                                  <td className="p-4 align-middle">
+                                    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                                      referral.status === 'Active' 
+                                        ? 'bg-green-100 text-green-800' 
+                                        : 'bg-yellow-100 text-yellow-800'
+                                    }`}>
+                                      {referral.status}
+                                    </span>
+                                  </td>
+                                  <td className="p-4 align-middle text-right font-medium">
+                                    CFA {referral.earnings.toLocaleString()}
+                                  </td>
+                                </tr>
+                              ))
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -252,10 +294,10 @@ const AffiliateDashboard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {userReferralData.referralHistory
+                            {affiliateData.referralHistory
                               .filter(ref => ref.status === 'Active')
-                              .map((referral, index) => (
-                                <tr key={index} className="border-b">
+                              .map((referral) => (
+                                <tr key={referral.id} className="border-b">
                                   <td className="p-4 align-middle">{referral.name}</td>
                                   <td className="p-4 align-middle text-gray-600">{referral.date}</td>
                                   <td className="p-4 align-middle">
@@ -264,10 +306,17 @@ const AffiliateDashboard = () => {
                                     </span>
                                   </td>
                                   <td className="p-4 align-middle text-right font-medium">
-                                    CFA {referral.earnings}
+                                    CFA {referral.earnings.toLocaleString()}
                                   </td>
                                 </tr>
                             ))}
+                            {affiliateData.referralHistory.filter(ref => ref.status === 'Active').length === 0 && (
+                              <tr>
+                                <td colSpan={4} className="p-8 text-center text-gray-500">
+                                  No active referrals yet.
+                                </td>
+                              </tr>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -287,10 +336,10 @@ const AffiliateDashboard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {userReferralData.referralHistory
+                            {affiliateData.referralHistory
                               .filter(ref => ref.status === 'Pending')
-                              .map((referral, index) => (
-                                <tr key={index} className="border-b">
+                              .map((referral) => (
+                                <tr key={referral.id} className="border-b">
                                   <td className="p-4 align-middle">{referral.name}</td>
                                   <td className="p-4 align-middle text-gray-600">{referral.date}</td>
                                   <td className="p-4 align-middle">
@@ -299,10 +348,17 @@ const AffiliateDashboard = () => {
                                     </span>
                                   </td>
                                   <td className="p-4 align-middle text-right font-medium">
-                                    CFA {referral.earnings}
+                                    CFA {referral.earnings.toLocaleString()}
                                   </td>
                                 </tr>
                             ))}
+                            {affiliateData.referralHistory.filter(ref => ref.status === 'Pending').length === 0 && (
+                              <tr>
+                                <td colSpan={4} className="p-8 text-center text-gray-500">
+                                  No pending referrals.
+                                </td>
+                              </tr>
+                            )}
                           </tbody>
                         </table>
                       </div>
@@ -320,6 +376,16 @@ const AffiliateDashboard = () => {
           </div>
         </div>
       </div>
+
+      <WithdrawalRequest
+        open={showWithdrawalModal}
+        onClose={() => setShowWithdrawalModal(false)}
+        onSuccess={() => {
+          setShowWithdrawalModal(false);
+          refreshData();
+        }}
+        availableAmount={affiliateData.pendingEarnings}
+      />
     </Layout>
   );
 };
