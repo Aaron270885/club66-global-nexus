@@ -18,6 +18,7 @@ import Dashboard from '@/pages/Dashboard';
 import JobDashboardEmployee from '@/pages/job-dashboard/EmployeeDashboard';
 import JobDashboardEmployer from '@/pages/job-dashboard/EmployerDashboard';
 import AffiliateDashboard from '@/pages/AffiliateDashboard';
+import PostJob from '@/pages/PostJob';
 import Debug from '@/pages/Debug';
 import Jobs from '@/pages/Jobs';
 import JobCenter from '@/pages/JobCenter';
@@ -175,6 +176,10 @@ const routes = [
   {
     path: '/job-center',
     element: <JobCenter />,
+  },
+  {
+    path: '/post-job',
+    element: <PostJob />,
   },
   {
     path: '/discounts',
