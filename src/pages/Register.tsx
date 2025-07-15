@@ -255,16 +255,15 @@ const Register = () => {
                           required
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="email">Email *</Label>
-                        <Input
-                          id="email"
-                          type="email"
-                          value={formData.email}
-                          onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                          required
-                        />
-                      </div>
+                       <div>
+                         <Label htmlFor="email">Email</Label>
+                         <Input
+                           id="email"
+                           type="email"
+                           value={formData.email}
+                           onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                         />
+                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

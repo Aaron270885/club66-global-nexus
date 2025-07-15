@@ -20,7 +20,7 @@ const Hero = () => {
       {/* Content */}
       <div className="relative z-20 text-center text-white px-4 max-w-6xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-          Connect with <span className="text-club66-gold">Millions</span> of 
+          Connect with <span className="text-club66-gold">Millions</span> of
           <br />
           <span className="text-club66-purple">African Professionals</span>
         </h1>

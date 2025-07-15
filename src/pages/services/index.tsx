@@ -26,6 +26,13 @@ const Services = () => {
 
   const services = [
     {
+      title: 'Credit Account',
+      description: 'Comprehensive credit management and tracking system',
+      icon: DollarSign,
+      path: '/services/credit-account',
+      color: 'bg-green-500'
+    },
+    {
       title: 'Ô Secours',
       description: 'Emergency assistance through token-based subscriptions',
       icon: AlertTriangle,
@@ -33,15 +40,8 @@ const Services = () => {
       color: 'bg-red-500'
     },
     {
-      title: 'Credit System',
-      description: 'Comprehensive credit management and tracking system',
-      icon: DollarSign,
-      path: '/services/credit-system',
-      color: 'bg-green-500'
-    },
-    {
       title: 'Hire Purchase',
-      description: 'We facilitate your hire purchase request through our various partners for electronics, furniture, and more',
+      description: 'We facilitate your hire purchase request for you through our various partners for electronics, furniture, and more',
       icon: ShoppingCart,
       path: '/services/hire-purchase',
       color: 'bg-purple-500'
