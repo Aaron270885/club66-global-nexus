@@ -6,6 +6,7 @@ import About from '@/pages/About';
 import Contact from '@/pages/about/Contact';
 import Terms from '@/pages/about/Terms';
 import Privacy from '@/pages/about/Privacy';
+import Cookies from '@/pages/about/Cookies';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import Register from '@/pages/Register';
@@ -316,6 +317,10 @@ const routes = [
   {
     path: '/admin/payments',
     element: <PaymentManagement />,
+  },
+  {
+    path: '/cookies',
+    element: <Cookies />,
   },
 ];
 

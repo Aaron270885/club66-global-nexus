@@ -75,9 +75,12 @@ const Register = () => {
         throw new Error('Password must be at least 6 characters');
       }
 
+      // Generate a unique email if none provided
+      const email = data.email.trim() || `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}@club66.org`;
+
       // Sign up the user with additional metadata
       console.log('📝 Calling Supabase signUp...');
-      const { data: authData, error: authError } = await signUp(data.email, data.password, {
+      const { data: authData, error: authError } = await signUp(email, data.password, {
         full_name: data.full_name,
         phone: data.phone,
         user_type: data.user_type
@@ -256,12 +259,13 @@ const Register = () => {
                         />
                       </div>
                        <div>
-                         <Label htmlFor="email">Email</Label>
+                         <Label htmlFor="email">Email (Optional)</Label>
                          <Input
                            id="email"
                            type="email"
                            value={formData.email}
                            onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                           placeholder="Enter your email address"
                          />
                        </div>
                     </div>
