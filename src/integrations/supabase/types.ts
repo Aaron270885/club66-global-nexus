@@ -14,9 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      affiliate_withdrawals: {
+        Row: {
+          account_details: Json | null
+          agent_id: string
+          created_at: string
+          id: string
+          processed_at: string | null
+          processed_by: string | null
+          processing_notes: string | null
+          requested_at: string
+          status: string
+          transaction_reference: string | null
+          updated_at: string
+          withdrawal_amount: number
+          withdrawal_method: string
+        }
+        Insert: {
+          account_details?: Json | null
+          agent_id: string
+          created_at?: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          processing_notes?: string | null
+          requested_at?: string
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+          withdrawal_amount: number
+          withdrawal_method: string
+        }
+        Update: {
+          account_details?: Json | null
+          agent_id?: string
+          created_at?: string
+          id?: string
+          processed_at?: string | null
+          processed_by?: string | null
+          processing_notes?: string | null
+          requested_at?: string
+          status?: string
+          transaction_reference?: string | null
+          updated_at?: string
+          withdrawal_amount?: number
+          withdrawal_method?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_withdrawals_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       agents: {
         Row: {
           agent_type: Database["public"]["Enums"]["agent_type"]
+          application_notes: string | null
+          approval_status: string | null
+          approved_at: string | null
+          approved_by: string | null
           commissions_pending: number | null
           commissions_withdrawn: number | null
           created_at: string | null
@@ -24,12 +84,17 @@ export type Database = {
           is_active: boolean | null
           qr_code: string | null
           referral_code: string
+          rejection_reason: string | null
           total_commissions: number | null
           updated_at: string | null
           user_id: string
         }
         Insert: {
           agent_type?: Database["public"]["Enums"]["agent_type"]
+          application_notes?: string | null
+          approval_status?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           commissions_pending?: number | null
           commissions_withdrawn?: number | null
           created_at?: string | null
@@ -37,12 +102,17 @@ export type Database = {
           is_active?: boolean | null
           qr_code?: string | null
           referral_code: string
+          rejection_reason?: string | null
           total_commissions?: number | null
           updated_at?: string | null
           user_id: string
         }
         Update: {
           agent_type?: Database["public"]["Enums"]["agent_type"]
+          application_notes?: string | null
+          approval_status?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
           commissions_pending?: number | null
           commissions_withdrawn?: number | null
           created_at?: string | null
@@ -50,6 +120,7 @@ export type Database = {
           is_active?: boolean | null
           qr_code?: string | null
           referral_code?: string
+          rejection_reason?: string | null
           total_commissions?: number | null
           updated_at?: string | null
           user_id?: string

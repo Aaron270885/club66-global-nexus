@@ -30,7 +30,7 @@ import Discounts from '@/pages/Discounts';
 import DiscountManagement from '@/pages/admin/DiscountManagement';
 import SecoursAdmin from '@/pages/admin/SecoursAdmin';
 import AdminDashboard from '@/pages/admin/Dashboard';
-import AgentPanel from '@/pages/admin/AgentPanel';
+import AffiliateManagement from '@/pages/admin/AffiliateManagement';
 import CmsManagement from '@/pages/admin/CmsManagement';
 import JobManagement from '@/pages/admin/JobManagement';
 import PartnersManagement from '@/pages/admin/PartnersManagement';
@@ -268,7 +268,7 @@ const routes = [
   },
   {
     path: '/admin/agent-panel',
-    element: <AgentPanel />,
+    element: <AffiliateManagement />,
   },
   {
     path: '/admin/cms',

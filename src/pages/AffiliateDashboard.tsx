@@ -48,9 +48,12 @@ const AffiliateDashboard = () => {
               <h1 className="text-3xl font-bold">Affiliate Dashboard</h1>
               <p className="text-gray-600">Refer friends and earn rewards</p>
             </div>
-            <div className="mt-4 lg:mt-0">
+            <div className="mt-4 lg:mt-0 space-x-2">
+              <Button variant="outline">
+                View Withdrawals
+              </Button>
               <Button className="bg-club66-purple hover:bg-club66-darkpurple">
-                Withdraw Earnings
+                Request Withdrawal
               </Button>
             </div>
           </div>

@@ -56,8 +56,8 @@ const AdminDashboard = () => {
       color: "bg-blue-50 hover:bg-blue-100 border-blue-200"
     },
     {
-      title: "Agent Panel",
-      description: "Manage agents, referrals, and commissions",
+      title: "Affiliate Management",
+      description: "Manage agent approvals and withdrawal requests",
       icon: Users,
       route: "/admin/agent-panel",
       color: "bg-green-50 hover:bg-green-100 border-green-200"
