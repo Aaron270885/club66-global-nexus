@@ -36,9 +36,9 @@ const Header = () => {
             <img 
               src="/lovable-uploads/club66-logo.png" 
               alt="Club66" 
-              className="h-10 w-auto"
+              className="h-12 w-auto"
             />
-            <span className="ml-2 text-xl font-display font-semibold text-gray-800 hidden sm:block">
+            <span className="ml-2 text-2xl font-display font-bold text-gray-800">
               Club66
             </span>
           </Link>

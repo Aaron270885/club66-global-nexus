@@ -105,9 +105,9 @@ const MemberDigitalCard = ({
       <Card id="member-card" className="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-200 bg-white">
         {/* Card Header */}
         <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white px-6 py-3 relative">
-          <div className="flex items-center justify-end space-x-4">
-            <h2 className="text-5xl font-bold text-white">Zenika</h2>
-            <img src="/lovable-uploads/597692e2-44e4-4646-b159-4d2e85310158.png" alt="Club66 Logo" className="h-12 w-auto" />
+          <div className="flex items-center justify-between">
+            <img src="/lovable-uploads/club66-logo.png" alt="Club66 Logo" className="h-12 w-auto brightness-0 invert" />
+            <h2 className="text-4xl font-bold text-white">Club66</h2>
           </div>
         </div>
 

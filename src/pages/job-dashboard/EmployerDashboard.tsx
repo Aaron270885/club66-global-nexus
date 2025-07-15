@@ -210,6 +210,11 @@ const EmployerDashboard = () => {
                       </div>
                       <div className="text-3xl font-bold text-blue-600 mb-1">{jobStats.applications}</div>
                       <div className="text-gray-600">Applications</div>
+                      <div className="mt-2">
+                        <Button size="sm" variant="outline" className="text-xs">
+                          Pay 2,000 FCFA/day for premium listing
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                   <Card>
