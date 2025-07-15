@@ -24,10 +24,12 @@ import {
 import { useJobDetails, useJobBookmarks } from '@/hooks/useJobs';
 import JobApplicationForm from '@/components/jobs/JobApplicationForm';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 const JobDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { job, loading, error } = useJobDetails(id || '');
   const { bookmarks, toggleBookmark } = useJobBookmarks();
   const [showApplicationForm, setShowApplicationForm] = useState(false);
@@ -35,10 +37,20 @@ const JobDetail = () => {
   const isBookmarked = id ? bookmarks.includes(id) : false;
 
   const handleApply = () => {
+    if (!user) {
+      toast.error('Please log in to apply for jobs');
+      navigate('/login');
+      return;
+    }
     setShowApplicationForm(true);
   };
 
   const handleBookmark = () => {
+    if (!user) {
+      toast.error('Please log in to bookmark jobs');
+      navigate('/login');
+      return;
+    }
     if (id) {
       toggleBookmark(id);
     }

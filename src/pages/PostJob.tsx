@@ -18,6 +18,7 @@ import { Switch } from '@/components/ui/switch';
 import { useAuth } from '@/hooks/useAuth';
 import { useJobs } from '@/hooks/useJobs';
 import { toast } from 'sonner';
+import JobPostingPayment from '@/components/jobs/JobPostingPayment';
 
 const jobSchema = z.object({
   title: z.string().min(1, 'Job title is required'),
@@ -46,6 +47,9 @@ const PostJob = () => {
   const [skills, setSkills] = useState<string[]>([]);
   const [newSkill, setNewSkill] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [jobDuration, setJobDuration] = useState(7); // Default 7 days
+  const [formData, setFormData] = useState<JobFormData | null>(null);
 
   const form = useForm<JobFormData>({
     resolver: zodResolver(jobSchema),
@@ -83,22 +87,30 @@ const PostJob = () => {
       return;
     }
 
+    // Save form data and show payment modal
+    setFormData(data);
+    setShowPayment(true);
+  };
+
+  const handlePaymentSuccess = async (paymentData: any) => {
+    if (!formData) return;
+
     setIsSubmitting(true);
     
     try {
       const { error } = await postJob({
-        title: data.title,
-        company: data.company,
-        location: data.location,
-        employment_type: data.employment_type,
-        experience_level: data.experience_level,
-        salary_min: data.salary_min,
-        salary_max: data.salary_max,
-        description: data.description,
-        requirements: data.requirements,
-        benefits: data.benefits,
-        application_deadline: data.application_deadline,
-        remote_allowed: data.remote_allowed,
+        title: formData.title,
+        company: formData.company,
+        location: formData.location,
+        employment_type: formData.employment_type,
+        experience_level: formData.experience_level,
+        salary_min: formData.salary_min,
+        salary_max: formData.salary_max,
+        description: formData.description,
+        requirements: formData.requirements,
+        benefits: formData.benefits,
+        application_deadline: formData.application_deadline,
+        remote_allowed: formData.remote_allowed,
         skills,
       });
 
@@ -419,6 +431,46 @@ const PostJob = () => {
                 </CardContent>
               </Card>
 
+              {/* Job Duration & Payment */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Clock className="h-5 w-5 mr-2" />
+                    Job Duration & Payment
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <FormLabel>Job Posting Duration</FormLabel>
+                      <Select value={jobDuration.toString()} onValueChange={(value) => setJobDuration(parseInt(value))}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select duration" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="7">7 days - CFA 14,000</SelectItem>
+                          <SelectItem value="14">14 days - CFA 28,000</SelectItem>
+                          <SelectItem value="30">30 days - CFA 60,000</SelectItem>
+                          <SelectItem value="60">60 days - CFA 120,000</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="bg-yellow-50 p-4 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <DollarSign className="h-5 w-5 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Payment Information</span>
+                      </div>
+                      <ul className="text-sm text-yellow-700 space-y-1">
+                        <li>• Job posting fee: CFA 2,000 per day</li>
+                        <li>• Total cost: CFA {(jobDuration * 2000).toLocaleString()}</li>
+                        <li>• Job expires after {jobDuration} days</li>
+                        <li>• 72-hour grace period for renewal</li>
+                      </ul>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Submit */}
               <div className="flex justify-end gap-4">
                 <Button 
@@ -429,13 +481,24 @@ const PostJob = () => {
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isSubmitting} className="bg-purple-600 hover:bg-purple-700">
-                  {isSubmitting ? 'Posting...' : 'Post Job'}
+                  {isSubmitting ? 'Processing...' : 'Proceed to Payment'}
                 </Button>
               </div>
             </form>
           </Form>
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {showPayment && formData && (
+        <JobPostingPayment
+          isOpen={showPayment}
+          onClose={() => setShowPayment(false)}
+          onSuccess={handlePaymentSuccess}
+          jobTitle={formData.title}
+          duration={jobDuration}
+        />
+      )}
     </Layout>
   );
 };
