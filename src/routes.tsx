@@ -58,6 +58,8 @@ import AutoServices from '@/pages/services/secours/AutoServices';
 import FirstAid from '@/pages/services/secours/FirstAid';
 import CataCatani from '@/pages/services/secours/CataCatani';
 import Cards from '@/pages/Cards';
+import OSecoursPage from '@/pages/services/OSecoursPage';
+import PaydayAdvancePage from '@/pages/services/PaydayAdvancePage';
 
 // Add the new route to the existing routes array
 const routes = [
@@ -276,6 +278,14 @@ const routes = [
   {
     path: '/secours/my-account',
     element: <SecoursMyAccount />,
+  },
+  {
+    path: '/services/o-secours-info',
+    element: <OSecoursPage />,
+  },
+  {
+    path: '/services/payday-advance-info', 
+    element: <PaydayAdvancePage />,
   },
 ];
 
