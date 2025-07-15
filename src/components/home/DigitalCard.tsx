@@ -19,7 +19,7 @@ const DigitalCard = () => {
                     <div className="card-gradient rounded-xl overflow-hidden shadow-lg p-4 mt-8">
                       <div className="flex justify-between items-center">
                         <div className="text-white">
-                          <div className="text-xs font-medium">Club66 Global</div>
+                          <div className="text-xs font-medium">Club66</div>
                           <div className="text-lg font-bold">Member Card</div>
                         </div>
                         <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
@@ -67,8 +67,8 @@ const DigitalCard = () => {
           <div className="order-1 md:order-2">
             <h2 className="text-3xl font-bold mb-6">Your Digital Membership Card</h2>
             <p className="text-gray-600 mb-6">
-              Access your Club66 Global membership benefits instantly with our digital card. Available right on your 
-              smartphone for convenient use at all partner locations.
+              Access your Club66 membership benefits instantly with our digital card. Available right on your 
+              phone, ready whenever you need it.
             </p>
             
             <div className="space-y-4 mb-8">

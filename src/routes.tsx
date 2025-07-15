@@ -61,6 +61,7 @@ import Cards from '@/pages/Cards';
 import ActivateCard from '@/pages/ActivateCard';
 import OSecoursPage from '@/pages/services/OSecoursPage';
 import PaydayAdvancePage from '@/pages/services/PaydayAdvancePage';
+import ProjectRequests from '@/pages/ProjectRequests';
 
 // Add the new route to the existing routes array
 const routes = [
@@ -291,6 +292,10 @@ const routes = [
   {
     path: '/services/payday-advance-info', 
     element: <PaydayAdvancePage />,
+  },
+  {
+    path: '/project-requests',
+    element: <ProjectRequests />,
   },
 ];
 

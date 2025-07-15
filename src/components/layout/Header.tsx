@@ -242,6 +242,13 @@ const Header = () => {
             </Link>
 
             <Link 
+              to="/project-requests" 
+              className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
+            >
+              Projects
+            </Link>
+
+            <Link 
               to="/competitions" 
               className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
             >

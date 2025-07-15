@@ -10,7 +10,7 @@ const About = () => {
   return (
     <Layout>
       <PremiumBanner
-        title="About Club66 Global"
+        title="About Club66"
         description="Learn about our mission, vision, and commitment to empowering African communities through innovative membership benefits."
         backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />

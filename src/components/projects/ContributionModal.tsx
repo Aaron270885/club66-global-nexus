@@ -13,17 +13,17 @@ import { toast } from 'sonner';
 interface ContributionModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onContribute: (amount: number) => void;
   project: {
     id: string;
     project_name: string;
     goal_amount: number;
     current_amount: number;
     currency: string;
-  } | null;
-  onSuccess: () => void;
+  };
 }
 
-const ContributionModal = ({ isOpen, onClose, project, onSuccess }: ContributionModalProps) => {
+const ContributionModal = ({ isOpen, onClose, project, onContribute }: ContributionModalProps) => {
   const [amount, setAmount] = useState('');
   const [contributorName, setContributorName] = useState('');
   const [contributorEmail, setContributorEmail] = useState('');
@@ -34,46 +34,19 @@ const ContributionModal = ({ isOpen, onClose, project, onSuccess }: Contribution
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!project || !amount) return;
+    if (!amount) return;
 
-    setLoading(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      
-      const { error } = await supabase
-        .from('project_contributions')
-        .insert({
-          project_id: project.id,
-          contributor_id: user?.id || null,
-          amount: parseInt(amount),
-          currency: project.currency,
-          contributor_name: isAnonymous ? null : contributorName,
-          contributor_email: isAnonymous ? null : contributorEmail,
-          is_anonymous: isAnonymous,
-          message: message || null,
-          payment_method: paymentMethod,
-          status: 'completed' // In real app, this would be 'pending' until payment is confirmed
-        });
-
-      if (error) throw error;
-
-      toast.success('Thank you for your contribution!');
-      onSuccess();
-      onClose();
-      
-      // Reset form
-      setAmount('');
-      setContributorName('');
-      setContributorEmail('');
-      setMessage('');
-      setIsAnonymous(false);
-      setPaymentMethod('mobile_money');
-    } catch (error) {
-      console.error('Error submitting contribution:', error);
-      toast.error('Failed to submit contribution. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    const contributionAmount = parseInt(amount);
+    onContribute(contributionAmount);
+    onClose();
+    
+    // Reset form
+    setAmount('');
+    setContributorName('');
+    setContributorEmail('');
+    setMessage('');
+    setIsAnonymous(false);
+    setPaymentMethod('mobile_money');
   };
 
   if (!project) return null;
@@ -171,7 +144,7 @@ const ContributionModal = ({ isOpen, onClose, project, onSuccess }: Contribution
             <Button 
               type="submit" 
               disabled={loading}
-              className="flex-1 bg-club66-purple hover:bg-club66-darkpurple"
+              className="flex-1"
             >
               {loading ? 'Processing...' : 'Contribute'}
             </Button>

@@ -56,7 +56,7 @@ const FAQ = () => {
       ]
     },
     {
-      category: "Financial Services",
+      category: "Services",
       questions: [
         {
           question: "How does the credit account work?",
@@ -67,11 +67,11 @@ const FAQ = () => {
           answer: "Hire purchase allows you to buy items and pay in installments over time. You can choose payment periods from 3 to 24 months with competitive interest rates."
         },
         {
-          question: "How quickly can I get a payday loan?",
-          answer: "Payday loans are processed within 30 minutes for eligible members. The amount depends on your membership tier and payment history with us."
+          question: "How quickly can I get a payday advance?",
+          answer: "Payday advances are processed within 30 minutes for eligible members. The amount depends on your membership tier and payment history with us."
         },
         {
-          question: "What documents do I need for financial services?",
+          question: "What documents do I need for services?",
           answer: "You'll need valid ID, proof of income, and bank statements. Additional documents may be required based on the specific service and amount requested."
         }
       ]

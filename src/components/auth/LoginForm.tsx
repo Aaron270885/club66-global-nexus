@@ -81,7 +81,7 @@ const LoginForm = () => {
     // On successful OTP verification, log the user in
     toast({
       title: "Login successful!",
-      description: "Welcome back to Club66 Global."
+      description: "Welcome back to Club66."
     });
     
     // Navigate to home page
@@ -107,7 +107,7 @@ const LoginForm = () => {
       <CardHeader>
         <CardTitle className="text-2xl">Log in to your account</CardTitle>
         <CardDescription>
-          Access your Club66 Global membership and benefits
+          Access your Club66 membership and benefits
         </CardDescription>
       </CardHeader>
       <CardContent>

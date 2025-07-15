@@ -38,7 +38,7 @@ const MemberCard = ({ memberName, memberID, expiryDate, membershipTier }: Member
                   <p className={`text-xs font-medium ${membershipTier === 'Essential' ? 'text-gray-600' : ''}`}>
                     {membershipTier} Member
                   </p>
-                  <p className="text-lg font-bold">Club66 Global</p>
+                  <p className="text-lg font-bold">Club66</p>
                 </div>
                 <div className={`h-12 w-12 rounded-full ${membershipTier === 'Essential' ? 'bg-gray-300' : 'bg-white/20'} flex items-center justify-center`}>
                   <span className="font-bold">66</span>
