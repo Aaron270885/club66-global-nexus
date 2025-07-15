@@ -34,7 +34,7 @@ const ActivateCard = () => {
     <Layout>
       <PremiumBanner
         title="Activate Your Membership Card"
-        description="Enter your activation code to unlock your premium Club66 Global membership benefits."
+        description="Enter your activation code to unlock your premium Club66 membership benefits."
         backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
         variant="compact"
       />
@@ -100,7 +100,7 @@ const ActivateCard = () => {
                   <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
                   <h2 className="text-3xl font-bold text-green-600 mb-2">Card Activated!</h2>
                   <p className="text-gray-600">
-                    Your Club66 Global membership card has been successfully activated.
+                    Your Club66 membership card has been successfully activated.
                   </p>
                 </div>
 

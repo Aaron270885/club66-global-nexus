@@ -58,6 +58,7 @@ import AutoServices from '@/pages/services/secours/AutoServices';
 import FirstAid from '@/pages/services/secours/FirstAid';
 import CataCatani from '@/pages/services/secours/CataCatani';
 import Cards from '@/pages/Cards';
+import ActivateCard from '@/pages/ActivateCard';
 import OSecoursPage from '@/pages/services/OSecoursPage';
 import PaydayAdvancePage from '@/pages/services/PaydayAdvancePage';
 
@@ -166,6 +167,10 @@ const routes = [
   {
     path: '/cards',
     element: <Cards />,
+  },
+  {
+    path: '/activate-card',
+    element: <ActivateCard />,
   },
   {
     path: '/jobs',

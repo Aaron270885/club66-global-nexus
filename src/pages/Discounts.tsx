@@ -52,7 +52,7 @@ const Discounts = () => {
       <Layout>
         <PremiumBanner
           title="Member Discounts"
-          description="Unlock exclusive savings across Africa with Club66 Global membership benefits"
+          description="Unlock exclusive savings across West Africa with Club66 membership benefits"
           backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
         />
         <div className="py-16 bg-gradient-to-br from-purple-50 to-blue-50">
@@ -79,7 +79,7 @@ const Discounts = () => {
     <Layout>
       <PremiumBanner
         title="Member Discounts"
-        description="Unlock exclusive savings across Africa with Club66 Global membership benefits"
+        description="Unlock exclusive savings across West Africa with Club66 membership benefits"
         backgroundImage="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
 
@@ -141,7 +141,7 @@ const Discounts = () => {
               </Card>
               <Card className="text-center p-6">
                 <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.countries}</div>
-                <div className="text-gray-600">African Countries</div>
+                <div className="text-gray-600">West African Countries</div>
               </Card>
               <Card className="text-center p-6">
                 <div className="text-3xl font-bold text-purple-600 mb-2">{merchantStats.avgDiscount}%</div>
@@ -277,7 +277,7 @@ const Discounts = () => {
               <CardContent className="p-12 text-center">
                 <h2 className="text-3xl font-bold mb-4">Start Saving Today!</h2>
                 <p className="text-xl mb-8 opacity-90">
-                  Join millions of Club66 Global members and unlock exclusive discounts across Africa
+                  Join millions of Club66 members and unlock exclusive discounts across West Africa
                 </p>
                 <Button size="lg" variant="outline" className="bg-white text-purple-600 hover:bg-gray-100">
                   Become a Member

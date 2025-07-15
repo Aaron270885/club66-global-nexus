@@ -35,9 +35,12 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/club66-logo.png" 
-              alt="Club66 Global" 
+              alt="Club66" 
               className="h-10 w-auto"
             />
+            <span className="ml-2 text-xl font-display font-semibold text-gray-800 hidden sm:block">
+              Club66
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
