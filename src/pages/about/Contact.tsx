@@ -13,7 +13,7 @@ const Contact = () => {
     <Layout>
       <PremiumBanner
         title="Contact Us"
-        description="Get in touch with Club66 Global team. We're here to help you with any questions or support you need."
+        description="Get in touch with Club66 team. We're here to help you with any questions or support you need."
         backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
         showBackButton
         backUrl="/about"
@@ -88,7 +88,7 @@ const Contact = () => {
                       <Mail className="h-5 w-5 text-purple-600" />
                       <div>
                         <p className="font-medium">Email</p>
-                        <p className="text-sm text-gray-600">info@club66global.com</p>
+                        <p className="text-sm text-gray-600">info@club66.org</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">

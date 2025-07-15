@@ -17,8 +17,8 @@ const FAQ = () => {
       category: "Membership",
       questions: [
         {
-          question: "How do I become a Club66 Global member?",
-          answer: "You can become a member by registering on our website or mobile app. Simply provide your basic information, choose a membership tier, and complete the verification process. Membership activation takes 24-48 hours."
+          question: "How do I become a Club66 member?",
+          answer: "You can become a member by registering on our website. Simply provide your basic information, choose a membership tier, and complete the verification process. Membership activation takes 24-48 hours."
         },
         {
           question: "What are the different membership tiers?",
@@ -132,7 +132,7 @@ const FAQ = () => {
     <Layout>
       <PremiumBanner
         title="Frequently Asked Questions"
-        description="Find answers to common questions about Club66 Global services and membership benefits."
+        description="Find answers to common questions about Club66 services and membership benefits."
       >
         <div className="relative max-w-2xl mx-auto">
           <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
