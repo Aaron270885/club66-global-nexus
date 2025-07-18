@@ -145,8 +145,8 @@ const Competitions = () => {
   return (
     <Layout>
       <PremiumBanner
-        title="Competitions & Awards"
-        description="Participate in exciting competitions and vote for your favorite participants. Win amazing prizes and recognition!"
+        title="Events & Awards"
+        description="Participate in exciting events and vote for your favorite participants. Win amazing prizes and recognition!"
         backgroundImage="https://images.unsplash.com/photo-1567034298638-1c2cdb3d1a65?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
 
@@ -155,18 +155,18 @@ const Competitions = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Competitions List */}
             <div className="lg:col-span-2">
-              <h2 className="text-2xl font-bold mb-6">Active & Upcoming Competitions</h2>
+              <h2 className="text-2xl font-bold mb-6">Active & Upcoming Events</h2>
               <div className="space-y-6">
-                {competitions?.map((competition) => (
-                  <Card key={competition.id} className="hover:shadow-lg transition-shadow">
+                {competitions?.map((event) => (
+                  <Card key={event.id} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div>
-                          <CardTitle className="text-xl">{competition.title}</CardTitle>
-                          <CardDescription className="mt-2">{competition.description}</CardDescription>
+                          <CardTitle className="text-xl">{event.title}</CardTitle>
+                          <CardDescription className="mt-2">{event.description}</CardDescription>
                         </div>
-                        <Badge className={`${getStatusColor(competition.status)} text-white`}>
-                          {competition.status.toUpperCase()}
+                        <Badge className={`${getStatusColor(event.status)} text-white`}>
+                          {event.status.toUpperCase()}
                         </Badge>
                       </div>
                     </CardHeader>
@@ -175,28 +175,28 @@ const Competitions = () => {
                         <div className="flex items-center">
                           <Calendar className="h-4 w-4 mr-2 text-gray-500" />
                           <span className="text-sm">
-                            {new Date(competition.start_date).toLocaleDateString()}
+                            {new Date(event.start_date).toLocaleDateString()}
                           </span>
                         </div>
                         <div className="flex items-center">
                           <MapPin className="h-4 w-4 mr-2 text-gray-500" />
-                          <span className="text-sm">{competition.location}</span>
+                          <span className="text-sm">{event.location}</span>
                         </div>
                         <div className="flex items-center">
                           <Trophy className="h-4 w-4 mr-2 text-gray-500" />
-                          <span className="text-sm">{competition.prize}</span>
+                          <span className="text-sm">{event.prize}</span>
                         </div>
                         <div className="flex items-center">
                           <Users className="h-4 w-4 mr-2 text-gray-500" />
-                          <span className="text-sm">{competition.current_entries} entries</span>
+                          <span className="text-sm">{event.current_entries} entries</span>
                         </div>
                       </div>
                       
                       <div className="flex gap-2">
-                        {competition.status === 'active' && (
+                        {event.status === 'active' && (
                           <>
                             <Button 
-                              onClick={() => handleParticipate(competition.id)}
+                              onClick={() => handleParticipate(event.id)}
                               className="bg-purple-600 hover:bg-purple-700"
                             >
                               Participate
@@ -204,10 +204,10 @@ const Competitions = () => {
                             <Button 
                               variant="outline"
                               onClick={() => setSelectedCompetition(
-                                selectedCompetition === competition.id ? null : competition.id
+                                selectedCompetition === event.id ? null : event.id
                               )}
                             >
-                              {selectedCompetition === competition.id ? 'Hide' : 'View'} Participants
+                              {selectedCompetition === event.id ? 'Hide' : 'View'} Participants
                             </Button>
                           </>
                         )}

@@ -30,9 +30,9 @@ const MembershipPlans = () => {
       buttonVariant: 'outline',
       features: [
         '5% discount at Club66 businesses',
-        'Digital membership card',
+        'Digital Value & Privilege Card',
         'Access to partner discounts',
-        'Member community access',
+        'Client community access',
         'Access to job center',
         'Payday loans (8% flat interest)',
       ],
@@ -48,9 +48,9 @@ const MembershipPlans = () => {
       popular: true,
       features: [
         '10% discount at Club66 businesses',
-        'Digital membership card',
+        'Digital Value & Privilege Card',
         'Access to partner discounts',
-        'Member community access',
+        'Client community access',
         'Access to job center',
         'Payday loans (8% flat interest)',
         'Priority customer support',
@@ -67,9 +67,9 @@ const MembershipPlans = () => {
       buttonVariant: 'default',
       features: [
         '20% discount at Club66 businesses',
-        'Digital membership card',
+        'Digital Value & Privilege Card',
         'Access to partner discounts',
-        'Member community access',
+        'Client community access',
         'Access to job center',
         'Payday loans (5% flat interest)',
         'Priority customer support',
@@ -84,10 +84,10 @@ const MembershipPlans = () => {
     <section className="py-16 bg-white" id="plans">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold mb-4">Find the Perfect Membership Plan</h2>
+          <h2 className="text-3xl font-bold mb-4">Find the Perfect Client Plan</h2>
           <p className="text-gray-600">
             Choose a plan that fits your lifestyle and goals. All plans include access to our 
-            exclusive network of partner businesses and special member-only benefits.
+            exclusive network of partner businesses and special client-only benefits.
           </p>
         </div>
         
@@ -142,7 +142,7 @@ const MembershipPlans = () => {
 
         <div className="mt-12 text-center">
           <p className="text-gray-500 mb-4">
-            All memberships include the option to select additional social benefits
+            All client plans include the option to select additional social benefits
           </p>
           <Button variant="link" className="text-club66-purple">
             Learn more about social benefits

@@ -30,10 +30,10 @@ const Partners = () => {
       id: 3,
       name: "Mali Chamber of Commerce",
       type: "Business Partner",
-      description: "Facilitating business connections and trade opportunities for our members.",
+      description: "Facilitating business connections and trade opportunities for our clients.",
       logo: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
       partnership_since: "2023",
-      services: ["Business Networking", "Trade Facilitation", "Member Discounts"]
+      services: ["Business Networking", "Trade Facilitation", "Client Discounts"]
     }
   ];
 
@@ -48,7 +48,7 @@ const Partners = () => {
     <Layout>
       <PremiumBanner
         title="Our Partners"
-        description="Meet the organizations and institutions that help us deliver exceptional value to our members."
+        description="Meet the organizations and institutions that help us deliver exceptional value to our clients."
         backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
         showBackButton
         backUrl="/about"
@@ -74,7 +74,7 @@ const Partners = () => {
               <h2 className="text-3xl font-bold mb-4">Strategic Partners</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 We collaborate with leading organizations across Africa to provide 
-                comprehensive services and benefits to our members.
+                comprehensive services and benefits to our clients.
               </p>
             </div>
 
@@ -120,7 +120,7 @@ const Partners = () => {
               <CardContent className="p-8 text-center">
                 <h3 className="text-2xl font-bold mb-4">Become a Partner</h3>
                 <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                  Join our network of partners and help us create more value for our members. 
+                  Join our network of partners and help us create more value for our clients. 
                   We're always looking for organizations that share our vision of 
                   empowering communities across Africa.
                 </p>

@@ -26,8 +26,8 @@ const PaydayAdvance = () => {
   ];
 
   const requirements = [
-    'Active Club66 membership',
-    'Minimum 3 months membership history',
+    'Active Club66 Global client status',
+    'Minimum 3 months client history',
     'Valid government-issued ID',
     'Proof of income or employment',
     'Bank account for disbursement'
@@ -116,7 +116,7 @@ const PaydayAdvance = () => {
                   <h4 className="font-semibold mb-2">Advance Limits</h4>
                   <p className="text-gray-600 text-sm">
                     • Minimum advance: 25,000 CFA<br />
-                    • Maximum advance: 500,000 CFA (based on membership tier)
+                    • Maximum advance: 500,000 CFA (based on client tier)
                   </p>
                 </div>
                 <div>

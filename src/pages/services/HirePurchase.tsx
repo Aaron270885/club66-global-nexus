@@ -96,7 +96,7 @@ const HirePurchase = () => {
               <div>
                 <h2 className="text-2xl font-bold mb-6">Own What You Need Today, Pay Over Time</h2>
                 <p className="text-gray-600 mb-6">
-                  Our Hire Purchase program allows Club66 Global members to acquire valuable assets without paying 
+                  Our Hire Purchase program allows Club66 Global clients to acquire valuable assets without paying 
                   the full amount upfront. Make a down payment, take possession of the item immediately, and pay 
                   the remainder in convenient monthly installments while you use and enjoy your purchase.
                 </p>
@@ -293,7 +293,7 @@ const HirePurchase = () => {
                         <ul className="space-y-2">
                           <li className="flex items-center">
                             <Check className="h-5 w-5 text-green-500 mr-2" />
-                            <span>Active Club66 Global membership for at least 2 months</span>
+                            <span>Active Club66 Global client status for at least 2 months</span>
                           </li>
                           <li className="flex items-center">
                             <Check className="h-5 w-5 text-green-500 mr-2" />

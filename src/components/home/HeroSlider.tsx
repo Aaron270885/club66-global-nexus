@@ -152,7 +152,7 @@ const HeroSlider = () => {
                             <TrendingUp className="h-6 w-6 text-green-400" />
                           </div>
                           <p className="text-3xl font-bold text-white">5-20%</p>
-                          <p className="text-sm text-gray-300">Member Discounts</p>
+                          <p className="text-sm text-gray-300">Client Discounts</p>
                         </div>
                         <div className="text-center transform transition-all duration-500 hover:scale-110">
                           <div className="flex items-center justify-center mb-2">
@@ -166,7 +166,7 @@ const HeroSlider = () => {
                             <Users className="h-6 w-6 text-blue-400" />
                           </div>
                           <p className="text-3xl font-bold text-white">2M+</p>
-                          <p className="text-sm text-gray-300">Members</p>
+                          <p className="text-sm text-gray-300">Clients</p>
                         </div>
                       </div>
                     </div>
@@ -178,7 +178,7 @@ const HeroSlider = () => {
                           <div className="flex justify-between items-start mb-6">
                             <div className="text-white">
                               <p className="text-sm uppercase tracking-wider opacity-90">Elite Member</p>
-                               <p className="text-2xl font-bold">Club66</p>
+                              <p className="text-2xl font-bold">Club66 Global</p>
                             </div>
                             <div className="bg-white/20 text-white rounded-full w-16 h-16 flex items-center justify-center backdrop-blur-sm">
                               <span className="font-bold text-xl">66</span>
@@ -207,7 +207,7 @@ const HeroSlider = () => {
                           <div className="flex justify-between items-start mb-6">
                             <div className="text-gray-900">
                               <p className="text-sm uppercase tracking-wider opacity-70">Premium Member</p>
-                              <p className="text-2xl font-bold">Club66</p>
+                              <p className="text-2xl font-bold">Club66 Global</p>
                             </div>
                             <div className="bg-white/30 text-gray-900 rounded-full w-16 h-16 flex items-center justify-center">
                               <span className="font-bold text-xl">66</span>

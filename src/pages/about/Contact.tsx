@@ -81,7 +81,7 @@ const Contact = () => {
                       <Phone className="h-5 w-5 text-purple-600" />
                       <div>
                         <p className="font-medium">Phone</p>
-                        <p className="text-sm text-gray-600">+223 XX XX XX XX</p>
+                        <p className="text-sm text-gray-600">+223 20 22 15 30</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-3">
@@ -110,10 +110,6 @@ const Contact = () => {
                       <div>
                         <h4 className="font-medium">Headquarters - Mali</h4>
                         <p className="text-sm text-gray-600">Bamako, Mali</p>
-                      </div>
-                      <div>
-                        <h4 className="font-medium">Regional Office - Senegal</h4>
-                        <p className="text-sm text-gray-600">Dakar, Senegal</p>
                       </div>
                     </div>
                   </CardContent>

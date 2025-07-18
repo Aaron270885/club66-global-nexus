@@ -10,13 +10,13 @@ const Benefits = () => {
     },
     {
       icon: <CreditCard className="h-10 w-10 text-club66-purple" />,
-      title: 'Digital Membership Card',
-      description: 'Access your membership benefits with a secure digital card featuring QR verification.'
+      title: 'Digital Value & Privilege Card',
+      description: 'Access your client benefits with a secure Zenika Card featuring QR verification.'
     },
     {
       icon: <Users className="h-10 w-10 text-club66-purple" />,
       title: 'Professional Network',
-      description: 'Connect with millions of members and expand your professional network across West Africa.'
+      description: 'Connect with millions of clients and expand your professional network across West Africa.'
     },
     {
       icon: <Gift className="h-10 w-10 text-club66-purple" />,
@@ -39,9 +39,9 @@ const Benefits = () => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold mb-4">Membership Benefits</h2>
+          <h2 className="text-3xl font-bold mb-4">Client Benefits</h2>
           <p className="text-gray-600">
-            Discover the advantages of being a Club66 member and how our services
+            Discover the advantages of being a Club66 Global client and how our services
             can enhance your lifestyle, career, and financial wellbeing across West Africa.
           </p>
         </div>

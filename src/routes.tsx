@@ -53,6 +53,7 @@ import Partners from '@/pages/about/Partners';
 import News from '@/pages/about/News'; 
 import ChangingLives from '@/pages/about/ChangingLives';
 import Projects from '@/pages/about/Projects';
+import Mission from '@/pages/about/Mission';
 
 import OSecours from '@/pages/services/OSecours';
 import PaydayAdvance from '@/pages/services/PaydayAdvance';
@@ -105,6 +106,10 @@ const routes = [
   {
     path: '/about/projects',
     element: <Projects />,
+  },
+  {
+    path: '/about/mission',
+    element: <Mission />,
   },
   {
     path: '/news/:id',
