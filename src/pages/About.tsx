@@ -5,28 +5,67 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Users, Target, Heart, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const About = () => {
+  const { toast } = useToast();
+  const [pageContent, setPageContent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchAboutContent();
+  }, []);
+
+  const fetchAboutContent = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cms_pages')
+        .select('*')
+        .eq('slug', 'about')
+        .eq('status', 'published')
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching about content:', error);
+        return;
+      }
+
+      if (data) {
+        setPageContent(data);
+      }
+    } catch (error: any) {
+      console.error('Error fetching about content:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <PremiumBanner
-        title="About Club66"
-        description="Learn about our mission, vision, and commitment to empowering African communities through innovative membership benefits."
+        title="About Club66 Global"
+        description="Learn about our mission, vision, and commitment to empowering African communities through innovative client benefits."
         backgroundImage="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80"
       />
 
       <div className="py-16 bg-gradient-to-br from-purple-50 to-purple-100">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            {/* Mission Section */}
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                To create a comprehensive membership platform that provides financial services, 
-                business opportunities, and community benefits to people across Africa, 
-                fostering economic growth and social development.
-              </p>
-            </div>
+            {/* Dynamic Content Section */}
+            {pageContent && (
+              <div className="text-center mb-16">
+                <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl">
+                  <CardContent className="p-8 md:p-12">
+                    <div 
+                      className="prose prose-lg max-w-none text-gray-700"
+                      dangerouslySetInnerHTML={{ __html: pageContent.content }}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            )}
 
             {/* Quick Links */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
