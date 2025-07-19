@@ -2,6 +2,7 @@
 import Layout from '@/components/layout/Layout';
 // import Hero from '@/components/home/Hero';  // Temporarily hidden
 import HeroSlider from '@/components/home/HeroSlider';
+import AboutSection from '@/components/home/AboutSection';
 import MembershipPlans from '@/components/home/MembershipPlans';
 import Benefits from '@/components/home/Benefits';
 import DigitalCard from '@/components/home/DigitalCard';
@@ -14,6 +15,7 @@ const Index = () => {
     <Layout>
       {/* <Hero /> */}  {/* Temporarily hidden - can be re-enabled when needed */}
       <HeroSlider />
+      <AboutSection />
       <Benefits />
       <MembershipPlans />
       <DigitalCard />
