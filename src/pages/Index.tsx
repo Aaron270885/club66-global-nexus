@@ -36,10 +36,17 @@ const Index = () => {
         .select('*')
         .eq('slug', 'home-page')
         .eq('status', 'published')
+        .eq('page_type', 'landing')
         .single();
 
       if (error) {
         console.error('Error fetching home content:', error);
+        // If no record found, create default content
+        if (error.code === 'PGRST116') {
+          setHomeContent(getDefaultHomeContent());
+          setLoading(false);
+          return;
+        }
         setError('Failed to load page content');
         return;
       }
@@ -62,6 +69,121 @@ const Index = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getDefaultHomeContent = (): HomePageContent => {
+    return {
+      id: 'default',
+      title: 'Club66 Global - Your Gateway to Exclusive Benefits',
+      slug: 'home-page',
+      content: `
+        <div class="hero-section">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-yellow-400 to-purple-600 bg-clip-text text-transparent">
+            Welcome to Club66 Global
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 text-gray-200">
+            Join thousands of members enjoying exclusive discounts, premium services, and global benefits
+          </p>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+            <div class="text-center">
+              <div class="text-3xl md:text-4xl font-bold text-yellow-400">10K+</div>
+              <div class="text-sm text-gray-300">Active Members</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl md:text-4xl font-bold text-yellow-400">500+</div>
+              <div class="text-sm text-gray-300">Partner Merchants</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl md:text-4xl font-bold text-yellow-400">50+</div>
+              <div class="text-sm text-gray-300">Countries</div>
+            </div>
+            <div class="text-center">
+              <div class="text-3xl md:text-4xl font-bold text-yellow-400">24/7</div>
+              <div class="text-sm text-gray-300">Support</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-section">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-800">About Club66 Global</h2>
+          <p class="text-lg mb-6">
+            Club66 Global is a revolutionary membership platform that connects you to a world of exclusive benefits, 
+            discounts, and premium services. Our mission is to enhance your lifestyle while providing exceptional 
+            value through our extensive network of partners and services.
+          </p>
+          <p class="text-lg">
+            From shopping discounts to emergency assistance, from job opportunities to educational scholarships, 
+            Club66 Global is your gateway to a better life.
+          </p>
+        </div>
+        <div class="features-section">
+          <h2 class="text-3xl md:text-4xl font-bold mb-12 text-gray-800">Why Choose Club66 Global?</h2>
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="text-center p-6 bg-white rounded-lg shadow-lg">
+              <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl">💳</span>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Exclusive Discounts</h3>
+              <p class="text-gray-600">Access up to 50% discounts at thousands of partner merchants worldwide</p>
+            </div>
+            <div class="text-center p-6 bg-white rounded-lg shadow-lg">
+              <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl">🌍</span>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Global Network</h3>
+              <p class="text-gray-600">Connect with members and services across 50+ countries</p>
+            </div>
+            <div class="text-center p-6 bg-white rounded-lg shadow-lg">
+              <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl">🏪</span>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Partner Merchants</h3>
+              <p class="text-gray-600">Shop at 500+ verified partner stores with guaranteed savings</p>
+            </div>
+            <div class="text-center p-6 bg-white rounded-lg shadow-lg">
+              <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="text-2xl">📊</span>
+              </div>
+              <h3 class="text-xl font-semibold mb-3">Premium Benefits</h3>
+              <p class="text-gray-600">Enjoy exclusive perks, priority support, and special offers</p>
+            </div>
+          </div>
+        </div>
+        <div class="cta-section">
+          <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Lifestyle?</h2>
+          <p class="text-xl mb-8 opacity-90">
+            Join Club66 Global today and unlock a world of exclusive benefits, discounts, and opportunities.
+          </p>
+          <div class="bg-white/10 backdrop-blur-sm rounded-lg p-6 mb-8">
+            <div class="grid md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div class="text-2xl font-bold text-yellow-400">Basic</div>
+                <div class="text-3xl font-bold">$29/year</div>
+                <div class="text-sm opacity-80">Essential benefits</div>
+              </div>
+              <div class="border-2 border-yellow-400 rounded-lg p-4 relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold">
+                  POPULAR
+                </div>
+                <div class="text-2xl font-bold text-yellow-400">Premium</div>
+                <div class="text-3xl font-bold">$99/year</div>
+                <div class="text-sm opacity-80">All benefits + extras</div>
+              </div>
+              <div>
+                <div class="text-2xl font-bold text-yellow-400">VIP</div>
+                <div class="text-3xl font-bold">$199/year</div>
+                <div class="text-sm opacity-80">Ultimate experience</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `,
+      meta_description: 'Join Club66 Global for exclusive discounts, premium services, and global benefits. Transform your lifestyle with our membership platform.',
+      meta_keywords: 'Club66 Global, membership, discounts, benefits, premium services',
+      status: 'published',
+      page_type: 'landing',
+      is_featured: true,
+      featured_image_url: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80'
+    };
   };
 
   const parseContentSections = (content: string) => {
