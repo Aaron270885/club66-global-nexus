@@ -37,35 +37,29 @@ const Index = () => {
         .eq('slug', 'home-page')
         .eq('status', 'published')
         .eq('page_type', 'landing')
-        .single();
+        .maybeSingle();
 
-      if (error) {
+      if (error || !data) {
         console.error('Error fetching home content:', error);
-        // If no record found, create default content
-        if (error.code === 'PGRST116') {
-          setHomeContent(getDefaultHomeContent());
-          setLoading(false);
-          return;
-        }
-        setError('Failed to load page content');
+        // If no record found or error occurred, use default content
+        setHomeContent(getDefaultHomeContent());
+        setLoading(false);
         return;
       }
 
-      if (data) {
-        setHomeContent(data);
-        
-        // Update page meta tags
-        if (data.meta_description) {
-          document.querySelector('meta[name="description"]')?.setAttribute('content', data.meta_description);
-        }
-        if (data.meta_keywords) {
-          document.querySelector('meta[name="keywords"]')?.setAttribute('content', data.meta_keywords);
-        }
-        document.title = data.title;
+      setHomeContent(data);
+      
+      // Update page meta tags
+      if (data.meta_description) {
+        document.querySelector('meta[name="description"]')?.setAttribute('content', data.meta_description);
       }
+      if (data.meta_keywords) {
+        document.querySelector('meta[name="keywords"]')?.setAttribute('content', data.meta_keywords);
+      }
+      document.title = data.title;
     } catch (error) {
       console.error('Error fetching home content:', error);
-      setError('Failed to load page content');
+      setHomeContent(getDefaultHomeContent());
     } finally {
       setLoading(false);
     }
