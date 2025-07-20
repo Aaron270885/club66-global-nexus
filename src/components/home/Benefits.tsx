@@ -1,7 +1,23 @@
 
 import { CreditCard, Gift, Users, Award, Percent, Clock } from 'lucide-react';
 
-const Benefits = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface BenefitsProps {
+  cmsContent?: CMSPage;
+}
+
+const Benefits = ({ cmsContent }: BenefitsProps) => {
   const benefits = [
     {
       icon: <Percent className="h-10 w-10 text-club66-purple" />,

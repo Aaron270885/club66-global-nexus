@@ -3,7 +3,23 @@ import { Users, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const AffiliateProgram = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface AffiliateProgramProps {
+  cmsContent?: CMSPage;
+}
+
+const AffiliateProgram = ({ cmsContent }: AffiliateProgramProps) => {
   return (
     <section className="py-16 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto px-4">

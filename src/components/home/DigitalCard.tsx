@@ -2,7 +2,23 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const DigitalCard = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface DigitalCardProps {
+  cmsContent?: CMSPage;
+}
+
+const DigitalCard = ({ cmsContent }: DigitalCardProps) => {
   return (
     <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">

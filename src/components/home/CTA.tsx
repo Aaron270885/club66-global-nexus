@@ -2,7 +2,23 @@
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const CTA = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface CTAProps {
+  cmsContent?: CMSPage;
+}
+
+const CTA = ({ cmsContent }: CTAProps) => {
   return (
     <section className="py-16 bg-gradient-to-br from-club66-purple to-club66-darkpurple text-white">
       <div className="container mx-auto px-4 text-center">

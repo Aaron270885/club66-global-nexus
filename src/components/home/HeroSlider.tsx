@@ -6,7 +6,23 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { useEffect, useState } from 'react';
 import type { CarouselApi } from '@/components/ui/carousel';
 
-const HeroSlider = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface HeroSliderProps {
+  cmsContent?: CMSPage;
+}
+
+const HeroSlider = ({ cmsContent }: HeroSliderProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);

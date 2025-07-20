@@ -3,7 +3,23 @@ import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const SocialBenefits = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface SocialBenefitsProps {
+  cmsContent?: CMSPage;
+}
+
+const SocialBenefits = ({ cmsContent }: SocialBenefitsProps) => {
   const benefits = [
     {
       id: 'startup',

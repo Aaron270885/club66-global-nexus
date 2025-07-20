@@ -5,7 +5,23 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
-const MembershipPlans = () => {
+interface CMSPage {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  meta_description?: string;
+  meta_keywords?: string;
+  status: string;
+  page_type: string;
+  is_featured?: boolean;
+}
+
+interface MembershipPlansProps {
+  cmsContent?: CMSPage;
+}
+
+const MembershipPlans = ({ cmsContent }: MembershipPlansProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
