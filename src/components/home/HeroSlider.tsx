@@ -143,7 +143,7 @@ const HeroSlider = ({ cmsContent }: HeroSliderProps) => {
                           </>
                         ) : (
                           <>
-                            Elverra<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300"> Global</span>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-purple-300">Elverra</span> Global
                           </>
                         )}
                        </h1>

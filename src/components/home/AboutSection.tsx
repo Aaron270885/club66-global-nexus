@@ -36,8 +36,7 @@ const AboutSection = ({ cmsContent }: AboutSectionProps) => {
                 <>
                   <div className="text-center mb-8">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                      About <span className="text-club66-gold">Elverra</span>
-                      <span className="text-club66-purple"> Global</span>
+                      About <span className="text-club66-gold">Elverra</span><span className="text-club66-purple"> Global</span>
                     </h2>
                     <div className="w-24 h-1 bg-gradient-to-r from-club66-gold to-club66-purple mx-auto mb-6"></div>
                   </div>

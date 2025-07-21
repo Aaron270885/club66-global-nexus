@@ -35,11 +35,11 @@ const Header = () => {
           <Link to="/" className="flex items-center">
             <img 
               src="/lovable-uploads/club66-logo.png" 
-              alt="Club66" 
+              alt="Elverra Global" 
               className="h-12 w-auto"
             />
             <span className="ml-2 text-2xl font-display font-bold text-gray-800">
-              Club66
+              Elverra Global
             </span>
           </Link>
 
