@@ -72,6 +72,12 @@ export default {
                     gold: '#EFC044',
                     lightpurple: '#A78BFA',
                     darkpurple: '#6E3AD6',
+                },
+                elverra: {
+                    purple: '#8B5CF6',
+                    gold: '#EFC044',
+                    lightpurple: '#A78BFA',
+                    darkpurple: '#6E3AD6',
                 }
 			},
 			borderRadius: {
