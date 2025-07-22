@@ -1015,6 +1015,99 @@ export type Database = {
           },
         ]
       }
+      product_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          category: string
+          condition: string
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          currency: string
+          description: string
+          id: string
+          images: Json | null
+          is_active: boolean
+          is_sold: boolean
+          location: string | null
+          posting_fee_amount: number
+          posting_fee_paid: boolean
+          posting_fee_payment_id: string | null
+          price: number
+          title: string
+          updated_at: string
+          user_id: string
+          views: number
+        }
+        Insert: {
+          category: string
+          condition?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string
+          description: string
+          id?: string
+          images?: Json | null
+          is_active?: boolean
+          is_sold?: boolean
+          location?: string | null
+          posting_fee_amount?: number
+          posting_fee_paid?: boolean
+          posting_fee_payment_id?: string | null
+          price: number
+          title: string
+          updated_at?: string
+          user_id: string
+          views?: number
+        }
+        Update: {
+          category?: string
+          condition?: string
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          currency?: string
+          description?: string
+          id?: string
+          images?: Json | null
+          is_active?: boolean
+          is_sold?: boolean
+          location?: string | null
+          posting_fee_amount?: number
+          posting_fee_paid?: boolean
+          posting_fee_payment_id?: string | null
+          price?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+          views?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
@@ -1484,6 +1577,10 @@ export type Database = {
       }
       increment_job_views: {
         Args: { job_id: string }
+        Returns: undefined
+      }
+      increment_product_views: {
+        Args: { product_id: string }
         Returns: undefined
       }
       increment_vote_count: {

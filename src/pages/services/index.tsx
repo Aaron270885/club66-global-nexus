@@ -10,7 +10,8 @@ import {
   ShoppingCart, 
   PiggyBank,
   Shield,
-  AlertTriangle
+  AlertTriangle,
+  Store
 } from 'lucide-react';
 
 const Services = () => {
@@ -25,6 +26,13 @@ const Services = () => {
   ];
 
   const services = [
+    {
+      title: 'Online Store',
+      description: 'Buy and sell products directly with other members. Post your items for sale or browse available products.',
+      icon: Store,
+      path: '/services/online-store',
+      color: 'bg-green-500'
+    },
     {
       title: 'Ô Secours',
       description: 'Emergency assistance through token-based subscriptions',

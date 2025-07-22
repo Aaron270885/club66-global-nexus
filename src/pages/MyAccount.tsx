@@ -38,13 +38,15 @@ import {
   RefreshCw,
   ExternalLink,
   Lock,
-  Smartphone
+  Smartphone,
+  Package
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useUserProfile } from '@/hooks/useUserProfile';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import Layout from '@/components/layout/Layout';
+import ProductManagement from '@/components/products/ProductManagement';
 
 const MyAccount = () => {
   const { user } = useAuth();
@@ -235,7 +237,7 @@ const MyAccount = () => {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9 overflow-x-auto">
+          <TabsList className="grid w-full grid-cols-10 overflow-x-auto">
             <TabsTrigger value="dashboard" className="flex items-center gap-1">
               <TrendingUp className="h-4 w-4" />
               <span className="hidden sm:inline">Dashboard</span>
@@ -267,6 +269,10 @@ const MyAccount = () => {
             <TabsTrigger value="jobs" className="flex items-center gap-1">
               <Briefcase className="h-4 w-4" />
               <span className="hidden sm:inline">Jobs</span>
+            </TabsTrigger>
+            <TabsTrigger value="products" className="flex items-center gap-1">
+              <Package className="h-4 w-4" />
+              <span className="hidden sm:inline">Products</span>
             </TabsTrigger>
             <TabsTrigger value="support" className="flex items-center gap-1">
               <HelpCircle className="h-4 w-4" />
@@ -882,6 +888,11 @@ const MyAccount = () => {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          {/* Products Tab */}
+          <TabsContent value="products" className="space-y-6">
+            <ProductManagement />
           </TabsContent>
 
           {/* Support Tab */}
