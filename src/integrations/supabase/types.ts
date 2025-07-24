@@ -1048,11 +1048,13 @@ export type Database = {
           created_at: string
           currency: string
           description: string
+          discount_percentage: number | null
           id: string
           images: Json | null
           is_active: boolean
           is_sold: boolean
           location: string | null
+          original_price: number | null
           posting_fee_amount: number
           posting_fee_paid: boolean
           posting_fee_payment_id: string | null
@@ -1070,11 +1072,13 @@ export type Database = {
           created_at?: string
           currency?: string
           description: string
+          discount_percentage?: number | null
           id?: string
           images?: Json | null
           is_active?: boolean
           is_sold?: boolean
           location?: string | null
+          original_price?: number | null
           posting_fee_amount?: number
           posting_fee_paid?: boolean
           posting_fee_payment_id?: string | null
@@ -1092,11 +1096,13 @@ export type Database = {
           created_at?: string
           currency?: string
           description?: string
+          discount_percentage?: number | null
           id?: string
           images?: Json | null
           is_active?: boolean
           is_sold?: boolean
           location?: string | null
+          original_price?: number | null
           posting_fee_amount?: number
           posting_fee_paid?: boolean
           posting_fee_payment_id?: string | null
@@ -1402,6 +1408,48 @@ export type Database = {
           is_active?: boolean
           name?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      shop_offers: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          discount_percentage: number
+          id: string
+          image_url: string | null
+          is_active: boolean
+          premium_only: boolean
+          title: string
+          updated_at: string
+          valid_until: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          discount_percentage?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          premium_only?: boolean
+          title: string
+          updated_at?: string
+          valid_until: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          discount_percentage?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean
+          premium_only?: boolean
+          title?: string
+          updated_at?: string
+          valid_until?: string
         }
         Relationships: []
       }
