@@ -96,6 +96,13 @@ const AdminDashboard = () => {
       icon: Settings,
       route: "/admin/payments",
       color: "bg-gray-50 hover:bg-gray-100 border-gray-200"
+    },
+    {
+      title: "Shop Management",
+      description: "Manage products, categories, and shop offers",
+      icon: ShoppingBag,
+      route: "/admin/shop-management",
+      color: "bg-teal-50 hover:bg-teal-100 border-teal-200"
     }
   ];
 

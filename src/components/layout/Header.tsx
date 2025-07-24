@@ -34,13 +34,10 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/lovable-uploads/club66-logo.png" 
+              src="/lovable-uploads/297366cb-d767-4097-baa3-4cd26419bac7.png" 
               alt="Elverra Global" 
               className="h-12 w-auto"
             />
-            <span className="ml-2 text-2xl font-display font-bold text-gray-800">
-              Elverra Global
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -142,14 +139,27 @@ const Header = () => {
                   <Link to="/services/hire-purchase" className="flex items-center">
                     Hire Purchase
                   </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to="/services/payday-advance" className="flex items-center">
-                    Payday Advance
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                 </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                   <Link to="/services/payday-advance" className="flex items-center">
+                     Payday Advance
+                   </Link>
+                 </DropdownMenuItem>
+                 <DropdownMenuItem asChild>
+                   <Link to="/services/online-store" className="flex items-center">
+                     Online Store
+                   </Link>
+                 </DropdownMenuItem>
+               </DropdownMenuContent>
+             </DropdownMenu>
+
+             {/* Shop Menu Item */}
+             <Link 
+               to="/shop" 
+               className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
+             >
+               Shop
+             </Link>
 
             {/* Jobs Dropdown */}
             <DropdownMenu>
@@ -364,13 +374,20 @@ const Header = () => {
               >
                 Services
               </Link>
-              <Link 
-                to="/services/o-secours" 
-                className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
-                onClick={toggleMenu}
-              >
-                Ô Secours
-              </Link>
+               <Link 
+                 to="/services/o-secours" 
+                 className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2 pl-6"
+                 onClick={toggleMenu}
+               >
+                 Ô Secours
+               </Link>
+               <Link 
+                 to="/shop" 
+                 className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
+                 onClick={toggleMenu}
+               >
+                 Shop
+               </Link>
               <Link 
                 to="/jobs" 
                 className="text-gray-600 hover:text-purple-600 transition-colors font-medium px-2"
