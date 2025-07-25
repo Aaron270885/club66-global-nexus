@@ -226,24 +226,87 @@ const Shop = () => {
   return (
     <Layout>
       {/* Hero Banner Section */}
-      <div className="relative h-[400px] bg-gradient-to-r from-blue-600 to-purple-700 overflow-hidden">
+      <div className="relative h-[500px] bg-gradient-to-r from-blue-600 to-green-500 overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
+        {/* Background pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-48 h-48 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
         <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-          <div className="text-white max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Shop Everything You Need
-            </h1>
-            <p className="text-xl mb-6">
-              Discover amazing deals from our community marketplace
-            </p>
-            <div className="flex gap-4">
-              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
-                <ShoppingBag className="w-5 h-5 mr-2" />
-                Start Shopping
-              </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-gray-900">
-                Browse Categories
-              </Button>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+            {/* Left Content */}
+            <div className="text-white">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+                Shop Everything <br />
+                <span className="text-green-300">You Need</span>
+              </h1>
+              <p className="text-xl mb-6 text-blue-100">
+                Electronics, Home Essentials, Groceries & More - Delivered to Your Doorstep
+              </p>
+              <div className="flex flex-wrap gap-4 mb-6">
+                <Badge className="bg-green-500 text-white px-4 py-2 text-base">
+                  🚚 Free Delivery
+                </Badge>
+                <Badge className="bg-blue-500 text-white px-4 py-2 text-base">
+                  💰 Best Prices
+                </Badge>
+                <Badge className="bg-yellow-500 text-white px-4 py-2 text-base">
+                  ⭐ Premium Quality
+                </Badge>
+              </div>
+              <div className="flex gap-4">
+                <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white">
+                  <ShoppingBag className="w-5 h-5 mr-2" />
+                  Shop Now
+                </Button>
+                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-blue-600">
+                  Browse Categories
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Content - Featured Products Carousel */}
+            <div className="hidden lg:flex items-center justify-center">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <img 
+                    src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200" 
+                    alt="Electronics" 
+                    className="w-full h-24 object-cover rounded-lg mb-2"
+                  />
+                  <h3 className="font-semibold">Electronics</h3>
+                  <p className="text-sm text-blue-100">Latest Smartphones & Gadgets</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <img 
+                    src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=200" 
+                    alt="Construction" 
+                    className="w-full h-24 object-cover rounded-lg mb-2"
+                  />
+                  <h3 className="font-semibold">Construction</h3>
+                  <p className="text-sm text-blue-100">Building Materials & Tools</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <img 
+                    src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=200" 
+                    alt="Groceries" 
+                    className="w-full h-24 object-cover rounded-lg mb-2"
+                  />
+                  <h3 className="font-semibold">Groceries</h3>
+                  <p className="text-sm text-blue-100">Fresh Food & Essentials</p>
+                </div>
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-white">
+                  <img 
+                    src="https://images.unsplash.com/photo-1586953208448-dc5fada4e4b0?w=200" 
+                    alt="Home & Garden" 
+                    className="w-full h-24 object-cover rounded-lg mb-2"
+                  />
+                  <h3 className="font-semibold">Home & Garden</h3>
+                  <p className="text-sm text-blue-100">Furniture & Appliances</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

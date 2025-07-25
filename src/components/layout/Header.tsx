@@ -1,8 +1,9 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus, ChevronDown, Info, UserCheck } from 'lucide-react';
+import { Menu, X, User, LogOut, Settings, Briefcase, Building, Users, Search, Plus, ChevronDown, Info, UserCheck, ShoppingCart, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -34,17 +35,17 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <img 
-              src="/lovable-uploads/297366cb-d767-4097-baa3-4cd26419bac7.png" 
+              src="/lovable-uploads/elverra-global-logo.png" 
               alt="Elverra Global" 
-              className="h-12 w-auto"
+              className="h-10 w-auto"
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             <Link 
               to="/" 
-              className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
+              className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
             >
               Home
             </Link>
@@ -52,7 +53,7 @@ const Header = () => {
             {/* About Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
+                <Button variant="ghost" className="text-gray-600 hover:text-blue-600 font-medium text-sm">
                   <Info className="h-4 w-4 mr-1" />
                   About
                   <ChevronDown className="h-4 w-4 ml-1" />
@@ -113,7 +114,7 @@ const Header = () => {
             {/* Services Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="text-gray-600 hover:text-purple-600 font-medium">
+                <Button variant="ghost" className="text-gray-600 hover:text-blue-600 font-medium text-sm">
                   Services
                   <ChevronDown className="h-4 w-4 ml-1" />
                 </Button>
@@ -156,7 +157,7 @@ const Header = () => {
              {/* Shop Menu Item */}
              <Link 
                to="/shop" 
-               className="text-gray-600 hover:text-purple-600 transition-colors font-medium"
+               className="text-gray-600 hover:text-blue-600 transition-colors font-medium text-sm"
              >
                Shop
              </Link>
@@ -267,7 +268,19 @@ const Header = () => {
           </nav>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
+            <Link to="/cart" className="text-gray-600 hover:text-blue-600 transition-colors relative">
+              <ShoppingCart className="h-5 w-5" />
+              <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-blue-600 text-white">
+                0
+              </Badge>
+            </Link>
+            <Link to="/wishlist" className="text-gray-600 hover:text-blue-600 transition-colors relative">
+              <Heart className="h-5 w-5" />
+              <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-red-500 text-white">
+                0
+              </Badge>
+            </Link>
             <CountrySelector />
             
             {user ? (
@@ -303,7 +316,7 @@ const Header = () => {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/login">Login</Link>
                 </Button>
-                <Button size="sm" asChild className="bg-purple-600 hover:bg-purple-700">
+                <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700">
                   <Link to="/register">Join Now</Link>
                 </Button>
               </div>

@@ -69,7 +69,11 @@ import OSecoursPage from '@/pages/services/OSecoursPage';
 import PaydayAdvancePage from '@/pages/services/PaydayAdvancePage';
 import OnlineStore from '@/pages/services/OnlineStore';
 import Shop from '@/pages/Shop';
+import Cart from '@/pages/Cart';
+import Checkout from '@/pages/Checkout';
+import Wishlist from '@/pages/Wishlist';
 import ShopManagement from '@/pages/admin/ShopManagement';
+import UserManagement from '@/pages/admin/UserManagement';
 import ProjectRequests from '@/pages/ProjectRequests';
 
 // Add the new route to the existing routes array
@@ -247,6 +251,18 @@ const routes = [
     element: <Shop />,
   },
   {
+    path: '/cart',
+    element: <Cart />,
+  },
+  {
+    path: '/checkout',
+    element: <Checkout />,
+  },
+  {
+    path: '/wishlist',
+    element: <Wishlist />,
+  },
+  {
     path: '/services/secours/school-fees',
     element: <SchoolFees />,
   },
@@ -337,6 +353,10 @@ const routes = [
   {
     path: '/admin/shop-management',
     element: <ShopManagement />,
+  },
+  {
+    path: '/admin/user-management',
+    element: <UserManagement />,
   },
   {
     path: '/cookies',
