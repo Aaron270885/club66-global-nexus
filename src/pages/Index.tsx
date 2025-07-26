@@ -6,6 +6,7 @@ import AboutSection from '@/components/home/AboutSection';
 import Benefits from '@/components/home/Benefits';
 import MembershipPlans from '@/components/home/MembershipPlans';
 import DigitalCard from '@/components/home/DigitalCard';
+import CardShowcase from '@/components/home/CardShowcase';
 import SocialBenefits from '@/components/home/SocialBenefits';
 import AffiliateProgram from '@/components/home/AffiliateProgram';
 import CTA from '@/components/home/CTA';
@@ -92,6 +93,9 @@ const Index = () => {
       
       {/* Digital Card Section */}
       <DigitalCard cmsContent={cmsContent['home-digital-card']} />
+      
+      {/* Card Showcase Section */}
+      <CardShowcase />
       
       {/* Social Benefits Section */}
       <SocialBenefits cmsContent={cmsContent['home-social-benefits']} />
