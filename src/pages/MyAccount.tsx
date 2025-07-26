@@ -381,85 +381,143 @@ const MyAccount = () => {
 
           {/* Card Management Tab */}
           <TabsContent value="cards" className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {['Essential', 'Premium', 'Elite'].map((tier, index) => (
-                <Card key={tier} className={`border-2 ${membership?.tier === tier ? 'border-purple-500 bg-purple-50' : 'border-gray-200'}`}>
-                  <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>{tier} ZENIKA</span>
-                      {membership?.tier === tier && <Badge>Current</Badge>}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4 rounded-lg">
-                      <div className="flex justify-between items-start mb-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Current Card Details */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center justify-between">
+                    My ZENIKA Card
+                    <Badge variant="default">Active</Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-6 rounded-lg">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-xs opacity-80">ZENIKA Card</p>
+                        <p className="font-bold text-xl" style={{ color: membership?.tier === 'Elite' ? '#277732' : membership?.tier === 'Premium' ? '#ffcf08' : '#b4121d' }}>
+                          {membership?.tier || 'Essential'}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs opacity-80">Elverra</p>
+                        <p className="font-bold">Global</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div>
+                        <p className="text-xs opacity-80">Card Number</p>
+                        <p className="font-mono text-lg">**** **** **** 1234</p>
+                      </div>
+                      <div className="flex justify-between">
                         <div>
-                          <p className="text-xs opacity-80">ZENIKA Card</p>
-                          <p className="font-bold">{tier}</p>
+                          <p className="text-xs opacity-80">Valid Thru</p>
+                          <p className="text-sm">12/28</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs opacity-80">Elverra</p>
-                          <p className="font-bold">Global</p>
+                        <div>
+                          <p className="text-xs opacity-80">Member ID</p>
+                          <p className="text-sm">{membership?.member_id || 'EG-1001'}</p>
                         </div>
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-xs opacity-80">Card Number</p>
-                        <p className="font-mono">**** **** **** {1234 + index}</p>
-                        <div className="flex justify-between">
-                          <div>
-                            <p className="text-xs opacity-80">Valid Thru</p>
-                            <p className="text-sm">12/28</p>
-                          </div>
-                          <div>
-                            <p className="text-xs opacity-80">Member ID</p>
-                            <p className="text-sm">EG-{1000 + index}</p>
-                          </div>
-                        </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-sm text-gray-600">Expiration Date</Label>
+                        <p className="font-medium">December 2028</p>
+                      </div>
+                      <div>
+                        <Label className="text-sm text-gray-600">Renewal Status</Label>
+                        <Badge variant="outline" className="bg-green-50 text-green-700">Auto-Renewal On</Badge>
                       </div>
                     </div>
                     
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Status:</span>
-                        <Badge variant={membership?.tier === tier ? 'default' : 'secondary'}>
-                          {membership?.tier === tier ? 'Active' : 'Available'}
-                        </Badge>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label className="text-sm text-gray-600">PIN Status</Label>
+                        <p className="font-medium text-green-600">Set</p>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Discount Rate:</span>
-                        <span className="font-medium">{tier === 'Essential' ? '5%' : tier === 'Premium' ? '10%' : '20%'}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-sm text-gray-600">Monthly Fee:</span>
-                        <span className="font-medium">CFA {tier === 'Essential' ? '1,000' : tier === 'Premium' ? '2,000' : '5,000'}</span>
+                      <div>
+                        <Label className="text-sm text-gray-600">Card Status</Label>
+                        <Badge variant="default">Activated</Badge>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="space-y-2">
-                      {membership?.tier === tier ? (
-                        <>
-                          <Button variant="outline" className="w-full">
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                            Request Renewal
-                          </Button>
-                          <Button variant="outline" className="w-full">
-                            <CreditCard className="h-4 w-4 mr-2" />
-                            Replace Card
-                          </Button>
-                          <Button variant="outline" className="w-full">
-                            <Lock className="h-4 w-4 mr-2" />
-                            Manage PIN
-                          </Button>
-                        </>
-                      ) : (
-                        <Button className="w-full">
-                          Upgrade to {tier}
-                        </Button>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" className="w-full">
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Request Renewal
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Replace Card
+                    </Button>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button variant="outline" className="w-full">
+                      <Lock className="h-4 w-4 mr-2" />
+                      Manage PIN
+                    </Button>
+                    <Button variant="outline" className="w-full">
+                      <Download className="h-4 w-4 mr-2" />
+                      Activate Card
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Card Management Actions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Card Management</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <Button className="w-full justify-start" asChild>
+                      <a href="/cards">
+                        <CreditCard className="h-4 w-4 mr-2" />
+                        View All Card Options
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="w-full justify-start" asChild>
+                      <a href="/activate-card">
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Card Activation
+                      </a>
+                    </Button>
+                    
+                    <Button variant="outline" className="w-full justify-start">
+                      <Lock className="h-4 w-4 mr-2" />
+                      PIN Management
+                    </Button>
+                    
+                    <Button variant="outline" className="w-full justify-start">
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Request Card Renewal
+                    </Button>
+                    
+                    <Button variant="outline" className="w-full justify-start">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Request Card Replacement
+                    </Button>
+                  </div>
+                  
+                  <div className="border-t pt-4">
+                    <h4 className="font-medium mb-3">Card Benefits</h4>
+                    <ul className="text-sm text-gray-600 space-y-1">
+                      <li>• Exclusive merchant discounts</li>
+                      <li>• Pan-African network access</li>
+                      <li>• Priority customer support</li>
+                      <li>• Reward points on purchases</li>
+                    </ul>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
