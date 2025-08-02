@@ -5,20 +5,23 @@ const CardShowcase = () => {
     {
       tier: 'Elite',
       name: 'Mariam Koné',
-      borderColor: '#22c55e',
-      zenikaColor: '#277732'
+      borderColor: '#ffcf08',
+      zenikaColor: '#277732',
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
     },
     {
       tier: 'Premium', 
       name: 'Moussa Ballo',
       borderColor: '#22c55e',
-      zenikaColor: '#ffcf08'
+      zenikaColor: '#ffcf08',
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
     },
     {
       tier: 'Essential',
       name: 'Ousmane Traoré',
       borderColor: '#3b82f6',
-      zenikaColor: '#b4121d'
+      zenikaColor: '#b4121d',
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)'
     }
   ];
 
@@ -40,56 +43,61 @@ const CardShowcase = () => {
               <div 
                 className="relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl hover:scale-105"
                 style={{
-                  border: `3px solid ${card.borderColor}`,
-                  background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                  border: `4px solid ${card.borderColor}`,
+                  background: card.background,
                   aspectRatio: '1.6/1',
-                  width: '300px'
+                  width: '320px'
                 }}
               >
-                {/* Background wave pattern */}
+                {/* Blue wave section */}
                 <div className="absolute inset-0">
-                  <svg viewBox="0 0 400 250" className="w-full h-full">
-                    <path d="M0,150 Q100,100 200,120 T400,110 L400,250 L0,250 Z" fill="rgba(255,255,255,0.1)" />
+                  <div className="absolute inset-0 bg-white"></div>
+                  <svg viewBox="0 0 400 250" className="w-full h-full absolute">
+                    <path d="M0,100 Q200,60 400,90 L400,250 L0,250 Z" fill="#3b82f6" />
                   </svg>
                 </div>
                 
                 {/* Globe and hand logo */}
-                <div className="absolute top-4 right-4 w-12 h-12">
+                <div className="absolute top-6 right-6 w-14 h-14">
                   <div className="relative w-full h-full">
-                    {/* Hand */}
-                    <div className="absolute inset-0 bg-blue-500 rounded-full opacity-80"></div>
+                    {/* Hand circle */}
+                    <div className="absolute inset-0 bg-blue-500 rounded-full"></div>
                     {/* Globe */}
-                    <div className="absolute top-1 right-1 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <div className="w-5 h-5 bg-white rounded-full opacity-90"></div>
+                    <div className="absolute top-1 right-1 w-9 h-9 bg-green-500 rounded-full flex items-center justify-center">
+                      <div className="w-6 h-6 bg-white rounded-full"></div>
                     </div>
                   </div>
                 </div>
 
-                <div className="relative p-4 h-full flex flex-col">
+                <div className="relative p-6 h-full flex flex-col">
                   {/* ZENIKA Header */}
-                  <div className="mb-6">
-                    <h2 className="text-2xl font-bold tracking-wider" style={{ color: card.zenikaColor }}>
+                  <div className="mb-4">
+                    <h2 className="text-3xl font-bold tracking-wider" style={{ color: card.zenikaColor }}>
                       ZENIKA
                     </h2>
                   </div>
 
                   {/* Member Info */}
-                  <div className="mt-auto text-white">
-                    <div className="mb-3">
-                      <h3 className="text-lg font-semibold">{card.name}</h3>
-                      <p className="text-sm opacity-90">Status: {card.tier}</p>
-                      <p className="text-sm opacity-90">Sokorodji, Bamako, Mali</p>
+                  <div className="mt-auto text-white pb-4">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-semibold mb-1">{card.name}</h3>
+                      <p className="text-base opacity-95 mb-1">Status: {card.tier}</p>
+                      <p className="text-base opacity-95 mb-2">Sokorodji, Bamako, Mali</p>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-end justify-between">
                       <div>
-                        <p className="text-xs opacity-90">ID: ML-2025896550</p>
+                        <p className="text-sm opacity-90">ID: ML-2025896550</p>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-bold">03/26</span>
-                        {/* QR Code placeholder */}
-                        <div className="w-8 h-8 bg-white rounded border border-black flex items-center justify-center">
-                          <div className="w-6 h-6 bg-black opacity-80"></div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-lg font-bold">03/26</span>
+                        {/* QR Code */}
+                        <div className="w-12 h-12 bg-white rounded-sm border-2 border-black p-1">
+                          <div className="w-full h-full bg-black rounded-sm grid grid-cols-3 grid-rows-3 gap-0.5">
+                            {[...Array(9)].map((_, i) => (
+                              <div key={i} className={`${i % 2 === 0 ? 'bg-white' : 'bg-black'} rounded-sm`}></div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>

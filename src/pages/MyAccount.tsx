@@ -286,43 +286,40 @@ const MyAccount = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {/* ZENIKA Card - Exact Design from Upload */}
-                <div className={`relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl ${
-                  membership?.tier === 'Elite' 
-                    ? 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600' 
-                    : membership?.tier === 'Premium'
-                    ? 'bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600'
-                    : 'bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700'
-                }`} style={{
+                {/* ZENIKA Card - Exact Design from Reference */}
+                <div className="relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 hover:shadow-3xl bg-white" style={{
                   border: membership?.tier === 'Elite' 
-                    ? '3px solid #22c55e' 
+                    ? '4px solid #ffcf08' 
                     : membership?.tier === 'Premium'
-                    ? '3px solid #22c55e'
-                    : '3px solid #3b82f6',
+                    ? '4px solid #22c55e'
+                    : '4px solid #3b82f6',
                   aspectRatio: '1.6/1',
-                  maxWidth: '400px'
+                  maxWidth: '420px'
                 }}>
-                  {/* Background wave */}
+                  {/* Blue wave section */}
                   <div className="absolute inset-0">
-                    <svg viewBox="0 0 400 250" className="w-full h-full">
-                      <path d="M0,150 Q100,100 200,120 T400,110 L400,250 L0,250 Z" fill="rgba(255,255,255,0.1)" />
+                    <div className="absolute inset-0 bg-white"></div>
+                    <svg viewBox="0 0 400 250" className="w-full h-full absolute">
+                      <path d="M0,100 Q200,60 400,90 L400,250 L0,250 Z" fill="#3b82f6" />
                     </svg>
                   </div>
                   
-                  {/* Globe logo */}
-                  <div className="absolute top-4 right-4 w-16 h-16">
+                  {/* Globe and hand logo */}
+                  <div className="absolute top-6 right-6 w-16 h-16">
                     <div className="relative w-full h-full">
-                      <div className="absolute inset-0 bg-blue-500 rounded-full opacity-80"></div>
+                      {/* Hand circle */}
+                      <div className="absolute inset-0 bg-blue-500 rounded-full"></div>
+                      {/* Globe */}
                       <div className="absolute top-1 right-1 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                        <div className="w-6 h-6 bg-white rounded-full opacity-90"></div>
+                        <div className="w-7 h-7 bg-white rounded-full"></div>
                       </div>
                     </div>
                   </div>
 
                   <div className="relative p-6 h-full flex flex-col">
                     {/* ZENIKA Header */}
-                    <div className="mb-8">
-                      <h2 className="text-3xl font-bold tracking-wider" style={{ 
+                    <div className="mb-6">
+                      <h2 className="text-4xl font-bold tracking-wider" style={{ 
                         color: membership?.tier === 'Elite' 
                           ? '#277732' 
                           : membership?.tier === 'Premium'
@@ -334,27 +331,31 @@ const MyAccount = () => {
                     </div>
 
                     {/* Member Info */}
-                    <div className="mt-auto text-white">
+                    <div className="mt-auto text-white pb-4">
                       <div className="mb-4">
-                        <h3 className="text-xl font-semibold">
+                        <h3 className="text-xl font-semibold mb-1">
                           {profile?.full_name || 'Member Name'}
                         </h3>
-                        <p className="text-sm opacity-90">
+                        <p className="text-base opacity-95 mb-1">
                           Status: {membership?.tier || 'Essential'}
                         </p>
-                        <p className="text-sm opacity-90">
+                        <p className="text-base opacity-95 mb-2">
                           Sokorodji, Bamako, Mali
                         </p>
                       </div>
                       
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-end justify-between">
                         <div>
                           <p className="text-sm opacity-90">ID: {membership?.member_id || 'ML-2025896550'}</p>
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="text-lg font-bold">03/26</span>
-                          <div className="w-12 h-12 bg-white rounded border-2 border-black flex items-center justify-center">
-                            <div className="w-8 h-8 bg-black opacity-80"></div>
+                          <div className="w-14 h-14 bg-white rounded-sm border-2 border-black p-1">
+                            <div className="w-full h-full bg-black rounded-sm grid grid-cols-3 grid-rows-3 gap-0.5">
+                              {[...Array(9)].map((_, i) => (
+                                <div key={i} className={`${i % 2 === 0 ? 'bg-white' : 'bg-black'} rounded-sm`}></div>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
