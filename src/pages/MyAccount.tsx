@@ -304,16 +304,13 @@ const MyAccount = () => {
                     </svg>
                   </div>
                   
-                  {/* Globe and hand logo */}
-                  <div className="absolute top-6 right-6 w-16 h-16">
-                    <div className="relative w-full h-full">
-                      {/* Hand circle */}
-                      <div className="absolute inset-0 bg-blue-500 rounded-full"></div>
-                      {/* Globe */}
-                      <div className="absolute top-1 right-1 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                        <div className="w-7 h-7 bg-white rounded-full"></div>
-                      </div>
-                    </div>
+                  {/* Logo */}
+                  <div className="absolute top-4 right-4 w-16 h-16 z-10">
+                    <img 
+                      src="/lovable-uploads/67ee58e7-72d3-4748-8fce-c410558519aa.png" 
+                      alt="ZENIKA Logo" 
+                      className="w-full h-full object-contain"
+                    />
                   </div>
 
                   <div className="relative p-6 h-full flex flex-col">
